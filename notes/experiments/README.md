@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-09-24 | [Blender → Unity rig hand-off](2026-09-24-blender-unity-rig-handoff.md) | Fixed shared skin weights; Generic FBX animation, scale/axes, three rendered poses and a reopened Unity scene. Direct editor works without new authentication; CLI stalled. |
 | 2026-09-23 | [Procedural Blender showcase](2026-09-23-blender-showcase.md) | Editable private scene and four Metal/Cycles renders; generic renderer with scene-hash provenance. |
 | 2026-09-23 | [Private asset library](2026-09-23-private-asset-library.md) | Private GitHub + LFS upload/restore; 77 files matched byte-for-byte. Generic public logs, private project details. |
 | 2026-09-23 | [Concept-art exploration](2026-09-23-concept-art.md) | Concept set from Klein 4B in ~7 min; literal simile leakage; fixed-seed comparisons. New pattern + `batch.py`, `contact_sheet.py`. |

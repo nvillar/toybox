@@ -7,7 +7,7 @@ Reusable helpers that link tools together. Only scripts that have actually worke
 | `gen/` | Capability wrappers with a stable interface and platform-specific backends | `python3 scripts/gen/<capability>.py …` |
 | `setup/` | Per-platform toolchain setup | `scripts/setup/<platform>.sh` |
 | `blender/` | `bpy` scripts | `blender -b --factory-startup -P scripts/blender/<script>.py -- <args>` |
-| `unity/` | C# editor scripts / snippets for the Pipeline package | See [notes/tools/unity.md](../notes/tools/unity.md) |
+| `unity/` | C# editor helpers for direct batch mode; Pipeline candidates | See [notes/tools/unity.md](../notes/tools/unity.md) |
 
 Conventions:
 
@@ -29,4 +29,6 @@ Conventions:
 | [`gen/gallery.py`](gen/gallery.py) | Build a local image gallery with round/model filters, full-size viewing and provenance (stdlib Python) | — |
 | [`gen/toybox_gen.py`](gen/toybox_gen.py) | Shared: platform detection, backend selection, seeds, provenance | — |
 | [`blender/render_scene.py`](blender/render_scene.py) | Render a saved scene/camera to PNG with scene-hash provenance | Cycles / Metal, Blender 5.2.2 |
+| [`blender/export_rig_probe.py`](blender/export_rig_probe.py) | Character-only FBX diagnostic, moving/stationary mesh guards and expected measurements | Blender 5.2.2 |
+| [`unity/RigImportProbe.cs`](unity/RigImportProbe.cs) | Import FBX, check Generic Animator/skin/axes, capture poses and save/reopen a scene | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`setup/macos.sh`](setup/macos.sh) | Install Blender, uv, ffmpeg, MFLUX, Stable Audio 3 MLX on Apple Silicon | — |

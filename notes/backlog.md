@@ -4,8 +4,10 @@ Open questions and next experiments. Move items into an experiment log when you 
 
 ## Next experiments
 
-- [ ] **Blender → Unity round-trip**: generate a mesh with bpy, export GLB, import into a fresh Unity project, place it in a scene, capture a screenshot.
+- [x] **Blender → Unity rig hand-off**: FBX Generic import, Animator/Playables, scale/axis/skin checks and screenshots ([experiment](experiments/2026-09-24-blender-unity-rig-handoff.md)). This is one-way, not a Unity-to-Blender round trip.
+- [ ] **GLB into Unity**: add a glTF importer in a disposable project and compare simple textured assets with FBX.
 - [ ] **Unity CLI basics**: create a project, install the Pipeline package, open it, list `unity command` tools, find and try C# eval.
+- [ ] **Unity CLI startup**: investigate stalled `projects new` / `run` and listed-but-unlocatable editors. Direct editor batch mode is verified; do not assume cloud authentication is needed for local asset checks.
 - [x] **Headless Blender preview render**: Cycles/Metal with explicit camera and scene-hash sidecar ([experiment](experiments/2026-09-23-blender-showcase.md)).
 - [ ] **First texture in Blender**: generate a tileable texture with `scripts/gen/image.py`, apply it to a mesh, check seams by 2×2 tiling, export GLB.
 - [ ] **SFX into Unity**: generate a handful of UI/pickup sounds with `scripts/gen/audio.py`, normalise with `ffmpeg`, play them from Unity.
@@ -20,7 +22,8 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] **Bulk storage (deferred)**: try `rclone` to a private R2/S3 bucket when large batches or video justify it. Small selected experiments now live in the private LFS library; disposable runs stay local.
 - [ ] Install `ffmpeg` (`brew install ffmpeg`, or run `scripts/setup/macos.sh`). Not present yet.
 - [ ] **Tiny vertical slice**: one scene, one controllable object, one generated model, one texture, one sound, one test.
-- [ ] **Concept → production model**: a private reference-driven showcase and segmented armature are [built](experiments/2026-09-23-blender-showcase.md). Next: production character topology, natural walking/turning/reaching and a turntable; then verify Unity import.
+- [ ] **Concept → production model**: a private reference-driven showcase is [built](experiments/2026-09-23-blender-showcase.md), skin-weight isolation is corrected, and its Generic rig [imports into Unity](experiments/2026-09-24-blender-unity-rig-handoff.md). Next: production topology, bind remaining decorative parts, neutral rest pose, in-place idle/walk with foot-contact checks, then code-driven Unity movement/player control and an explicit facing convention.
+- [ ] **Blender → Unity appearance**: bake procedural materials, compare lighting, and optimize mesh/renderer counts; successful rig import does not establish visual parity or game-ready budgets.
 - [ ] **Miniature animation**: test natural articulated locomotion independently of any deliberately stepped/stop-motion treatment; visual scale does not dictate movement style. Also survey local image-to-video models (licences, MLX/CUDA backends).
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
 - [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).

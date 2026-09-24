@@ -1,6 +1,6 @@
 ---
 status: verified
-last_verified: 2026-09-23
+last_verified: 2026-09-24
 versions: { blender: 5.2.2 LTS }
 ---
 
@@ -13,10 +13,10 @@ Turn a reviewed concept set into an editable 3D scene, using a render-and-review
 ## Steps
 
 1. **Freeze the visual brief.** Record the exact selected images and what to preserve, change or omit. Separate appearance from function: a display stand is not part of a walking character, and a miniature appearance does not require stepped animation. Keep the brief and reference paths private.
-2. **Build a small representative scene.** Establish camera, proportions and the focal object before multiplying detail. Use meshes for flat or clipped components, lathed profiles for rotational forms, and bevelled curves for rails, cables and ornament. Share repeated mesh data where appropriate; use object-level material slots when instances need different materials. Keep the builder parameterised and project-specific.
+2. **Build a small representative scene.** Establish camera, proportions and the focal object before multiplying detail. Use meshes for flat or clipped components, lathed profiles for rotational forms, and bevelled curves for rails, cables and ornament. Share repeated unskinned mesh data where appropriate; copy data before assigning different skin bindings. Use object-level material slots when instances need different materials. Keep the builder parameterised and project-specific.
 3. **Make the deliverable editable.** Organize named collections and cameras. Keep procedural materials in the scene, embed the builder and navigation notes as Blender text blocks, and preserve the standalone source in private Git. A `.blend` is the editable source, not just an intermediate on the way to a PNG.
 4. **Render, inspect and revise.** Start with a small draft; then inspect a wide composition, a focal-object close-up, a material/detail view and a character view where relevant. Fix geometry and materials before increasing resolution. Re-render all final views from the same saved scene revision.
-5. **Reopen and check the saved file.** Verify the named cameras and expected objects, embedded source agreement, and external dependencies. If a rig is claimed, rotate a bone and verify its intended mesh moves. This establishes articulation only, not good deformation or a natural walk cycle.
+5. **Reopen and check the saved file.** Verify the named cameras and expected objects, embedded source agreement, and external dependencies. If a rig is claimed, rotate a bone and verify its intended mesh moves **while unrelated body parts stay still**. The original positive-only check missed shared-weight contamination, caught in the hand-off experiment. This establishes articulation only, not good deformation or a natural walk cycle.
 6. **Archive the selected result.** Preserve the builder, `.blend`, images and sidecars in the private asset library. Record the scene hash in each render sidecar; archive only selected milestones, leaving disposable drafts in local scratch. Commit/push the completed cycle under the repository's checkpoint policy.
 
 The existing renderer provides the draft/final loop once the project's builder has saved a scene. Camera names below are examples; use the exact names in the saved file.
@@ -63,3 +63,4 @@ Choose a new or empty gallery output directory. Open its `index.html` locally, o
 - [Concept-art exploration](../experiments/2026-09-23-concept-art.md): selected references and human review.
 - [Procedural Blender showcase](../experiments/2026-09-23-blender-showcase.md): construction, iteration, saved-scene checks and Metal renders.
 - [Private asset library](../experiments/2026-09-23-private-asset-library.md): storage and restoration.
+- [Rig hand-off](../experiments/2026-09-24-blender-unity-rig-handoff.md): corrected shared skin weights and added negative controls before Unity import.

@@ -79,8 +79,8 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 |------------|---------|--------|
 | Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B (default); Qwen-Image-2.1 for in-image text (non-commercial) | 🟢 macOS · ⚪ other platforms |
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
-| 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render · ⚪ production animation/Unity hand-off |
-| Game engine | Unity (CLI + Pipeline package) | 🟡 installed, not yet exercised |
+| 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render + rig hand-off · ⚪ production animation |
+| Game engine | Unity editor batch mode; CLI + Pipeline candidates | 🟢 FBX rig import, animation + screenshots · ⚪ gameplay/Pipeline |
 | Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
 | Video | — | ⚪ not started |
 | Asset storage, collaboration | Private `toybox-assets` library · GitHub + Git LFS; per-game repos later | 🟢 upload/restore · ⚪ Unity collaboration ([notes](notes/tools/asset-storage.md)) |

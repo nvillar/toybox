@@ -1,5 +1,7 @@
 # Procedural Blender showcase and headless Metal rendering
 
+**Rig validation superseded:** the [2026-09-24 hand-off](2026-09-24-blender-unity-rig-handoff.md) caught shared-mesh skin-weight contamination missed by the positive-only articulation check. The private builder is corrected; original renders and scene remain historical artifacts.
+
 - **Date:** 2026-09-23
 - **Goal:** Turn selected private concept references into an editable scene and reviewable renders, without embedding project details in the public knowledge repo.
 - **Tools & versions:** Blender 5.2.2 LTS, Cycles, Metal; Apple M4 Max, 128 GB unified memory; Python 3.9.6 for orchestration.
