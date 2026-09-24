@@ -87,3 +87,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 | Publishing | — | ⚪ not started |
 
 🟢 verified in an experiment · 🟡 partially known · ⚪ not yet explored · 🔴 known broken
+
+## License
+
+The notes and scripts in this repo are available under the [MIT License](LICENSE). The third-party tools and model weights it refers to are not included, and each has its own licence. Some are non-commercial (see the tool notes). This licence does not override those terms, or the terms that govern generated output.
