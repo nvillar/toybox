@@ -16,9 +16,14 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] **Image edit / references** via `mflux-generate-flux2-edit` (9B KV, non-commercial) and a commercial-safe alternative.
 - [ ] **Commercial-safe in-image text**: find a shippable alternative to Qwen-Image-2.1 for titles/UI text (or overlay real fonts), and compare.
 - [ ] **Private game repo via `unity vcs`**: create a throwaway Unity project, run `unity vcs setup --vcs github --git-visibility private --git-lfs`, then `unity vcs doctor` and `merge-setup`. Push a generated texture + WAV (with sidecars), clone elsewhere, `unity vcs sync`. Record LFS patterns, locking, and GitHub LFS quota behaviour in [tools/asset-storage.md](tools/asset-storage.md).
-- [ ] **Bulk storage**: try `rclone` to a private R2/S3 bucket for raw generation batches; decide the promotion flow into the game repo.
+- [ ] **Multi-user LFS locking**: test lock/unlock and competing edits to a disposable binary with two collaborators. Private-library upload/restore is [verified](experiments/2026-09-23-private-asset-library.md); shared access and locking are not.
+- [ ] **Bulk storage (deferred)**: try `rclone` to a private R2/S3 bucket when large batches or video justify it. Small selected experiments now live in the private LFS library; disposable runs stay local.
 - [ ] Install `ffmpeg` (`brew install ffmpeg`, or run `scripts/setup/macos.sh`). Not present yet.
 - [ ] **Tiny vertical slice**: one scene, one controllable object, one generated model, one texture, one sound, one test.
+- [ ] **Concept → model**: use a generated character turnaround as the reference for a bpy/Blender model, then render a turntable in the concept style and compare. ([concept-art exploration](experiments/2026-09-23-concept-art.md))
+- [ ] **Miniatures brought to life**: a stop-motion-style animation (stepped keys, e.g. on twos) of a figurine in Blender or Unity. Also survey local image-to-video models (licences, MLX/CUDA backends).
+- [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
+- [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).
 
 ## Open questions
 
@@ -26,5 +31,4 @@ Open questions and next experiments. Move items into an experiment log when you 
 - Is the Stability AI Community License acceptable for the games we want to ship? (Revenue thresholds apply.)
 - Can multiple MLX jobs (image + audio + LLM) run concurrently in separate processes without contention problems, given 128 GB unified memory?
 - Provenance: per-asset sidecars are now the default. Do we also want a project-level manifest?
-- Where should Unity projects live — in this repo under `sandbox/`, or separate repos?
 - What does "publishing" mean for us first: a desktop build, WebGL on a page, or a store?

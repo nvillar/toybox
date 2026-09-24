@@ -31,7 +31,7 @@ python3 scripts/gen/audio.py --kind sfx --prompt "coin pickup, bright chime, ret
 ## Pitfalls
 
 - The default models are commercially usable (FLUX.2 Klein 4B: Apache-2.0; Stable Audio 3: Stability AI Community License, which has conditions). Overriding `--model` may switch to a non-commercial licence. The sidecar records it.
-- Keep generated assets out of this repo. Curate them into a private project repo ([asset storage](../tools/asset-storage.md)).
+- Keep generated assets out of this repo. Archive selected experiments in the private asset library and promote rights-reviewed assets to private production repos ([asset storage](../tools/asset-storage.md)).
 
 ## Evidence
 

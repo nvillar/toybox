@@ -25,7 +25,7 @@ Role: textures, PBR maps, backgrounds, skyboxes, sprites, UI art, concept art.
 | Backgrounds / parallax | Layered, transparent edges | Needs alpha or background removal. |
 | Sprites / UI / icons | Transparent background, consistent style | Style consistency across a set is the hard part. A fixed style suffix helped in HotCards. |
 | Titles, logos, signage | Legible, correctly spelled text | Qwen-Image-2.1 spells text reliably. Non-commercial, so use it for prototypes or get a licence. |
-| Concept art | Fast iteration | Feeds the design brief and Blender reference. |
+| Concept art | Fast iteration, consistent style across a set | See the [concept-art exploration](../patterns/concept-art-exploration.md) pattern. Klein 4B takes ~20 s at 1344×768. |
 
 ## Evaluation criteria
 

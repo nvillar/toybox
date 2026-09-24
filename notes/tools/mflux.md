@@ -59,6 +59,14 @@ From [nvillar/HotCards](https://github.com/nvillar/HotCards), `evals/DECISION.md
 - Getting the same object from a new viewpoint was unreliable with references, so don't rely on it for consistency across views.
 - Inside one process, run MLX/Metal work (MFLUX and Stable Audio) one at a time through a single inference boundary. Our wrappers start a separate process per call.
 
+## Prompting gotchas (verified 2026-09-23, [concept-art exploration](../experiments/2026-09-23-concept-art.md))
+
+- **Similes leak literally.** "figurines like hand-painted chess pieces" put chess pieces into most scenes, in both Klein and Qwen. Klein runs at guidance 1.0 with no negative prompt, so remove the simile and describe the attribute itself.
+- **Fixed seeds helped style comparisons:** the reviewed Klein 4B and Qwen-Image-2.1 pairs kept broadly similar layouts after suffix changes. This is not a guarantee of composition consistency.
+- Qwen-Image-2.1 sometimes moved a background landmark inside the scene as miniature props; inspect spatial relationships, not just object presence.
+- Timing at 1344×768: Klein 4B 19–24 s; Qwen-Image-2.1 306–337 s.
+- `scripts/gen/image.py` now records the `mflux` and `mlx` versions in each sidecar. Earlier sidecars have `"versions": {}`.
+
 ## To explore
 
 - Tileable / seamless textures: prompt-only vs post-processing (offset + inpaint via `mflux-generate-fill`).

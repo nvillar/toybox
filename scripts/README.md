@@ -24,5 +24,8 @@ Conventions:
 |--------|---------|---------------------|
 | [`gen/image.py`](gen/image.py) | Text-to-image (textures, backgrounds, sprites) | `mflux` (macos-arm64) |
 | [`gen/audio.py`](gen/audio.py) | SFX / music from text | `sa3-mlx` (macos-arm64) |
+| [`gen/batch.py`](gen/batch.py) | Batch images from a JSON shot list with a shared style suffix (concept sets, variations) | via `image.py` |
+| [`gen/contact_sheet.py`](gen/contact_sheet.py) | Tile images into a labelled JPEG for review (`uv run`, Pillow) | — |
+| [`gen/gallery.py`](gen/gallery.py) | Build a local image gallery with round/model filters, full-size viewing and provenance (stdlib Python) | — |
 | [`gen/toybox_gen.py`](gen/toybox_gen.py) | Shared: platform detection, backend selection, seeds, provenance | — |
 | [`setup/macos.sh`](setup/macos.sh) | Install Blender, uv, ffmpeg, MFLUX, Stable Audio 3 MLX on Apple Silicon | — |

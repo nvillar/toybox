@@ -26,7 +26,7 @@ flowchart LR
 
 | Stage | Responsibility | Primary tool | Output format | Notes |
 |-------|----------------|--------------|---------------|-------|
-| Concept | Design brief, style guide, asset list | Agent + human | Markdown | Asset list drives everything downstream. |
+| Concept | Design brief, style guide, concept art, asset list | Agent + human | Markdown, PNG sets | Asset list drives everything downstream. Concept art: [pattern](patterns/concept-art-exploration.md). |
 | 3D assets | Model, UV, material, rig, animate | Blender | `.glb` (preferred), `.fbx` | [tools/blender.md](tools/blender.md) |
 | 2D assets | Textures, PBR maps, backgrounds, skyboxes, sprites, UI | `scripts/gen/image.py` (MFLUX on macOS), Blender bakes | `.png`, `.exr` | [tools/image-generation.md](tools/image-generation.md) |
 | Audio | SFX, ambience, music, voice | `scripts/gen/audio.py` (Stable Audio 3 on macOS), `ffmpeg` | `.wav` (source), `.ogg` | [tools/audio-generation.md](tools/audio-generation.md) |
@@ -46,7 +46,7 @@ These are the defaults until an experiment shows a better choice.
 - **Naming:** `snake_case`, prefixed by type: `mdl_`, `tex_`, `sfx_`, `mus_`, `sky_`.
 - **Provenance:** every generated asset gets an `<asset>.json` sidecar (prompt, seed, params, backend, model, licence, versions, platform, exact command, timing). The `scripts/gen/` wrappers write it automatically.
 - **Platform independence:** stages call capability wrappers, not backend tools directly, so the same pipeline runs on MLX, CUDA or ROCm backends ([platforms.md](platforms.md)).
-- **Storage:** game assets never go in this repo. Curated assets go in a private per-game git repo with LFS; bulk or scratch output goes in private object storage ([tools/asset-storage.md](tools/asset-storage.md)).
+- **Storage:** project assets and full briefs never go in this repo. Selected experiments live in the private `toybox-assets` library with Git LFS; approved production assets go in private per-game repos. Disposable output stays in local `out/`; private object storage is deferred until volume warrants it ([tools/asset-storage.md](tools/asset-storage.md)).
 
 ## The feedback loop
 

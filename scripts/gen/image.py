@@ -18,7 +18,10 @@ Backends:
 from __future__ import annotations
 
 import argparse
+import json
+import shlex
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -34,6 +37,34 @@ MFLUX_LICENSES = {
     "qwen-image-2.1": "Qwen Research License (non-commercial)",
 }
 MFLUX_COMMANDS = {"qwen-image-2.1": "mflux-generate-qwen-2.1"}
+
+
+def _package_versions(exe: str, packages: list[str]) -> dict[str, str]:
+    """Ask the interpreter behind a console script (its shebang) for package versions."""
+    try:
+        with open(exe, "rb") as f:
+            first = f.readline().decode(errors="replace").strip()
+        if not first.startswith("#!"):
+            raise ValueError("console script has no interpreter shebang")
+        interpreter = shlex.split(first[2:].strip())
+        if not interpreter:
+            raise ValueError("console script has an empty interpreter shebang")
+        code = (
+            "import importlib.metadata as m, json\n"
+            f"print(json.dumps({{p: m.version(p) for p in {packages!r}}}))"
+        )
+        out = subprocess.run(
+            [*interpreter, "-c", code], capture_output=True, text=True, timeout=30, check=True
+        )
+        versions = json.loads(out.stdout)
+        if not isinstance(versions, dict) or any(
+            not isinstance(versions.get(package), str) for package in packages
+        ):
+            raise ValueError("interpreter returned invalid package versions")
+        return versions
+    except (OSError, ValueError, subprocess.SubprocessError) as error:
+        print(f"warning: could not record package versions for {exe}: {error}", file=sys.stderr)
+        return {}
 
 
 def _run_mflux(req: Request) -> Result:
@@ -60,6 +91,7 @@ def _run_mflux(req: Request) -> Result:
         model=model,
         command=cmd,
         license=MFLUX_LICENSES.get(model, "unknown - check model card"),
+        versions=_package_versions(exe, ["mflux", "mlx"]),
     )
 
 

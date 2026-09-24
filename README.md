@@ -83,7 +83,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 | Game engine | Unity (CLI + Pipeline package) | 🟡 installed, not yet exercised |
 | Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
 | Video | — | ⚪ not started |
-| Asset storage, collaboration | Private per-game git + LFS via `unity vcs`; object storage | ⚪ planned ([notes](notes/tools/asset-storage.md)) |
+| Asset storage, collaboration | Private `toybox-assets` library · GitHub + Git LFS; per-game repos later | 🟢 upload/restore · ⚪ Unity collaboration ([notes](notes/tools/asset-storage.md)) |
 | Publishing | — | ⚪ not started |
 
 🟢 verified in an experiment · 🟡 partially known · ⚪ not yet explored · 🔴 known broken
