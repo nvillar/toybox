@@ -8,6 +8,8 @@ versions: { blender: 5.2.2 LTS }
 
 Role: create and edit 3D assets (modelling, UVs, materials, baking, rigging, animation) and export them for Unity.
 
+For the complete reference-selection, modelling and visual-review loop, see [Selected references → Blender showcase](../patterns/reference-to-blender-showcase.md). This tool note covers individual commands and API findings.
+
 ## Installing (macOS)
 
 Prefer Homebrew over downloading the app from blender.org:

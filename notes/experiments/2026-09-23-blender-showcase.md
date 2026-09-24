@@ -42,6 +42,12 @@ blender -b out/scene.blend --python-exit-code 1 \
 
 Reusable details were folded into [Blender](../tools/blender.md). Project identities, art direction, source and images remain private.
 
+## Distillation (2026-09-24)
+
+Promoted the completed sequence into [Selected references → Blender showcase](../patterns/reference-to-blender-showcase.md): freeze the brief, author an editable scene, inspect multiple camera scales, validate the saved artifact and archive selected results with provenance. This documents the existing experiment, not another successful run.
+
+Corrected the concept-art pattern's stale claim that the Blender reference hand-off was entirely unverified. Only the showcase hand-off is now demonstrated; production character work and downstream texture/UI consistency remain open. The animation backlog now separates miniature appearance from a required stop-motion gait.
+
 ## Follow-ups
 
 - Production topology, deforming skin and a natural locomotion study; a poseable segmented rig is not enough evidence.

@@ -19,3 +19,4 @@ Each pattern (`notes/patterns/<slug>.md`) has:
 |---------|----------|--------|
 | [Generated asset with provenance](generated-asset-with-provenance.md) | A PNG or WAV plus a `.json` sidecar | verified (macOS) |
 | [Concept-art exploration](concept-art-exploration.md) | A reviewed concept set + contact sheets from a brief | partial (macOS) |
+| [Selected references → Blender showcase](reference-to-blender-showcase.md) | Editable scene, procedural source, multi-view renders and private review gallery | verified (macOS/Metal; look development only) |

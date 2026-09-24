@@ -1,5 +1,5 @@
 ---
-status: seed
+status: partial
 last_verified: 2026-09-23
 ---
 
@@ -27,7 +27,7 @@ flowchart LR
 | Stage | Responsibility | Primary tool | Output format | Notes |
 |-------|----------------|--------------|---------------|-------|
 | Concept | Design brief, style guide, concept art, asset list | Agent + human | Markdown, PNG sets | Asset list drives everything downstream. Concept art: [pattern](patterns/concept-art-exploration.md). |
-| 3D assets | Model, UV, material, rig, animate | Blender | `.glb` (preferred), `.fbx` | [tools/blender.md](tools/blender.md) |
+| 3D assets | Model, UV, material, rig, animate | Blender | `.blend` source; `.glb` / `.fbx` for hand-off | [Showcase workflow](patterns/reference-to-blender-showcase.md) verified; production animation and Unity import remain unverified. [Tool notes](tools/blender.md). |
 | 2D assets | Textures, PBR maps, backgrounds, skyboxes, sprites, UI | `scripts/gen/image.py` (MFLUX on macOS), Blender bakes | `.png`, `.exr` | [tools/image-generation.md](tools/image-generation.md) |
 | Audio | SFX, ambience, music, voice | `scripts/gen/audio.py` (Stable Audio 3 on macOS), `ffmpeg` | `.wav` (source), `.ogg` | [tools/audio-generation.md](tools/audio-generation.md) |
 | Language helpers | Prompt variants, naming, captioning / QA | Ollama / oMLX | text / JSON | [tools/local-llm.md](tools/local-llm.md) |

@@ -21,7 +21,7 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] Install `ffmpeg` (`brew install ffmpeg`, or run `scripts/setup/macos.sh`). Not present yet.
 - [ ] **Tiny vertical slice**: one scene, one controllable object, one generated model, one texture, one sound, one test.
 - [ ] **Concept → production model**: a private reference-driven showcase and segmented armature are [built](experiments/2026-09-23-blender-showcase.md). Next: production character topology, natural walking/turning/reaching and a turntable; then verify Unity import.
-- [ ] **Miniatures brought to life**: a stop-motion-style animation (stepped keys, e.g. on twos) of a figurine in Blender or Unity. Also survey local image-to-video models (licences, MLX/CUDA backends).
+- [ ] **Miniature animation**: test natural articulated locomotion independently of any deliberately stepped/stop-motion treatment; visual scale does not dictate movement style. Also survey local image-to-video models (licences, MLX/CUDA backends).
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
 - [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).
 
