@@ -40,6 +40,14 @@ python3 scripts/gen/audio.py --kind music --prompt "calm ambient forest music, s
 - MFLUX 0.18.0 was older than the latest (0.20.0) and HotCards' pin (≥0.19.1), but Klein worked on it. After upgrading to 0.20.0 (`uv tool upgrade mflux`), the Klein 4B recipe re-ran with the same peak memory.
 - `ffmpeg` is not installed yet.
 
+## Addendum: Qwen-Image-2.1 (same day)
+
+- `uv tool upgrade mflux` 0.18.0 → 0.20.0 added `mflux-generate-qwen-2.1`.
+- Downloaded the weights: `hf download Qwen/Qwen-Image-2.1 --revision 790c926 --exclude "assets/*"` (31 GB, not gated).
+- Licence is the **Qwen Research License**: non-commercial only. A commercial licence can be requested from Qwen.
+- 512² took 59 s at 20.5 GB peak; 768×512 took 84 s at 21.8 GB. The text in a title logo was rendered correctly.
+- Registered in `scripts/gen/image.py` as `--model qwen-image-2.1`. The sidecar records the non-commercial licence.
+
 ## Follow-ups
 
 - CUDA / ROCm backends, oMLX evaluation and an MFLUX upgrade, all added to [backlog.md](../backlog.md).

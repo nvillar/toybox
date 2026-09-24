@@ -17,7 +17,7 @@ uv tool install mflux --with hf-transfer    # puts mflux-* commands in ~/.local/
 uv tool upgrade mflux
 ```
 
-This machine: **0.20.0** (upgraded from 0.18.0 on 2026-09-23; HotCards pins `mflux>=0.19.1`). 0.20.0 adds Qwen-Image-2.1 (`mflux-generate-qwen-2.1`) and Krea 2. Weights download to the Hugging Face cache (`~/.cache/huggingface/hub`) on first use. Klein 4B is ~15 GB, and 9B / 9B-KV are ~49 GB each. All three are already cached here.
+This machine: **0.20.0** (upgraded from 0.18.0 on 2026-09-23; HotCards pins `mflux>=0.19.1`). 0.20.0 adds Qwen-Image-2.1 (`mflux-generate-qwen-2.1`) and Krea 2. Weights download to the Hugging Face cache (`~/.cache/huggingface/hub`) on first use. Klein 4B is ~15 GB, 9B / 9B-KV are ~49 GB each, and Qwen-Image-2.1 is ~31 GB. All are cached here.
 
 ## Models
 
@@ -27,8 +27,9 @@ This machine: **0.20.0** (upgraded from 0.18.0 on 2026-09-23; HotCards pins `mfl
 | `flux2-klein-9b` | FLUX Non-Commercial | Text-to-image, slower. Not for shipped commercial assets. |
 | `flux2-klein-9b-kv` | FLUX Non-Commercial | Reference-image / edit mode (`mflux-generate-flux2-edit`). |
 | `flux2-klein-base-*` | as above | Undistilled bases (more steps). |
+| `qwen-image-2.1` (`mflux-generate-qwen-2.1`) | **Qwen Research License, non-commercial** | 7.1B DiT with a Qwen3-VL text encoder. **Excellent in-image text** (logos, titles, signage). ~10× slower than Klein 4B. |
 
-Other families available through `mflux-generate-*`: Qwen Image (+edit), Z-Image (turbo), FIBO, Kontext, ERNIE, Ideogram, depth/ControlNet/fill/redux, SeedVR2 upscaling, LoRA training (`mflux-train`). None tested here yet.
+Other families available through `mflux-generate-*`: Qwen Image 1.x (+edit), Krea 2, Z-Image (turbo), FIBO, Kontext, ERNIE, Ideogram, depth/ControlNet/fill/redux, SeedVR2 upscaling, LoRA training (`mflux-train`). None tested here yet.
 
 ## Verified recipes
 
@@ -38,6 +39,15 @@ Other families available through `mflux-generate-*`: Qwen Image (+edit), Z-Image
     --width 512 --height 512 --seed 42 --output out/tex.png
   ```
   The result looked like a plausible cobblestone texture. It was not checked for seamless tiling.
+- ✅ Qwen-Image-2.1 text-to-image (2026-09-23, M4 Max, mflux 0.20.0). Defaults: 40 steps, no guidance, bf16.
+  - 512×512: **59 s**, peak **20.5 GB**.
+  - 768×512: **84 s**, peak **21.8 GB**.
+  - It rendered a pixel-art "TOYBOX" title logo with every letter correct.
+  - `mflux-generate-qwen-2.1` defaults to this model, so the wrapper does not pass `--model`. `-q 8` / `-q 4` quantization is available, but untested here.
+  ```sh
+  python3 scripts/gen/image.py --model qwen-image-2.1 --prompt 'pixel-art game title logo reading "TOYBOX" …' \
+    --width 768 --height 512 --seed 7 --out out/title.png
+  ```
 
 ## Learnings carried over from HotCards
 
@@ -54,4 +64,4 @@ From [nvillar/HotCards](https://github.com/nvillar/HotCards), `evals/DECISION.md
 - Tileable / seamless textures: prompt-only vs post-processing (offset + inpaint via `mflux-generate-fill`).
 - PBR map derivation (depth → normal via `mflux-save-depth`?).
 - Transparent sprites (FIBO edit RMBG / background removal).
-- Qwen-Image-2.1 (Qwen Research License, **non-commercial**): download and test in progress.
+- Qwen-Image-2.1: `-q 8` speed/quality, img2img (`--image`), true CFG with `--negative-prompt`. Is a commercial licence from Qwen worth it for title/UI text?

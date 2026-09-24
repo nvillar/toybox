@@ -10,8 +10,9 @@ Usage:
 Writes the image plus <out>.json provenance.
 
 Backends:
-  mflux (macos-arm64) - MFLUX FLUX.2 Klein via `mflux-generate-flux2`.
-    Tested 2026-09-23 with mflux 0.18.0 and 0.20.0 (mlx 0.32.2) on M4 Max.
+  mflux (macos-arm64) - MFLUX. FLUX.2 Klein via `mflux-generate-flux2`;
+    Qwen-Image-2.1 (non-commercial) via `mflux-generate-qwen-2.1`.
+    Tested 2026-09-23 with mflux 0.20.0 (mlx 0.32.2) on M4 Max.
 """
 
 from __future__ import annotations
@@ -30,17 +31,19 @@ MFLUX_LICENSES = {
     "flux2-klein-9b": "FLUX Non-Commercial",
     "flux2-klein-9b-kv": "FLUX Non-Commercial",
     "flux2-klein-base-9b": "FLUX Non-Commercial",
+    "qwen-image-2.1": "Qwen Research License (non-commercial)",
 }
+MFLUX_COMMANDS = {"qwen-image-2.1": "mflux-generate-qwen-2.1"}
 
 
 def _run_mflux(req: Request) -> Result:
-    exe = shutil.which("mflux-generate-flux2")
-    if not exe:
-        sys.exit("mflux-generate-flux2 not found; install with: uv tool install mflux --with hf-transfer")
     model = str(req.params["model"])
-    cmd = [
-        exe,
-        "--model", model,
+    command = MFLUX_COMMANDS.get(model, "mflux-generate-flux2")
+    exe = shutil.which(command)
+    if not exe:
+        sys.exit(f"{command} not found; install/upgrade with: uv tool install --upgrade mflux --with hf-transfer")
+    cmd = [exe] + (["--model", model] if command == "mflux-generate-flux2" else [])
+    cmd += [
         "--prompt", req.prompt,
         "--width", str(req.params["width"]),
         "--height", str(req.params["height"]),
@@ -73,7 +76,11 @@ def main() -> None:
     p.add_argument("--height", type=int, default=1024)
     p.add_argument("--seed", type=int)
     p.add_argument("--steps", type=int, help="backend default if omitted")
-    p.add_argument("--model", default="flux2-klein-4b", help="default is Apache-2.0 licensed")
+    p.add_argument(
+        "--model",
+        default="flux2-klein-4b",
+        help="flux2-klein-4b (default, Apache-2.0), flux2-klein-9b, qwen-image-2.1 (both non-commercial)",
+    )
     p.add_argument("--quantize", type=int, choices=[3, 4, 5, 6, 8])
     p.add_argument("--backend", help="force a backend: " + ", ".join(b.name for b in BACKENDS))
     a = p.parse_args()

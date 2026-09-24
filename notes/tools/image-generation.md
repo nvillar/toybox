@@ -11,7 +11,7 @@ Role: textures, PBR maps, backgrounds, skyboxes, sprites, UI art, concept art.
 
 | Platform | Backend | Status |
 |----------|---------|--------|
-| macOS Apple Silicon | [MFLUX](mflux.md), FLUX.2 Klein 4B default | ✅ |
+| macOS Apple Silicon | [MFLUX](mflux.md), FLUX.2 Klein 4B default; Qwen-Image-2.1 for in-image text (non-commercial) | ✅ |
 | NVIDIA (Win/Linux) | diffusers `Flux2KleinPipeline` or ComfyUI, same HF weights | ❓ |
 | AMD ROCm | diffusers / ComfyUI on PyTorch ROCm | ❓ |
 
@@ -24,6 +24,7 @@ Role: textures, PBR maps, backgrounds, skyboxes, sprites, UI art, concept art.
 | Skyboxes | Equirectangular 2:1 or 6-face cubemap, ideally HDR | Pole distortion and seams are the typical failure. |
 | Backgrounds / parallax | Layered, transparent edges | Needs alpha or background removal. |
 | Sprites / UI / icons | Transparent background, consistent style | Style consistency across a set is the hard part. A fixed style suffix helped in HotCards. |
+| Titles, logos, signage | Legible, correctly spelled text | Qwen-Image-2.1 spells text reliably. Non-commercial, so use it for prototypes or get a licence. |
 | Concept art | Fast iteration | Feeds the design brief and Blender reference. |
 
 ## Evaluation criteria

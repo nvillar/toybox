@@ -14,7 +14,7 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] **AMD ROCm backends**: same as above on PyTorch ROCm; try Stable Audio 3 ONNX exports.
 - [ ] **oMLX vs Ollama** on the M4 Max: throughput, memory, API compatibility.
 - [ ] **Image edit / references** via `mflux-generate-flux2-edit` (9B KV, non-commercial) and a commercial-safe alternative.
-- [ ] **Qwen-Image-2.1** via MFLUX 0.20.0: finish download, test, register in `scripts/gen/image.py` flagged non-commercial.
+- [ ] **Commercial-safe in-image text**: find a shippable alternative to Qwen-Image-2.1 for titles/UI text (or overlay real fonts), and compare.
 - [ ] **Private game repo via `unity vcs`**: create a throwaway Unity project, run `unity vcs setup --vcs github --git-visibility private --git-lfs`, then `unity vcs doctor` and `merge-setup`. Push a generated texture + WAV (with sidecars), clone elsewhere, `unity vcs sync`. Record LFS patterns, locking, and GitHub LFS quota behaviour in [tools/asset-storage.md](tools/asset-storage.md).
 - [ ] **Bulk storage**: try `rclone` to a private R2/S3 bucket for raw generation batches; decide the promotion flow into the game repo.
 - [ ] Install `ffmpeg` (`brew install ffmpeg`, or run `scripts/setup/macos.sh`). Not present yet.

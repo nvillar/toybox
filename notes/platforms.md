@@ -16,7 +16,7 @@ We develop on one machine but want the pipeline to be portable. Each **capabilit
 | Accelerator | Metal / MLX |
 | Platform id (`scripts/gen`) | `macos-arm64` |
 
-Unified memory means GPU models share RAM with everything else (Blender, Unity, the agent). Observed peaks so far: FLUX.2 Klein 4B ~10.5 GB at 512², Stable Audio 3 small ~2 GB (upstream benchmark). Local LLMs add their weight size (e.g. 9–21 GB for the installed Ollama models).
+Unified memory means GPU models share RAM with everything else (Blender, Unity, the agent). Observed peaks so far: FLUX.2 Klein 4B ~10.5 GB at 512², Qwen-Image-2.1 ~20–22 GB at 512²–768×512, Stable Audio 3 small ~2 GB (upstream benchmark). Local LLMs add their weight size (e.g. 9–21 GB for the installed Ollama models).
 
 ## Backend matrix
 
@@ -24,7 +24,7 @@ Unified memory means GPU models share RAM with everything else (Blender, Unity, 
 
 | Capability | macOS Apple Silicon | Windows / Linux + NVIDIA | Linux / Windows + AMD | Fallback |
 |------------|---------------------|---------------------------|------------------------|----------|
-| Image gen / edit | ✅ **MFLUX** (FLUX.2 Klein) — [tools/mflux.md](tools/mflux.md) | ❓ diffusers `Flux2KleinPipeline` on PyTorch CUDA; ❓ ComfyUI (HTTP API) | ❓ diffusers or ComfyUI on PyTorch ROCm (Linux mature; Windows ROCm newer) | Hosted image APIs |
+| Image gen / edit | ✅ **MFLUX** (FLUX.2 Klein; Qwen-Image-2.1) — [tools/mflux.md](tools/mflux.md) | ❓ diffusers `Flux2KleinPipeline` on PyTorch CUDA; ❓ ComfyUI (HTTP API) | ❓ diffusers or ComfyUI on PyTorch ROCm (Linux mature; Windows ROCm newer) | Hosted image APIs |
 | SFX / music | ✅ **Stable Audio 3 MLX** (`sa3`) — [tools/stable-audio-3.md](tools/stable-audio-3.md) | 🟡 Stable Audio 3 **TensorRT** `sa3` (same CLI flags, Linux; Windows via WSL2 ❓); 🟡 `stable-audio-3` PyTorch lib (CUDA) | ❓ `stable-audio-3` PyTorch on ROCm; ❓ ONNX exports via onnxruntime (MIGraphX / DirectML) | 🟡 Small models on CPU (TFLite/LiteRT runtime upstream) |
 | Local LLM | ✅ **Ollama** (MLX models); 🟡 **oMLX** (Apple Silicon only) — [tools/local-llm.md](tools/local-llm.md) | 🟡 Ollama (CUDA) | 🟡 Ollama (ROCm) | Hosted LLM APIs |
 | 3D modelling | ✅ Blender (Metal) | 🟡 Blender (CUDA/OptiX) | 🟡 Blender (HIP) | Blender CPU |

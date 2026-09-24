@@ -77,7 +77,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 
 | Capability | Tool(s) | Status |
 |------------|---------|--------|
-| Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B | 🟢 macOS · ⚪ other platforms |
+| Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B (default); Qwen-Image-2.1 for in-image text (non-commercial) | 🟢 macOS · ⚪ other platforms |
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
 | 3D modelling | Blender (bpy, headless) | 🟢 smoke-tested |
 | Game engine | Unity (CLI + Pipeline package) | 🟡 installed, not yet exercised |
