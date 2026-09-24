@@ -28,4 +28,5 @@ Conventions:
 | [`gen/contact_sheet.py`](gen/contact_sheet.py) | Tile images into a labelled JPEG for review (`uv run`, Pillow) | — |
 | [`gen/gallery.py`](gen/gallery.py) | Build a local image gallery with round/model filters, full-size viewing and provenance (stdlib Python) | — |
 | [`gen/toybox_gen.py`](gen/toybox_gen.py) | Shared: platform detection, backend selection, seeds, provenance | — |
+| [`blender/render_scene.py`](blender/render_scene.py) | Render a saved scene/camera to PNG with scene-hash provenance | Cycles / Metal, Blender 5.2.2 |
 | [`setup/macos.sh`](setup/macos.sh) | Install Blender, uv, ffmpeg, MFLUX, Stable Audio 3 MLX on Apple Silicon | — |

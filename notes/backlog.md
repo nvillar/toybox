@@ -6,7 +6,7 @@ Open questions and next experiments. Move items into an experiment log when you 
 
 - [ ] **Blender → Unity round-trip**: generate a mesh with bpy, export GLB, import into a fresh Unity project, place it in a scene, capture a screenshot.
 - [ ] **Unity CLI basics**: create a project, install the Pipeline package, open it, list `unity command` tools, find and try C# eval.
-- [ ] **Headless Blender preview render** so the agent can inspect models visually.
+- [x] **Headless Blender preview render**: Cycles/Metal with explicit camera and scene-hash sidecar ([experiment](experiments/2026-09-23-blender-showcase.md)).
 - [ ] **First texture in Blender**: generate a tileable texture with `scripts/gen/image.py`, apply it to a mesh, check seams by 2×2 tiling, export GLB.
 - [ ] **SFX into Unity**: generate a handful of UI/pickup sounds with `scripts/gen/audio.py`, normalise with `ffmpeg`, play them from Unity.
 - [ ] **NVIDIA backend for images**: diffusers `Flux2KleinPipeline` (or ComfyUI API) with FLUX.2 Klein 4B on a Windows/Linux CUDA box; register in `scripts/gen/image.py`.
@@ -20,7 +20,7 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] **Bulk storage (deferred)**: try `rclone` to a private R2/S3 bucket when large batches or video justify it. Small selected experiments now live in the private LFS library; disposable runs stay local.
 - [ ] Install `ffmpeg` (`brew install ffmpeg`, or run `scripts/setup/macos.sh`). Not present yet.
 - [ ] **Tiny vertical slice**: one scene, one controllable object, one generated model, one texture, one sound, one test.
-- [ ] **Concept → model**: use a generated character turnaround as the reference for a bpy/Blender model, then render a turntable in the concept style and compare. ([concept-art exploration](experiments/2026-09-23-concept-art.md))
+- [ ] **Concept → production model**: a private reference-driven showcase and segmented armature are [built](experiments/2026-09-23-blender-showcase.md). Next: production character topology, natural walking/turning/reaching and a turntable; then verify Unity import.
 - [ ] **Miniatures brought to life**: a stop-motion-style animation (stepped keys, e.g. on twos) of a figurine in Blender or Unity. Also survey local image-to-video models (licences, MLX/CUDA backends).
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
 - [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).

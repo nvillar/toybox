@@ -79,7 +79,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 |------------|---------|--------|
 | Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B (default); Qwen-Image-2.1 for in-image text (non-commercial) | 🟢 macOS · ⚪ other platforms |
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
-| 3D modelling | Blender (bpy, headless) | 🟢 smoke-tested |
+| 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render · ⚪ production animation/Unity hand-off |
 | Game engine | Unity (CLI + Pipeline package) | 🟡 installed, not yet exercised |
 | Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
 | Video | — | ⚪ not started |
