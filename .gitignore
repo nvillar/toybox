@@ -1,0 +1,29 @@
+# Scratch space and generated artefacts
+sandbox/
+out/
+
+# Blender
+*.blend1
+*.blend2
+
+# Unity (for any project kept inside this repo)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Bb]uild/
+[Bb]uilds/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.sln
+
+# Python
+__pycache__/
+.venv/
+
+# Secrets
+.env
+.env.*
+
+# OS
+.DS_Store
