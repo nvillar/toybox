@@ -1,2 +1,2 @@
 # toybox
-Experiments on generative media
+Experiments in generative media
