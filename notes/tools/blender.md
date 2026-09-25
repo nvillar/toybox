@@ -70,14 +70,25 @@ Verified with Unity 6000.6.2f1: [experiment and commands](../experiments/2026-09
 - Settings: FBX `-Z` forward / `Y` up, `FBX_SCALE_UNITS`, metre units, no leaf bones, no experimental `bake_space_transform`; bake the current take at 24 fps with simplification disabled. With Unity `bakeAxisConversion=true`, measured mapping is `(x, z, y)`, not `(x, z, -y)`. Inspect markers rather than assuming facing.
 - With a single scene bake, the take was named after the **scene**, not its active action. The helper names both `HandoffProbe`.
 - The tested rig has 16 deform bones and segmented rigid weights, not a production continuous skin. Six decorative curves are converted to unskinned meshes and reported explicitly; this does not bind them for later torso/limb animation.
-- Blender shader graphs do not become equivalent Unity materials. Basic imported materials are usable; texture baking and visual parity remain separate work.
+- Blender shader graphs do not become equivalent Unity materials. The later static transfer below bakes supported colour/normal detail; full visual parity remains separate work.
+
+## Static geometry and procedural surface hand-off
+
+[`export_static_scene.py`](../../scripts/blender/export_static_scene.py) now exports a detailed static environment with baked colour/normal atlases; [experiment and limits](../experiments/2026-09-24-static-scene-unity.md).
+
+- Exclude character/studio collections explicitly. The helper evaluates mesh modifiers, curves and text, then joins by collection and material. It does not transfer rigs, lights or cameras.
+- **Preserve procedural coordinates before joining.** Store normalized object-local bounding-box coordinates in a point-domain vector attribute, then use a Shader Attribute node instead of Generated coordinates. Handle unconnected procedural texture Vector inputs too; Noise used implicit Generated coordinates in the tested source. Applying world transforms or joining first changes that coordinate system.
+- Triangulate before UV unwrap, tangent-normal baking and export. The original n-gons prevented FBX tangent export; remove genuinely zero-area triangles before comparing engine geometry counts.
+- Bake linked Base Color through a temporary Emission output, then restore the Principled output for a tangent-normal bake. Save colour as sRGB, normal as Non-Color. Scalar roughness/metal/transmission/emission factors travel in JSON, not extra constant-colour textures.
+- The helper requires metre-scale coordinates, one direct Principled material per object, Generated-coordinate procedural textures and unlinked scalar factors. Guards reject non-metre units, multiple slots, indirect surface outputs, linked scalar factors and explicit non-Generated coordinate outputs. Existing UV image textures and other graph variants are outside its contract, not a verified general-purpose material conversion. Metal is the verified bake device.
+- `--planar-material NAME` separates coplanar groups for engine-side planar reflections. Other groups remain collection/material based. Inspect both the complete room and close-up surfaces after import.
 
 ## To explore
 
 - Eevee vs Cycles preview quality and speed; Metal Cycles is now exercised.
 - Broader `bmesh` modelling; triangulation/subdivision and front-panel normal correction are now exercised in the motion study.
-- Applying generated textures to materials and baking PBR maps.
-- Production animation, Humanoid retargeting and baked material fidelity in Unity; the Generic FBX diagnostic is verified, not those broader claims.
+- Applying model-generated textures; broader PBR map baking and arbitrary shader graphs. Procedural colour/normal baking is now verified for the constrained static workflow above.
+- Production animation, Humanoid retargeting and closer renderer parity; neither the Generic diagnostic nor the static bake establishes these.
 - Geometry Nodes for procedural assets.
 - Blender 5.2 compositor API: introspection found `Scene.compositing_node_group`, not `Scene.node_tree`; old glare properties have moved to sockets. Rendering a compositor graph remains **(unverified)**.
 - Revisit `Material.use_nodes` / `World.use_nodes` on Blender 6.0; 5.2 emits deprecation warnings.

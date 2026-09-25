@@ -31,7 +31,7 @@ flowchart LR
 | 2D assets | Textures, PBR maps, backgrounds, skyboxes, sprites, UI | `scripts/gen/image.py` (MFLUX on macOS), Blender bakes | `.png`, `.exr` | [tools/image-generation.md](tools/image-generation.md) |
 | Audio | SFX, ambience, music, voice | `scripts/gen/audio.py` (Stable Audio 3 on macOS), `ffmpeg` | `.wav` (source), `.ogg` | [tools/audio-generation.md](tools/audio-generation.md) |
 | Language helpers | Prompt variants, naming, captioning / QA | Ollama / oMLX | text / JSON | [tools/local-llm.md](tools/local-llm.md) |
-| Assembly | Import, scenes, prefabs, scripts, gameplay | Unity | Unity project | [Click-to-move prototype](experiments/2026-09-24-click-to-move.md): static navigation, input rays and idle/walk crossfades. [tools/unity.md](tools/unity.md) |
+| Assembly | Import, scenes, prefabs, scripts, gameplay | Unity | Unity project | [Click-to-move](experiments/2026-09-24-click-to-move.md) plus [detailed geometry/material transfer](experiments/2026-09-24-static-scene-unity.md); realtime look and shipping budgets remain separate. [tools/unity.md](tools/unity.md) |
 | Test | Edit/PlayMode tests, screenshots, log inspection | Unity CLI | Test reports, images | Closes the loop so the agent can *see* results. |
 | Publish | Build targets, packaging, distribution | Unity editor `BuildPipeline`; CLI candidate | Platform builds | Local macOS arm64 prototype and cache-free rebuild verified; signing, distribution and other targets open. |
 

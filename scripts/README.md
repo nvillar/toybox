@@ -30,6 +30,7 @@ Conventions:
 | [`gen/toybox_gen.py`](gen/toybox_gen.py) | Shared: platform detection, backend selection, seeds, provenance | — |
 | [`blender/render_scene.py`](blender/render_scene.py) | Render a saved scene/camera to PNG with scene-hash provenance | Cycles / Metal, Blender 5.2.2 |
 | [`blender/export_rig_probe.py`](blender/export_rig_probe.py) | Character-only FBX diagnostic, moving/stationary mesh guards and expected measurements | Blender 5.2.2 |
+| [`blender/export_static_scene.py`](blender/export_static_scene.py) | Evaluated static FBX, per-object Generated-coordinate preservation, grouped colour/normal bakes, geometry/material/hash manifest; constrained Principled workflow | Blender 5.2.2, Cycles Metal |
 | [`unity/RigImportProbe.cs`](unity/RigImportProbe.cs) | Import FBX, check Generic Animator/skin/axes, capture poses and save/reopen a scene | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/AnimationStudy.cs`](unity/AnimationStudy.cs) | Compare idle/walk bones and all mesh bounds, measure world-space foot contacts, render loops and check real Play Mode; requires `RigImportProbe.cs` | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/StudyLocomotion.cs`](unity/StudyLocomotion.cs) | Constant-speed, camera-follow study preview with a four-cycle position reset; not a player controller | Unity 6000.6.2f1 |

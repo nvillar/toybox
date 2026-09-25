@@ -77,6 +77,17 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 - Native build: `BuildPipeline.BuildPlayer` targeting `StandaloneOSX`, Mono backend, MacStandaloneSupport installed. A cache-free rebuild of the saved scene also passed the runtime probe. This is a local build, not signed/notarized distribution.
 - The runtime acceptance probe exercises the same screen-ray method as pointer input, plus real navigation/Animator evaluation. It is not an OS-level mouse/keyboard test. Contact, natural turning, dynamic blockers and other platforms remain open.
 
+## Detailed static scene transfer
+
+A [later experiment](../experiments/2026-09-24-static-scene-unity.md) replaces blockout visuals with a baked Blender environment: 2,241 static objects grouped into 33 meshes, 998,167 triangles and 21 2K textures. Engine import checks each mesh's triangle count against the export manifest; native navigation and a cache-free saved-scene rebuild pass.
+
+- Import static FBX normals and calculate Mikk tangents. Set colour textures to sRGB; use `TextureImporterType.NormalMap` for tangent normals. Set Standard material roughness via smoothness = 1 − roughness and keep metallic/emission factors explicit.
+- Keep geometry for display separate from collision proxies. Decorative topology and small floor details should not automatically become navigation geometry.
+- A realtime reflection probe supports metallic highlights; planar mirrors need their own reflected camera/texture. The tested private implementation separates two coplanar groups, clips at the mirror plane and excludes mirror surfaces from reflection rendering. These are one-bounce reflections, not recursive ray tracing.
+- Highly emissive thin effects made broad highlight bands in the coarse cubemap. Excluding those effects from that probe improved the result; they remain in the main view and planar reflections. This is an intentional realtime approximation.
+- Transparent Standard materials retain visible glass/crystal geometry but not Cycles refraction or caustics. Grouping transparent geometry can also limit sorting; do not claim offline-render parity.
+- For a 50% movement increase, set agent speed to 1.08 m/s and retain `authoredWalkSpeed=0.72`; observed `WalkRate` is 1.5. The existing controller already supports this without changing clip calibration.
+
 ## Gotchas
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.

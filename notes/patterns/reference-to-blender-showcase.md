@@ -6,7 +6,7 @@ versions: { blender: 5.2.2 LTS }
 
 # Selected references → Blender showcase
 
-Turn a reviewed concept set into an editable 3D scene, using a render-and-review loop rather than treating the first successful render as completion. Verified once on macOS/Metal; production animation and engine integration are outside this pattern.
+Turn a reviewed concept set into an editable 3D scene, using a render-and-review loop rather than treating the first successful render as completion. Verified on macOS/Metal, with a later static Unity derivative linked below; production animation and shipping optimization remain outside this pattern.
 
 **Produces:** a private project-specific Python builder, a self-contained `.blend`, several PNG views with scene-hash provenance, and a local review gallery. Geometry and materials are authored through `bpy`; this is **not automatic image-to-mesh reconstruction**. Reference licences and project rights still apply.
 
@@ -18,6 +18,7 @@ Turn a reviewed concept set into an editable 3D scene, using a render-and-review
 4. **Render, inspect and revise.** Start with a small draft; then inspect a wide composition, a focal-object close-up, a material/detail view and a character view where relevant. Fix geometry and materials before increasing resolution. Re-render all final views from the same saved scene revision.
 5. **Reopen and check the saved file.** Verify the named cameras and expected objects, embedded source agreement, and external dependencies. If a rig is claimed, rotate a bone and verify its intended mesh moves **while unrelated body parts stay still**. The original positive-only check missed shared-weight contamination, caught in the hand-off experiment. This establishes articulation only, not good deformation or a natural walk cycle.
 6. **Archive the selected result.** Preserve the builder, `.blend`, images and sidecars in the private asset library. Record the scene hash in each render sidecar; archive only selected milestones, leaving disposable drafts in local scratch. Commit/push the completed cycle under the repository's checkpoint policy.
+7. **Make an engine derivative, not an overwrite.** For the verified constrained static workflow, [bake colour/normal atlases and export evaluated geometry](../experiments/2026-09-24-static-scene-unity.md), preserving each object's Generated coordinates before grouping. Keep a separately validated animated character and simple collision proxies. Inspect realtime lighting, transparency and reflections independently of geometry-count checks; they are not automatically equivalent to Cycles.
 
 The existing renderer provides the draft/final loop once the project's builder has saved a scene. Camera names below are examples; use the exact names in the saved file.
 

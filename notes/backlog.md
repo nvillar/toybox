@@ -27,7 +27,8 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [x] **Player control**: click-to-move, static obstacle routes, retarget/stop/reset, idle/walk crossfades and a native macOS player ([experiment](experiments/2026-09-24-click-to-move.md)). Independent controller replaces the study preview's periodic reset.
 - [ ] **Locomotion usability and contact polish**: human mouse/keyboard pass; closer floor contact, starts/stops and turning without foot slide; dynamic blockers and slopes. Native scripted acceptance covers input rays, not OS event delivery or artistic quality.
 - [ ] **Build distribution**: local macOS arm64 player is verified; decide signing/notarization and delivery before publishing. Windows/WebGL builds remain untested.
-- [ ] **Blender → Unity appearance**: bake procedural materials, compare lighting, and optimize mesh/renderer counts; successful rig import does not establish visual parity or game-ready budgets.
+- [x] **Detailed static Blender → Unity transfer**: procedural colour/normal bakes, grouped geometry, planar reflections and navigation with a 1.5× movement/animation rate ([experiment](experiments/2026-09-24-static-scene-unity.md)).
+- [ ] **Realtime appearance and budgets**: profile/optimize the detailed transfer, improve glass/crystal refraction and sorting, soften shadows and compare baked lighting. Preserved geometry and textures do not establish Cycles parity or shipping performance.
 - [ ] **Miniature animation**: test natural articulated locomotion independently of any deliberately stepped/stop-motion treatment; visual scale does not dictate movement style. Also survey local image-to-video models (licences, MLX/CUDA backends).
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
 - [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).
