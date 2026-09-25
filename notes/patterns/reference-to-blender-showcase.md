@@ -39,7 +39,7 @@ python3 scripts/gen/gallery.py out/review/final \
   --out-dir out/gallery/scene-review --title "Scene review"
 ```
 
-Choose a new or empty gallery output directory. Open its `index.html` locally, or serve only that directory on `127.0.0.1`; never expose the private repository root.
+Choose a new or empty gallery output directory. Prefer opening and presenting its `index.html` directly, without a server; keep the HTML and relative media files together. Only if serving is genuinely required, serve that directory on `127.0.0.1`, never the private repository root.
 
 ## Checks
 
