@@ -28,7 +28,7 @@ Unified memory means GPU models share RAM with everything else (Blender, Unity, 
 | SFX / music | ✅ **Stable Audio 3 MLX** (`sa3`) — [tools/stable-audio-3.md](tools/stable-audio-3.md) | 🟡 Stable Audio 3 **TensorRT** `sa3` (same CLI flags, Linux; Windows via WSL2 ❓); 🟡 `stable-audio-3` PyTorch lib (CUDA) | ❓ `stable-audio-3` PyTorch on ROCm; ❓ ONNX exports via onnxruntime (MIGraphX / DirectML) | 🟡 Small models on CPU (TFLite/LiteRT runtime upstream) |
 | Local LLM | ✅ **Ollama** (MLX models); 🟡 **oMLX** (Apple Silicon only) — [tools/local-llm.md](tools/local-llm.md) | 🟡 Ollama (CUDA) | 🟡 Ollama (ROCm) | Hosted LLM APIs |
 | 3D modelling | ✅ Blender (Metal) | 🟡 Blender (CUDA/OptiX) | 🟡 Blender (HIP) | Blender CPU |
-| Game engine | ✅ Unity 6000.6.2f1 batch FBX/animation/screenshots; Pipeline unverified | 🟡 Unity | 🟡 Unity | — |
+| Game engine | ✅ Unity 6000.6.2f1 FBX/animation, click-to-move and macOS arm64 build; Pipeline unverified | 🟡 Unity | 🟡 Unity | — |
 
 The same Hugging Face weights generally work across backends (e.g. `black-forest-labs/FLUX.2-klein-4B`; `stabilityai/stable-audio-3-optimized` ships `MLX/`, `tensorRT/`, `onnx/`, `tflite/` and `cpu-amx/` variants), so switching platform changes the runtime, not the model. Check licences per model, not per backend.
 

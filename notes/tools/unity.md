@@ -63,9 +63,24 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 - Front and side renders expose different problems. An overlapping tiled floor caused depth artifacts; one planar mesh with two material submeshes avoided them. A changed PNG hash proves change, not visual correctness.
 - All 54 parts are now skinned in the motion derivative. The study still does not establish continuous topology, natural heel/toe mechanics, blends, turning, player input or collision behaviour. The preview deliberately resets position after four cycles and is not a gameplay controller.
 
+## Click-to-move and native builds
+
+[`ClickToMove.cs`](../../scripts/unity/ClickToMove.cs) is a separate runtime controller, not an extension of the looping study preview. Verified with a flat, static NavMesh and the existing Generic clips in a native macOS arm64 player. [Experiment, commands and limits](../experiments/2026-09-24-click-to-move.md).
+
+- Put the script outside `Assets/Editor`. Supply a `NavMeshAgent` on registered navigation, a camera, a visual-child Animator and a click mask including **both floor and blocking colliders**. It uses legacy `UnityEngine.Input` (the tested project's `activeInputHandler` is 0). Left-click moves; right-click/Space stops; R resets; Esc quits the player.
+- `floorLayer` defaults to 8; wire your actual floor layer. `blockedScreenRect` is a top-left-origin GUI rectangle. Optional `LineRenderer route` and `Transform targetMarker` display a path/goal. The hosting UI should show `Status`, including rejection reasons.
+- Use `NavMeshBuilder.CollectSources` / `BuildNavMeshData` from the built-in AI module for a small procedural room. Save the returned data asset; add it with `NavMesh.AddNavMeshData` before agents start and remove that instance on disable. No extra AI Navigation package was needed for this narrow workflow.
+- Reject distant samples and incomplete paths, not just points outside the NavMesh. An isolated but valid navigation surface can produce a partial path. Invalid retargets should preserve an existing route.
+- Animator contract: float `MoveBlend` reflects actual speed / `authoredWalkSpeed` (default 0.72 m/s). Idle → Walk when >0.07, Walk → Idle when <0.04; fixed-duration transitions of 0.16/0.18 s, no exit time. Bind **only Walk's** speed multiplier to float `WalkRate` (default 1). Root motion stays off. The transitions do the smoothing; additional parameter damping delayed stop recovery in the experiment.
+- `ResetPath` alone did not meet the stop guard. Set `isStopped=true`, clear velocity, then reset the path; resume explicitly on a successful destination. Keep the outgoing animation clock running during a stationary crossfade.
+- Initialize `NavMeshPath` in `Start` or `Awake`, not a component field initializer: its native allocation fails during Unity serialization. Check **both** `BuildResult.Succeeded` and `summary.totalErrors == 0`; the initial build returned success despite a logged serialization error.
+- Native build: `BuildPipeline.BuildPlayer` targeting `StandaloneOSX`, Mono backend, MacStandaloneSupport installed. A cache-free rebuild of the saved scene also passed the runtime probe. This is a local build, not signed/notarized distribution.
+- The runtime acceptance probe exercises the same screen-ray method as pointer input, plus real navigation/Animator evaluation. It is not an OS-level mouse/keyboard test. Contact, natural turning, dynamic blockers and other platforms remain open.
+
 ## Gotchas
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.
+- Inspect `.asset` files before archiving: baked `NavMeshData` was binary even though nearby materials/controllers/scenes were YAML. Put that binary in LFS without globally treating all `.asset` or `.meta` files as binary.
 - `unity editors` listed versions that could not actually be located. Only 6000.6.2f1 was verified usable; pin and record the actual editor.
 - `unity projects new` failed with a missing parent directory/stale editor version, then stalled with the installed editor. `unity run --editor-path … --timeout 240` also stalled before creating an editor log. We stopped our wrappers and used the binary directly; the cause of the stalls is unresolved.
 - The CLI's macOS `--editor-path` expects a `.app` bundle; direct shell execution uses its `Contents/MacOS/Unity` binary. These are different interfaces.

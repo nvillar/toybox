@@ -33,4 +33,5 @@ Conventions:
 | [`unity/RigImportProbe.cs`](unity/RigImportProbe.cs) | Import FBX, check Generic Animator/skin/axes, capture poses and save/reopen a scene | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/AnimationStudy.cs`](unity/AnimationStudy.cs) | Compare idle/walk bones and all mesh bounds, measure world-space foot contacts, render loops and check real Play Mode; requires `RigImportProbe.cs` | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/StudyLocomotion.cs`](unity/StudyLocomotion.cs) | Constant-speed, camera-follow study preview with a four-cycle position reset; not a player controller | Unity 6000.6.2f1 |
+| [`unity/ClickToMove.cs`](unity/ClickToMove.cs) | Screen-ray/NavMesh destinations, obstacle rejection, retarget/stop/reset, turning and velocity-driven Animator parameters; [setup contract](../notes/tools/unity.md#click-to-move-and-native-builds) | Unity 6000.6.2f1, native macOS arm64 |
 | [`setup/macos.sh`](setup/macos.sh) | Install Blender, uv, ffmpeg, MFLUX, Stable Audio 3 MLX on Apple Silicon | — |

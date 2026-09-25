@@ -23,8 +23,10 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [x] Install `ffmpeg`: Homebrew 9.0.2; four H.264 motion-review loops encoded and inspected ([experiment](experiments/2026-09-24-idle-walk-motion-study.md)).
 - [ ] **Tiny vertical slice**: one scene, one controllable object, one generated model, one texture, one sound, one test.
 - [x] **First idle/walk study**: neutral limbs, all 54 pieces skinned, half-frame floor/contact measurements, +Z Unity parent convention and constant-speed Play Mode preview ([experiment](experiments/2026-09-24-idle-walk-motion-study.md)).
-- [ ] **Concept → production model**: production shoulder/hip topology, heel/toe roll, less mechanical weight transfer, idle/walk transitions and turning. The verified first walk is flat-footed and segmented, not production animation.
-- [ ] **Player control**: build on measured 0.72 m/s in-place walk; coordinate clip speed with translation, add input/collision and transitions. The study preview is straight-line and automatically resets after four cycles, not navigation.
+- [ ] **Concept → production model**: production shoulder/hip topology, heel/toe roll, less mechanical weight transfer and planted turns. Basic idle/walk crossfades and navigation now work, but the first gait remains flat-footed and segmented.
+- [x] **Player control**: click-to-move, static obstacle routes, retarget/stop/reset, idle/walk crossfades and a native macOS player ([experiment](experiments/2026-09-24-click-to-move.md)). Independent controller replaces the study preview's periodic reset.
+- [ ] **Locomotion usability and contact polish**: human mouse/keyboard pass; closer floor contact, starts/stops and turning without foot slide; dynamic blockers and slopes. Native scripted acceptance covers input rays, not OS event delivery or artistic quality.
+- [ ] **Build distribution**: local macOS arm64 player is verified; decide signing/notarization and delivery before publishing. Windows/WebGL builds remain untested.
 - [ ] **Blender → Unity appearance**: bake procedural materials, compare lighting, and optimize mesh/renderer counts; successful rig import does not establish visual parity or game-ready budgets.
 - [ ] **Miniature animation**: test natural articulated locomotion independently of any deliberately stepped/stop-motion treatment; visual scale does not dictate movement style. Also survey local image-to-video models (licences, MLX/CUDA backends).
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
@@ -36,4 +38,4 @@ Open questions and next experiments. Move items into an experiment log when you 
 - Is the Stability AI Community License acceptable for the games we want to ship? (Revenue thresholds apply.)
 - Can multiple MLX jobs (image + audio + LLM) run concurrently in separate processes without contention problems, given 128 GB unified memory?
 - Provenance: per-asset sidecars are now the default. Do we also want a project-level manifest?
-- What does "publishing" mean for us first: a desktop build, WebGL on a page, or a store?
+- Local desktop is the first playable build; what should distribution mean next: downloadable signed desktop builds, WebGL or a store?

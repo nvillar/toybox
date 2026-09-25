@@ -80,11 +80,11 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 | Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B (default); Qwen-Image-2.1 for in-image text (non-commercial) | 🟢 macOS · ⚪ other platforms |
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
 | 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render + rig hand-off + idle/walk study · ⚪ production animation |
-| Game engine | Unity editor batch mode; CLI + Pipeline candidates | 🟢 FBX animation, measured locomotion + Play Mode preview · ⚪ player input/Pipeline |
+| Game engine | Unity editor batch mode; CLI + Pipeline candidates | 🟢 FBX animation, measured locomotion, click-to-move + native macOS prototype · ⚪ Pipeline |
 | Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
 | Video | FFmpeg | 🟢 motion-review encoding · ⚪ generative video |
 | Asset storage, collaboration | Private `toybox-assets` library · GitHub + Git LFS; per-game repos later | 🟢 upload/restore · ⚪ Unity collaboration ([notes](notes/tools/asset-storage.md)) |
-| Publishing | — | ⚪ not started |
+| Publishing | Unity BuildPipeline | 🟡 local macOS arm64 build · ⚪ distribution/store pipeline |
 
 🟢 verified in an experiment · 🟡 partially known · ⚪ not yet explored · 🔴 known broken
 
