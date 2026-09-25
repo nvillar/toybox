@@ -56,7 +56,7 @@ public static class RigImportProbe
         public List<string> failures = new List<string>();
     }
 
-    static string Arg(string key)
+    internal static string Arg(string key)
     {
         var args = Environment.GetCommandLineArgs();
         var index = Array.IndexOf(args, key);
@@ -65,7 +65,7 @@ public static class RigImportProbe
         return args[index + 1];
     }
 
-    static string FileHash(string path)
+    internal static string FileHash(string path)
     {
         using (var sha = SHA256.Create())
             return BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(path))).Replace("-", "").ToLowerInvariant();
@@ -77,14 +77,14 @@ public static class RigImportProbe
         report.checks.Add(message);
     }
 
-    static Transform Find(GameObject instance, string name)
+    internal static Transform Find(GameObject instance, string name)
     {
         var matches = instance.GetComponentsInChildren<Transform>(true).Where(t => t.name == name).ToArray();
         if (matches.Length != 1) throw new InvalidOperationException("Expected one transform named " + name + ", got " + matches.Length);
         return matches[0];
     }
 
-    static Bounds MeshBounds(Renderer renderer)
+    internal static Bounds MeshBounds(Renderer renderer)
     {
         var baked = new Mesh();
         var skin = renderer as SkinnedMeshRenderer;
@@ -148,7 +148,7 @@ public static class RigImportProbe
         return camera;
     }
 
-    static void Screenshot(Camera camera, string path)
+    internal static void Screenshot(Camera camera, string path)
     {
         var target = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
         var previous = RenderTexture.active;

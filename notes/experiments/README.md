@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-09-24 | [Idle/walk motion study](2026-09-24-idle-walk-motion-study.md) | Neutral limbs and all-part binding; grounded in-place clips, Unity curve-resampling fix, real Play Mode preview and four H.264 review videos. |
 | 2026-09-24 | [Blender → Unity rig hand-off](2026-09-24-blender-unity-rig-handoff.md) | Fixed shared skin weights; Generic FBX animation, scale/axes, three rendered poses and a reopened Unity scene. Direct editor works without new authentication; CLI stalled. |
 | 2026-09-23 | [Procedural Blender showcase](2026-09-23-blender-showcase.md) | Editable private scene and four Metal/Cycles renders; generic renderer with scene-hash provenance. |
 | 2026-09-23 | [Private asset library](2026-09-23-private-asset-library.md) | Private GitHub + LFS upload/restore; 77 files matched byte-for-byte. Generic public logs, private project details. |

@@ -27,7 +27,7 @@ flowchart LR
 | Stage | Responsibility | Primary tool | Output format | Notes |
 |-------|----------------|--------------|---------------|-------|
 | Concept | Design brief, style guide, concept art, asset list | Agent + human | Markdown, PNG sets | Asset list drives everything downstream. Concept art: [pattern](patterns/concept-art-exploration.md). |
-| 3D assets | Model, UV, material, rig, animate | Blender | `.blend` source; `.glb` / `.fbx` for hand-off | [Showcase](patterns/reference-to-blender-showcase.md) and [diagnostic FBX rig hand-off](experiments/2026-09-24-blender-unity-rig-handoff.md) verified; production locomotion remains unverified. |
+| 3D assets | Model, UV, material, rig, animate | Blender | `.blend` source; `.glb` / `.fbx` for hand-off | [Showcase](patterns/reference-to-blender-showcase.md), [rig hand-off](experiments/2026-09-24-blender-unity-rig-handoff.md) and [first idle/walk study](experiments/2026-09-24-idle-walk-motion-study.md) verified; production animation remains open. |
 | 2D assets | Textures, PBR maps, backgrounds, skyboxes, sprites, UI | `scripts/gen/image.py` (MFLUX on macOS), Blender bakes | `.png`, `.exr` | [tools/image-generation.md](tools/image-generation.md) |
 | Audio | SFX, ambience, music, voice | `scripts/gen/audio.py` (Stable Audio 3 on macOS), `ffmpeg` | `.wav` (source), `.ogg` | [tools/audio-generation.md](tools/audio-generation.md) |
 | Language helpers | Prompt variants, naming, captioning / QA | Ollama / oMLX | text / JSON | [tools/local-llm.md](tools/local-llm.md) |
@@ -39,7 +39,8 @@ flowchart LR
 
 These are the defaults until an experiment shows a better choice.
 
-- **Units & axes:** metres; verify exporter and importer together using one-metre markers. Tested FBX settings map Blender `(x, y, z)` to Unity `(x, z, y)`: a character facing Blender -Y faces Unity -Z. Do not assume Unity +Z-facing; a future controller/prefab needs an explicit facing convention.
+- **Units & axes:** metres; verify exporter and importer together using one-metre markers. Tested FBX settings map Blender `(x, y, z)` to Unity `(x, z, y)`: a character facing Blender -Y faces Unity -Z. The motion study uses a 180-degree Y rotation on the visual child under a +Z locomotion parent; no hidden negative scale.
+- **Animation:** in-place clips plus code-driven translation for the first study. Match translation speed to stance-foot travel; measure stance drift in world space, foot clearance and loop endpoints, including samples between authored keys. No foot-contact guarantee on slopes or during blends yet.
 - **Meshes:** FBX for the verified Unity rig/animation hand-off (built-in importer, no extra package). GLB with embedded textures remains a candidate for simple assets; Unity glTF import is still unverified.
 - **Textures:** PNG, power-of-two, sRGB for colour, linear for data maps (normal, roughness, metallic, AO).
 - **Audio:** WAV source (Stable Audio 3 emits 44.1 kHz stereo 16-bit; keep native rate unless Unity needs otherwise); loudness-normalised; loops trimmed on zero crossings.

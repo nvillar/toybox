@@ -75,9 +75,20 @@ Verified with Unity 6000.6.2f1: [experiment and commands](../experiments/2026-09
 ## To explore
 
 - Eevee vs Cycles preview quality and speed; Metal Cycles is now exercised.
-- `bmesh` workflows (unverified here).
+- Broader `bmesh` modelling; triangulation/subdivision and front-panel normal correction are now exercised in the motion study.
 - Applying generated textures to materials and baking PBR maps.
 - Production animation, Humanoid retargeting and baked material fidelity in Unity; the Generic FBX diagnostic is verified, not those broader claims.
 - Geometry Nodes for procedural assets.
 - Blender 5.2 compositor API: introspection found `Scene.compositing_node_group`, not `Scene.node_tree`; old glare properties have moved to sockets. Rendering a compositor graph remains **(unverified)**.
 - Revisit `Material.use_nodes` / `World.use_nodes` on Blender 6.0; 5.2 emits deprecation warnings.
+
+## First idle/walk study
+
+[Evidence](../experiments/2026-09-24-idle-walk-motion-study.md): a private neutral-limb derivative, all decorative curves converted and rigidly weighted to their intended bones, analytic two-bone legs baked to editable FK keys, 2.4 s idle and 1.2 s walk at 30 fps.
+
+- Derive stance travel from desired translation speed, cycle duration and stance fraction. Stance feet move backward in the in-place clip; adding forward world translation should cancel it. Use a forward knee pole and fail on unreachable targets instead of stretching limbs silently.
+- Inspect half-frame samples, not only keys: the first passing study still showed about 0.37 mm of interpolated contact drift. This is a measured tolerance, not exact mathematical foot locking.
+- Blender 5.2 layered-action curves are accessible through `action.layers`, strips and channelbags. Set baked-key interpolation explicitly; keep inactive clips via `use_fake_user` and restore the intended action/slot before saving.
+- A single baked take per FBX avoids action-selection ambiguity. Half-frame export keys plus Unity `resampleCurves=false` preserved the measured poses; see Unity notes for the resampling failure.
+- Curved garment overlays need tessellation **before** projection onto the body. Moving only a large polygon's corners leaves the interior cutting through the coat. Check face winding too: Blender's double-sided rendering can hide faces Unity will cull.
+- This remains segmented, flat-footed animation. Heel/toe roll, seamless joints, turns and transitions are separate quality work, not implied by a low drift figure.

@@ -52,6 +52,17 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 
 `unity pipeline install --project-path <proj>`, `unity open`, `unity status`, `unity command`, `unity test` and `unity build` remain **(unverified)** here. Command discovery is not an end-to-end run.
 
+## Measured locomotion study
+
+[`AnimationStudy.cs`](../../scripts/unity/AnimationStudy.cs) reuses the diagnostic helper's bounds, hashing and screenshot functions. Supply `idle.fbx`, `walk.fbx` and matching measurements in a disposable project; copy both editor helpers to `Assets/Editor/` and [`StudyLocomotion.cs`](../../scripts/unity/StudyLocomotion.cs) outside it. [Experiment and commands](../experiments/2026-09-24-idle-walk-motion-study.md).
+
+- **Preserve sampled curves deliberately.** With compression off but default `resampleCurves=true`, half-frame walk poses differed from Blender by up to 3.76 mm. Denser FBX keys alone did not help. Turning resampling off reduced maximum observed bone error to about 0.002 mm. This is one measured Generic workflow, not a universal recommendation for all animation import.
+- The visual child rotates 180 degrees around Y; its parent moves forward along +Z at 0.72 m/s with root motion off. Bone comparisons are made back in visual-local space; contact measurements are world-space.
+- Check every bone and every mesh's bounds at keys **and between keys**. Measure each stance against its first world-space foot position, not just consecutive frames; otherwise cumulative drift can hide.
+- Verify the saved scene separately in real Play Mode. `AnimationStudy.VerifyPlayback` enters Play Mode, survives the domain reload with `SessionState`, checks speed/camera follow and one four-cycle preview reset, writes a report, then exits. Omit `-quit` for that command.
+- Front and side renders expose different problems. An overlapping tiled floor caused depth artifacts; one planar mesh with two material submeshes avoided them. A changed PNG hash proves change, not visual correctness.
+- All 54 parts are now skinned in the motion derivative. The study still does not establish continuous topology, natural heel/toe mechanics, blends, turning, player input or collision behaviour. The preview deliberately resets position after four cycles and is not a gameplay controller.
+
 ## Gotchas
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.
