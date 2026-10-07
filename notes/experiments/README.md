@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-10-07 | [Unity/iOS toolchain preflight](2026-10-07-unity-ios-preflight.md) | Direct editor + Blender FBX/Metal rechecked; iOS module, Xcode and current Git LFS absent. Plain project creation uses Built-in; URP template/package versions differ. Sequoia-compatible Xcode path documented, not built. |
 | 2026-09-24 | [Detailed static scene → Unity](2026-09-24-static-scene-unity.md) | Generated-coordinate preservation, 21 colour/normal bakes, 33 grouped meshes, planar reflections and 1.5× locomotion; native and clean-restore acceptance. |
 | 2026-09-24 | [Click-to-move native prototype](2026-09-24-click-to-move.md) | Static obstacle navigation, retarget/stop/reset and idle/walk crossfades; 32 native acceptance checks, cache-free rebuild and server-free video review. |
 | 2026-09-24 | [Idle/walk motion study](2026-09-24-idle-walk-motion-study.md) | Neutral limbs and all-part binding; grounded in-place clips, Unity curve-resampling fix, real Play Mode preview and four H.264 review videos. |

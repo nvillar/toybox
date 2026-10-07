@@ -1,6 +1,6 @@
 ---
 status: partial
-last_verified: 2026-09-24
+last_verified: 2026-10-07
 versions: { unity-cli: 1.0.0-beta.8, unity-editor: 6000.6.2f1 }
 ---
 
@@ -37,6 +37,26 @@ mkdir -p out/unity
 ```
 
 Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then use `-projectPath … -executeMethod Class.Method`. The rig helper performs an explicit synchronous import and exits nonzero on failure; see [the complete experiment](../experiments/2026-09-24-blender-unity-rig-handoff.md).
+
+### Scaffold and platform preflight
+
+[Rechecked on 2026-10-07](../experiments/2026-10-07-unity-ios-preflight.md): the native 6000.6.2f1 editor created a project, compiled a helper, and imported an asymmetric Blender FBX with the expected metre dimensions under Metal. These are local checks, not proof that a shipping target is ready.
+
+- `unity --version` reports the separate CLI version; invoke the actual editor with `-version` to identify the compiler/importer in use.
+- **Choose the render pipeline explicitly.** Plain `-createProject` produced Built-in, not URP. The installed 3D URP template archive was version `17.2.1`, but its manifest pinned URP `17.6.0`. Inspect the selected editor's template manifest; do not infer package versions from the archive name. URP creation/rendering remains **(unverified)** here.
+- Installed modules in this Hub layout are under `/Applications/Unity/Hub/Editor/<version>/PlaybackEngines`, beside `Unity.app`. An entry in `modules.json` may describe an available download rather than an installed component. Use `BuildPipeline.IsBuildTargetSupported` as an editor-side check; macOS was true and iOS false.
+- The current licence allowed batch work even though a token-refresh error appeared in the log. Do not infer cloud authentication from local success, or ignore a future licence failure.
+- For VS Code, Microsoft's [Unity extension](https://code.visualstudio.com/docs/other/unity) uses `com.unity.ide.visualstudio` 2.0.20 or later, not the legacy VS Code Editor package. This authoring integration is **(unverified)** here; a PATH-visible .NET SDK is not required for the editor's own C# compiler.
+
+### iOS on a Sequoia host (documented; builds unverified)
+
+Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The current machine has neither the iOS module nor full Xcode; no device build or signing was attempted.
+
+- As checked 2026-10-07, [Apple's compatibility table](https://developer.apple.com/xcode/system-requirements/) lists **Xcode 26.3 / iOS 26.2 SDK** as compatible with Sequoia **15.6+** within its stated OS range. Xcode 26.4.1 requires macOS 26.2; Xcode 27 requires macOS 26.6+. Use a versioned download rather than prescribing "latest Xcode."
+- Keep the host OS, Xcode, SDK, and deployment minimum as separate decisions. A newer SDK can build for an older supported deployment minimum.
+- After installation, use `DEVELOPER_DIR=/Applications/<actual-Xcode-name>.app/Contents/Developer` with `xcodebuild -version` and `xcrun --sdk iphoneos --show-sdk-version` to verify that installation without changing other projects' global developer selection. This full-Xcode workflow remains **(unverified)** locally.
+- Check [App Store submission requirements](https://developer.apple.com/app-store/submitting/) at release time. Apple announces an iOS/iPadOS **27 SDK** minimum from **April 2027**; a Sequoia-compatible local setup is not an indefinite publishing guarantee.
+- Confirm a real IL2CPP/Metal build on both intended device families before claiming mobile support. Simulator, desktop, editor tests, and catalogue metadata do not establish physical-device behavior.
 
 ### Animation and image checks
 

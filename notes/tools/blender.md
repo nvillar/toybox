@@ -1,6 +1,6 @@
 ---
 status: partial
-last_verified: 2026-09-24
+last_verified: 2026-10-07
 versions: { blender: 5.2.2 LTS }
 ---
 
@@ -65,6 +65,8 @@ blender -b path/to/file.blend --python-exit-code 1 -P script.py
 ## Diagnostic FBX rig hand-off
 
 Verified with Unity 6000.6.2f1: [experiment and commands](../experiments/2026-09-24-blender-unity-rig-handoff.md). [`export_rig_probe.py`](../../scripts/blender/export_rig_probe.py) exports only the named rig and its descendants, resets the rig object's placement and pose, and bakes a one-second diagnostic bone rotation. It never changes the input `.blend`.
+
+The [2026-10-07 toolchain preflight](../experiments/2026-10-07-unity-ios-preflight.md) rechecked 5.2.2 headless FBX export and Metal-device discovery. A `(1, 2, 3)` metre box imported at `(1, 3, 2)` metres with the explicit axis settings below. This was an import/scale check, not a new rendering or animation validation. Keep editable `.blend` sources outside Unity's `Assets/` and hand off explicit exports so importing a game does not depend on invoking a local Blender installation.
 
 - Choose a **moving mesh witness away from the joint**, plus unaffected head/foot meshes. A symmetric joint's bounding-box centre may not move even when its vertices rotate. Check intended deformation **and** unintended movement.
 - Settings: FBX `-Z` forward / `Y` up, `FBX_SCALE_UNITS`, metre units, no leaf bones, no experimental `bake_space_transform`; bake the current take at 24 fps with simplification disabled. With Unity `bakeAxisConversion=true`, measured mapping is `(x, z, y)`, not `(x, z, -y)`. Inspect markers rather than assuming facing.

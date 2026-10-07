@@ -1,12 +1,14 @@
 ---
 status: partial
-last_verified: 2026-09-23
-versions: { git: 2.53.0, git-lfs: 3.7.1, gh: 2.98.0, unity-cli: 1.0.0-beta.8 }
+last_verified: 2026-10-07
+versions: { git: 2.50.1, git-lfs: unavailable, gh: 2.101.0, unity-cli: 1.0.0-beta.8 }
 ---
 
 # Asset storage and collaboration
 
 Role: where private media experiments, game projects and binary assets live. A private GitHub + Git LFS library has been created, uploaded and restored on macOS; Unity-specific workflows, locking and object storage remain unverified. Evidence: [private asset-library experiment](../experiments/2026-09-23-private-asset-library.md).
+
+**Current readiness:** the [2026-10-07 preflight](../experiments/2026-10-07-unity-ios-preflight.md) could not run `git lfs version`, and Homebrew reported no installed Git LFS formula. The September round-trip used Git 2.53.0 / Git LFS 3.7.1 / gh 2.98.0; it does not prove those executables are still available. Current upload/restore is **(unverified)** until LFS is restored. Text-only repository work remains possible.
 
 ## Storage convention
 
@@ -40,6 +42,8 @@ projects/<project>/
 ## Verified CLI workflow
 
 Plain `git`, `git lfs` and `gh` suffice; Unity is not a prerequisite. Create a private remote only after user approval:
+
+First run `git lfs version` in the same environment that will perform the upload or restore. If it fails, install or repair LFS (on macOS, `brew install git-lfs`) before adding binaries or relying on smudge filters. Then use repository-local initialization below; do not silently replace global Git settings. Historical notes and existing LFS pointers are not an installation check.
 
 ```sh
 # Example values: replace OWNER and choose an unused local directory.

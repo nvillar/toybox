@@ -1,6 +1,6 @@
 ---
 status: partial
-last_verified: 2026-09-24
+last_verified: 2026-10-07
 ---
 
 # Platforms and acceleration
@@ -12,11 +12,13 @@ We develop on one machine but want the pipeline to be portable. Each **capabilit
 | | |
 |---|---|
 | Machine | Apple M4 Max, 128 GB unified memory |
-| OS | macOS 15.8 (arm64) |
+| OS | macOS Sequoia 15.8.1 (arm64) |
 | Accelerator | Metal / MLX |
 | Platform id (`scripts/gen`) | `macos-arm64` |
 
 Unified memory means GPU models share RAM with everything else (Blender, Unity, the agent). Observed peaks so far: FLUX.2 Klein 4B ~10.5 GB at 512², Qwen-Image-2.1 ~20–22 GB at 512²–768×512, Stable Audio 3 small ~2 GB (upstream benchmark). Local LLMs add their weight size (e.g. 9–21 GB for the installed Ollama models).
+
+[2026-10-07 preflight](experiments/2026-10-07-unity-ios-preflight.md): Blender 5.2.2 LTS and Unity 6000.6.2f1 still work for headless FBX export/import with Metal. Unity has macOS/WebGL modules, but no iOS module; full Xcode and a usable Git LFS command are also absent. Desktop readiness is not iOS readiness. See [Unity](tools/unity.md#ios-on-a-sequoia-host-documented-builds-unverified) for the documented Sequoia-compatible Xcode path; no major OS upgrade was performed.
 
 ## Backend matrix
 
