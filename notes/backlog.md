@@ -4,9 +4,9 @@ Open questions and next experiments. Move items into an experiment log when you 
 
 ## Next experiments
 
-- [ ] **URP scaffold preflight**: explicitly select the editor's 3D URP template, inspect its manifest, capture a real URP frame and rebuild a clean clone. Plain `-createProject` used Built-in in the [toolchain preflight](experiments/2026-10-07-unity-ios-preflight.md); template archive versions are not rendering-package versions.
-- [ ] **iOS on Sequoia**: install the selected editor's iOS module and a compatible full Xcode, then export, compile, sign and run on physical iPhone/iPad. Xcode 26.3 is a documented Sequoia option, not yet tested here. Recheck Apple's SDK deadlines before distribution.
-- [ ] **Restore current Git LFS readiness**: `git lfs version` failed in the [2026-10-07 preflight](experiments/2026-10-07-unity-ios-preflight.md). Restore it before binary work, initialize per repository and repeat a hash-checked asset restore. Do not treat the historical successful installation as current state.
+- [ ] **URP scaffold preflight**: on the replacement 6000.6.5f1 editor, repeat the Blender import check, explicitly select 3D URP, inspect the template manifest, capture a real frame and rebuild a clean clone. Plain `-createProject` used Built-in in the [6000.6.2f1 preflight](experiments/2026-10-07-unity-ios-preflight.md); template archive versions are not rendering-package versions.
+- [ ] **iOS on Sequoia**: the 6000.6.5f1 iOS module is now [installed](experiments/2026-10-08-unity-installation.md). Install a compatible full Xcode, then export, compile, sign and run on physical iPhone/iPad. Xcode 26.3 is a documented Sequoia option, not yet tested here. Recheck Apple's SDK deadlines before distribution.
+- [ ] **Current Git LFS round-trip**: Git LFS 3.8.0 is [available again](experiments/2026-10-08-unity-installation.md). Initialize per repository and repeat a hash-checked asset restore before claiming current end-to-end readiness.
 - [x] **Blender → Unity rig hand-off**: FBX Generic import, Animator/Playables, scale/axis/skin checks and screenshots ([experiment](experiments/2026-09-24-blender-unity-rig-handoff.md)). This is one-way, not a Unity-to-Blender round trip.
 - [ ] **GLB into Unity**: add a glTF importer in a disposable project and compare simple textured assets with FBX.
 - [ ] **Unity CLI basics**: create a project, install the Pipeline package, open it, list `unity command` tools, find and try C# eval.

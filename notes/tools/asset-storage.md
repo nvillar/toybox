@@ -1,14 +1,14 @@
 ---
 status: partial
-last_verified: 2026-10-07
-versions: { git: 2.50.1, git-lfs: unavailable, gh: 2.101.0, unity-cli: 1.0.0-beta.8 }
+last_verified: 2026-10-08
+versions: { git: 2.50.1, git-lfs: 3.8.0, gh: 2.101.0, unity-cli: 1.0.0-beta.12 }
 ---
 
 # Asset storage and collaboration
 
 Role: where private media experiments, game projects and binary assets live. A private GitHub + Git LFS library has been created, uploaded and restored on macOS; Unity-specific workflows, locking and object storage remain unverified. Evidence: [private asset-library experiment](../experiments/2026-09-23-private-asset-library.md).
 
-**Current readiness:** the [2026-10-07 preflight](../experiments/2026-10-07-unity-ios-preflight.md) could not run `git lfs version`, and Homebrew reported no installed Git LFS formula. The September round-trip used Git 2.53.0 / Git LFS 3.7.1 / gh 2.98.0; it does not prove those executables are still available. Current upload/restore is **(unverified)** until LFS is restored. Text-only repository work remains possible.
+**Current readiness:** [Git LFS 3.8.0 is now executable](../experiments/2026-10-08-unity-installation.md), resolving the missing-command finding from 2026-10-07. Repository-local initialization and a current upload/restore still need verification. The September round-trip used Git 2.53.0 / Git LFS 3.7.1 / gh 2.98.0; its results are historical, not a fresh round-trip on the current versions. CLI `vcs` help below was inspected on beta.8, not the newly installed beta.12.
 
 ## Storage convention
 

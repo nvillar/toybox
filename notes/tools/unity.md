@@ -1,12 +1,14 @@
 ---
 status: partial
-last_verified: 2026-10-07
-versions: { unity-cli: 1.0.0-beta.8, unity-editor: 6000.6.2f1 }
+last_verified: 2026-10-08
+versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1 }
 ---
 
 # Unity
 
 Role: assemble assets into a playable game, run it, test it, and build it.
+
+**Current installation:** [6000.6.5f1 arm64, checked 2026-10-08](../experiments/2026-10-08-unity-installation.md), is the only editor in the Hub directory. iOS and Web modules are present. Mac Mono players are bundled even with optional **Mac Build Support (IL2CPP)** unselected. Hub's **Web Build Support** still uses module ID `webgl` and directory `WebGLSupport`. Only executable/installation checks have been repeated on this version; the project/import/render/build recipes below were exercised on **6000.6.2f1** and remain **(unverified)** on the replacement. CLI beta.12 is present; help and workflow observations below retain their original beta.8 scope.
 
 ## Driving it
 
@@ -26,10 +28,10 @@ Useful global flags: `--json`, `--non-interactive`, `--no-pager`, `--quiet`.
 
 ## Verified local batch workflow
 
-The installed editor binary successfully created a project, imported FBX, ran a Generic rig through Animator/Playables, rendered three PNGs, and saved/reopened a scene. No Pipeline package or Unity Cloud project was needed. The existing local editor licence sufficed; no additional account authentication was needed for these commands.
+The 6000.6.2f1 editor binary successfully created a project, imported FBX, ran a Generic rig through Animator/Playables, rendered three PNGs, and saved/reopened a scene. No Pipeline package or Unity Cloud project was needed. The existing local editor licence sufficed at that time; no additional account authentication was needed for these commands.
 
 ```sh
-# Use an editor actually installed on this machine, not merely listed by the CLI.
+# Historical tested version; substitute an installed editor and revalidate.
 UNITY_EDITOR=/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/MacOS/Unity
 mkdir -p out/unity
 "$UNITY_EDITOR" -batchmode -quit -createProject "$PWD/out/unity/RigImportProbe" \
@@ -45,12 +47,12 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 - `unity --version` reports the separate CLI version; invoke the actual editor with `-version` to identify the compiler/importer in use.
 - **Choose the render pipeline explicitly.** Plain `-createProject` produced Built-in, not URP. The installed 3D URP template archive was version `17.2.1`, but its manifest pinned URP `17.6.0`. Inspect the selected editor's template manifest; do not infer package versions from the archive name. URP creation/rendering remains **(unverified)** here.
 - Installed modules in this Hub layout are under `/Applications/Unity/Hub/Editor/<version>/PlaybackEngines`, beside `Unity.app`. An entry in `modules.json` may describe an available download rather than an installed component. Use `BuildPipeline.IsBuildTargetSupported` as an editor-side check; macOS was true and iOS false.
-- The current licence allowed batch work even though a token-refresh error appeared in the log. Do not infer cloud authentication from local success, or ignore a future licence failure.
+- The licence at that preflight allowed batch work even though a token-refresh error appeared in the log. Do not infer cloud authentication from local success, or ignore a future licence failure.
 - For VS Code, Microsoft's [Unity extension](https://code.visualstudio.com/docs/other/unity) uses `com.unity.ide.visualstudio` 2.0.20 or later, not the legacy VS Code Editor package. This authoring integration is **(unverified)** here; a PATH-visible .NET SDK is not required for the editor's own C# compiler.
 
 ### iOS on a Sequoia host (documented; builds unverified)
 
-Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The current machine has neither the iOS module nor full Xcode; no device build or signing was attempted.
+Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The iOS module is now present for 6000.6.5f1, but full Xcode is still missing from the checked locations; no device build or signing was attempted.
 
 - As checked 2026-10-07, [Apple's compatibility table](https://developer.apple.com/xcode/system-requirements/) lists **Xcode 26.3 / iOS 26.2 SDK** as compatible with Sequoia **15.6+** within its stated OS range. Xcode 26.4.1 requires macOS 26.2; Xcode 27 requires macOS 26.6+. Use a versioned download rather than prescribing "latest Xcode."
 - Keep the host OS, Xcode, SDK, and deployment minimum as separate decisions. A newer SDK can build for an older supported deployment minimum.
@@ -112,7 +114,7 @@ A [later experiment](../experiments/2026-09-24-static-scene-unity.md) replaces b
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.
 - Inspect `.asset` files before archiving: baked `NavMeshData` was binary even though nearby materials/controllers/scenes were YAML. Put that binary in LFS without globally treating all `.asset` or `.meta` files as binary.
-- `unity editors` listed versions that could not actually be located. Only 6000.6.2f1 was verified usable; pin and record the actual editor.
+- CLI beta.8's `unity editors` listed versions that could not actually be located. Only 6000.6.2f1 was verified for project work at that time; pin and record the actual editor. The current installation is listed above.
 - `unity projects new` failed with a missing parent directory/stale editor version, then stalled with the installed editor. `unity run --editor-path … --timeout 240` also stalled before creating an editor log. We stopped our wrappers and used the binary directly; the cause of the stalls is unresolved.
 - The CLI's macOS `--editor-path` expects a `.app` bundle; direct shell execution uses its `Contents/MacOS/Unity` binary. These are different interfaces.
 - Do not launch another editor against a project already open elsewhere, and do not stop unrelated editor processes.
