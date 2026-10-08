@@ -84,7 +84,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 | Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
 | Video | FFmpeg | 🟢 motion-review encoding · ⚪ generative video |
 | Asset storage, collaboration | Private `toybox-assets` library · GitHub + Git LFS; per-game repos later | 🟢 historical upload/restore · 🟡 LFS 3.8.0 available, fresh round-trip pending · ⚪ Unity collaboration ([notes](notes/tools/asset-storage.md)) |
-| Publishing | Unity BuildPipeline | 🟡 historical local macOS arm64 build · ⚪ iOS / distribution (iOS module present; Xcode pending; [inspection](notes/experiments/2026-10-08-unity-installation.md)) |
+| Publishing | Unity BuildPipeline + Xcode | 🟡 historical local macOS arm64 build; Xcode/iOS SDK discovery on Sequoia · ⚪ iOS app builds / distribution ([preflight](notes/experiments/2026-10-08-xcode-preflight.md)) |
 
 🟢 verified in an experiment · 🟡 partially known · ⚪ not yet explored · 🔴 known broken
 

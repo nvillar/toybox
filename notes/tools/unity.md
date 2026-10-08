@@ -1,7 +1,7 @@
 ---
 status: partial
 last_verified: 2026-10-08
-versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1 }
+versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1, xcode: "26.3 (17C529)" }
 ---
 
 # Unity
@@ -52,11 +52,12 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 
 ### iOS on a Sequoia host (documented; builds unverified)
 
-Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The iOS module is now present for 6000.6.5f1, but full Xcode is still missing from the checked locations; no device build or signing was attempted.
+Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The iOS module is present for 6000.6.5f1, and [Xcode 26.3 (17C529) is now installed and selected on Sequoia 15.8.1](../experiments/2026-10-08-xcode-preflight.md). SDK discovery and first-launch checks passed; no app build or signing was attempted.
 
 - As checked 2026-10-07, [Apple's compatibility table](https://developer.apple.com/xcode/system-requirements/) lists **Xcode 26.3 / iOS 26.2 SDK** as compatible with Sequoia **15.6+** within its stated OS range. Xcode 26.4.1 requires macOS 26.2; Xcode 27 requires macOS 26.6+. Use a versioned download rather than prescribing "latest Xcode."
-- Keep the host OS, Xcode, SDK, and deployment minimum as separate decisions. A newer SDK can build for an older supported deployment minimum.
-- After installation, use `DEVELOPER_DIR=/Applications/<actual-Xcode-name>.app/Contents/Developer` with `xcodebuild -version` and `xcrun --sdk iphoneos --show-sdk-version` to verify that installation without changing other projects' global developer selection. This full-Xcode workflow remains **(unverified)** locally.
+- Keep the host OS, Xcode, SDK, simulator runtime, and deployment minimum separate. The local SDKs report **26.2** while the available simulator runtime is named **iOS 26.3** and reports version **26.3.1**. Do not infer one version from another. A newer SDK can build for an older supported deployment minimum.
+- Check `xcode-select -p`, `xcodebuild -version`, `xcodebuild -checkFirstLaunchStatus`, and `xcrun --sdk iphoneos --show-sdk-version`. Inspect `xcrun simctl list runtimes --json` for runtime versions and `isAvailable`. These discovery commands are verified; runtime availability alone is not a successful simulator launch.
+- If needed, use a per-command `DEVELOPER_DIR=/Applications/<actual-Xcode-name>.app/Contents/Developer` instead of changing other projects' global developer selection. In the latest probe the correct Xcode was already selected, so no override or global change was necessary.
 - Check [App Store submission requirements](https://developer.apple.com/app-store/submitting/) at release time. Apple announces an iOS/iPadOS **27 SDK** minimum from **April 2027**; a Sequoia-compatible local setup is not an indefinite publishing guarantee.
 - Confirm a real IL2CPP/Metal build on both intended device families before claiming mobile support. Simulator, desktop, editor tests, and catalogue metadata do not establish physical-device behavior.
 
