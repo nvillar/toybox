@@ -1,6 +1,6 @@
 ---
 status: partial
-last_verified: 2026-10-08
+last_verified: 2026-10-09
 versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1, xcode: "26.3 (17C529)" }
 ---
 
@@ -61,6 +61,16 @@ Verified on **6000.6.5f1 / URP 17.6.0**: [commands, failures, and corrections](.
 - When post-processing is deliberately unused, clear the renderer's `postProcessData`; keeping stripped effect references produced avoidable runtime warnings.
 - Use `Debug.isDebugBuild` for development-only runtime diagnostics; `DEVELOPMENT_BUILD` is deprecated here. A command-driven native probe should enable background execution for its duration and have an external timeout.
 - A remote clone with restored LFS assets passed tests, Mac build/run, and iOS export without a project Library cache or source changes. Preserve Unity's normalized iOS automatic-graphics flag and assert the effective API list is Metal-only instead of repeatedly forcing a setting that the importer rewrites.
+
+### Compound physics and input cancellation
+
+[Verified with source-derived figures on 6000.6.5f1](../experiments/2026-10-09-unity-stacking.md):
+
+- Unity's cylinder primitive carries a **capsule** collider. For a wide, shallow platform, replace it with collision geometry matching the disk; otherwise invisible support can sit far above the visible surface.
+- Set interpolated kinematic poses through `Rigidbody.position` / `rotation`, and synchronize transforms before geometry queries. Transform-only placement snapped back in the experiment.
+- Test a queued `TouchPhase.Canceled` through the real UI module; a pointer-up callback alone does not prove a valid tap. Suppress placement on cancellation, focus loss, or resize.
+- Preserve independent smoke scene selection when changing the default build scene. A new gameplay entry point must not silently invalidate an older diagnostic command.
+- URP Complex Lit clearcoat needs its keyword/mask/smoothness configured; reflection lighting is separate. Native frame review remains necessary even when shader compilation succeeds.
 
 ### iOS on a Sequoia host (unsigned compile verified)
 
