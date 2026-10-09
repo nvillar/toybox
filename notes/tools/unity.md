@@ -71,6 +71,8 @@ Verified on **6000.6.5f1 / URP 17.6.0**: [commands, failures, and corrections](.
 - Test a queued `TouchPhase.Canceled` through the real UI module; a pointer-up callback alone does not prove a valid tap. Suppress placement on cancellation, focus loss, or resize.
 - Preserve independent smoke scene selection when changing the default build scene. A new gameplay entry point must not silently invalidate an older diagnostic command.
 - URP Complex Lit clearcoat needs its keyword/mask/smoothness configured; reflection lighting is separate. Native frame review remains necessary even when shader compilation succeeds.
+- For a camera-facing arcball with screen X right/Y up, Unity's near hemisphere is camera-local **negative Z**. Conjugate the local quaternion delta by camera rotation. Test projected near-surface motion in the pointer direction at several camera yaws, plus rim roll; drag-back undo alone also passes for reversed controls.
+- A tuned spherical/cubic-shoulder/equator projection differs from a generic sphere/hyperbola trackball. Preserve its curve, logical-pixel bounds, flick sampling and decay independently. Use shared projected bounds for visible/input spheres and pause camera-height tracking during an owned gesture. [Follow-up evidence](../experiments/2026-10-09-unity-stacking.md#follow-up-camera-facing-arcball-and-visible-direction-tests).
 
 ### iOS on a Sequoia host (unsigned compile verified)
 

@@ -4,7 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
-| 2026-10-09 | [Compound stacking and gesture acceptance](2026-10-09-unity-stacking.md) | Source-derived figures, scoring/loss/replay and native captures; fixed cylinder/capsule mismatch, interpolated kinematic poses, and touch-cancellation handling. |
+| 2026-10-09 | [Compound stacking and gesture acceptance](2026-10-09-unity-stacking.md) | Source-derived figures, scoring/loss/replay and native captures; cylinder/capsule, kinematic pose and cancellation fixes. Follow-up: camera-facing arcball and visible-direction regression tests. |
 | 2026-10-08 | [Source/export fidelity audit](2026-10-08-urp-scaffold.md#follow-up-source-versus-export-fidelity-audit) | Six GLBs match evaluated Blender triangle counts and retain clearcoat; source access enables refinement, not an automatic resolution upgrade. Rendering parity remains separate. |
 | 2026-10-08 | [URP scaffold and unsigned iOS build](2026-10-08-urp-scaffold.md) | 6000.6.5f1 URP/FBX/input/physics checks, native Mac player, unsigned Xcode compile, and LFS-backed cache-free rebuild with no source drift. Signing/device runs remain pending. |
 | 2026-10-08 | [Xcode SDK/simulator preflight](2026-10-08-xcode-preflight.md) | Xcode 26.3 (17C529) selected on Sequoia 15.8.1; first-launch complete, SDKs 26.2 and simulator runtime 26.3.1 available. App builds/launches remain unverified. |

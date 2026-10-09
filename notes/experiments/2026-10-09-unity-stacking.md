@@ -31,3 +31,15 @@ These checks establish a first playable path, not a complete pairing/tilt/tall-t
 - Unity reported one build warning and internal conservative-rasterization shader fallback messages; the final player log was clean. Build acceptance still requires zero errors, and warnings should remain visible.
 
 Distilled into [Unity](../tools/unity.md). Device acceptance, balance sweeps, collider/bevel contact review, material/draw-call consolidation, and human game-feel review remain open.
+
+## Follow-up: camera-facing arcball and visible-direction tests
+
+On the same Unity/URP/Input System versions, a control-focused follow-up exposed a gap in the original undo test: a reversed rotation can still undo perfectly. The correction and expanded tests passed with the same direct-editor command form above, using both `-testPlatform EditMode` and `-testPlatform PlayMode`. Native development builds and both smoke scene paths were rerun; screen captures included the loss/replay HUD.
+
+- Unity camera-local forward is +Z, so a visible-hemisphere arcball uses negative Z with screen X right and Y up. Transform the camera-local delta into world space as `view * delta * inverse(view)`, then apply it to the gesture's initial pose.
+- Assert that a point on the **near surface** projects right/up after matching pointer motion, at several camera yaws. Also test rim-roll direction and anchored return independently; merely testing nonzero rotation or undo misses handedness errors.
+- Preserve the intended projection profile. A sphere with a cubic shoulder into an equator is not interchangeable with a generic sphere/hyperbola trackball. Test numerical shoulder samples and equatorial roll separately.
+- Share projected bounds between visual sphere sizing and input admission; keep pixel thresholds in consistent logical units. Stabilize camera height during an owned gesture so its frozen center does not drift underneath the pointer.
+- Cap flick speed, specify minimum sample duration and stale-release cutoff, and ignore stationary drag events. Include these in numeric tests rather than judging only a screenshot.
+
+These checks establish direction and mathematical behavior, not subjective touch-feel acceptance. No project-specific tuning constants or media are published.
