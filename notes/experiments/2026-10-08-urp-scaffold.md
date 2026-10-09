@@ -82,3 +82,32 @@ Distilled into [Unity](../tools/unity.md), [Blender](../tools/blender.md), [asse
 ## Follow-ups
 
 Physical iPhone/iPad signing and acceptance, native rotation/window/safe-area behavior, touch feel, lifecycle interruptions, and sustained device performance remain in [the backlog](../backlog.md). The CLI/Pipeline, rig-animation recipes on this replacement editor, and Web target remain unverified.
+
+## Follow-up: source-versus-export fidelity audit
+
+Inspected a separate six-figure source/export set before proposing higher-resolution engine assets. This was a read-only Blender 5.2.2 LTS inspection, not an import of those figures into the scaffold. Project identities, source paths, and previews remain outside this public log.
+
+The inspection used this command form, with the private inspector and checkout supplied explicitly:
+
+```sh
+blender -b --factory-startup --disable-autoexec --python-exit-code 1 \
+  -P "$INSPECTOR" -- "$ASSET_CHECKOUT"
+```
+
+The inspector opened each source with `bpy.ops.wm.open_mainfile(filepath=..., use_scripts=False)` and never saved it. For each selected figure root, it counted evaluated mesh/curve triangles through the dependency graph:
+
+```python
+evaluated = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
+mesh = evaluated.to_mesh()
+mesh.calc_loop_triangles()
+triangle_count = len(mesh.loop_triangles)
+evaluated.to_mesh_clear()
+```
+
+It parsed the GLB JSON chunk with Python's standard `struct`/`json` modules, counted each node's referenced triangle primitives using index-accessor count divided by three, and inspected material extensions. Node instances were counted separately. All inspected primitives were triangle lists.
+
+**Results:** all six exported triangle counts matched their evaluated Blender figures, spanning approximately 3,900-37,200 triangles per figure. Source modifiers included bevels, weighted normals, solidify, and one subdivision surface with viewport/render level 2. No hidden higher render-subdivision level was found. Source material graphs were Principled BSDF plus material output; every exported material retained `KHR_materials_clearcoat`. The sources remained unchanged.
+
+**Conclusion:** do not assume a runtime GLB is a decimated substitute or that a different engine automatically restores lost detail or glaze. In this set, source access chiefly enables deliberate geometry/material refinement and reproducible export. Lighting, reflections, normals, color management, shadow quality, and runtime material interpretation must be evaluated independently.
+
+Matching triangle counts does not establish identical positions, normals, rendered appearance, collider fit, or adequate performance. A controlled source-render/engine-render comparison is still needed. Distilled into [Blender's fidelity-audit guidance](../tools/blender.md#source-versus-export-fidelity).

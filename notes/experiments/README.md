@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-10-08 | [Source/export fidelity audit](2026-10-08-urp-scaffold.md#follow-up-source-versus-export-fidelity-audit) | Six GLBs match evaluated Blender triangle counts and retain clearcoat; source access enables refinement, not an automatic resolution upgrade. Rendering parity remains separate. |
 | 2026-10-08 | [URP scaffold and unsigned iOS build](2026-10-08-urp-scaffold.md) | 6000.6.5f1 URP/FBX/input/physics checks, native Mac player, unsigned Xcode compile, and LFS-backed cache-free rebuild with no source drift. Signing/device runs remain pending. |
 | 2026-10-08 | [Xcode SDK/simulator preflight](2026-10-08-xcode-preflight.md) | Xcode 26.3 (17C529) selected on Sequoia 15.8.1; first-launch complete, SDKs 26.2 and simulator runtime 26.3.1 available. App builds/launches remain unverified. |
 | 2026-10-08 | [Unity replacement/module inspection](2026-10-08-unity-installation.md) | Single 6000.6.5f1 arm64 editor, iOS/Web modules, bundled Mac Mono without optional Mac IL2CPP; CLI beta.12 and LFS 3.8.0 available. Xcode and new-version project/build validation pending. |

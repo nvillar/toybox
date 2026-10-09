@@ -76,6 +76,17 @@ The [6000.6.5f1 URP scaffold](../experiments/2026-10-08-urp-scaffold.md) recheck
 - The tested rig has 16 deform bones and segmented rigid weights, not a production continuous skin. Six decorative curves are converted to unskinned meshes and reported explicitly; this does not bind them for later torso/limb animation.
 - Blender shader graphs do not become equivalent Unity materials. The later static transfer below bakes supported colour/normal detail; full visual parity remains separate work.
 
+## Source-versus-export fidelity
+
+A [six-figure read-only audit](../experiments/2026-10-08-urp-scaffold.md#follow-up-source-versus-export-fidelity-audit) found identical evaluated-source and GLB triangle counts, including applied bevel/subdivision detail, and clearcoat extensions on every exported material. Source access did not reveal an automatically higher-resolution runtime model.
+
+- Compare **evaluated** geometry, including modifiers and converted curves, rather than raw source mesh counts. Count node instances when measuring an exported scene.
+- Check modifier viewport/render levels and exported material extensions before diagnosing missing detail or glaze.
+- Treat silhouette, normals, roughness/clearcoat, lighting/reflections, color management, and contact shadows as separate fidelity questions. More triangles cannot fix missing reflection lighting.
+- Keep deliberate facets and broad planes; increase tessellation only where a silhouette or highlight needs it. Profile part/material counts as well as triangles.
+- Matching geometry counts is a screening check, not proof of visual equivalence. Compare controlled source and engine frames before claiming improvement.
+- Open inspection sources with `--disable-autoexec` and `use_scripts=False`, and do not save them.
+
 ## Static geometry and procedural surface hand-off
 
 [`export_static_scene.py`](../../scripts/blender/export_static_scene.py) now exports a detailed static environment with baked colour/normal atlases; [experiment and limits](../experiments/2026-09-24-static-scene-unity.md).
