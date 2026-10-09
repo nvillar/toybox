@@ -64,3 +64,11 @@ Keeping the physics timestep unchanged while increasing `Time.timeScale` substan
 Use counterbalanced speed order, repeat both ordinary and accelerated cases, and record distributions rather than expecting a previously failed attempt to always fail again. Keep the full comparison gated when the sample cannot distinguish acceleration bias from ordinary contact/order variability. Restore timing and log-handling settings after the fixture. Expected gameplay timeout errors can be recorded as outcomes, but all other errors/exceptions must still fail the harness.
 
 The corpus test exceeded Unity's default 180-second timeout during normal-speed cross-checks; an explicit bounded `Timeout` attribute allowed the final measurement to complete. A completion marker denotes completed data collection, not scientific acceptance of equivalent behavior. Preserve partial runs separately from completed evidence.
+
+### Separating reset history from speed
+
+A larger prespecified comparison crossed scene reuse/reload, ordinary/accelerated clocks, and counterbalanced order. Reused scenes varied in survival and timeout outcomes; fresh-scene trials agreed across speeds on recorded starting states, first dynamic poses and final positions for every selected case. A further check of the fresh-scene default passed with ordinary fixed callbacks and unchanged timestep. This supports isolated accelerated screening on the tested toolchain, not a universal determinism claim or a proven particular PhysX cache mechanism.
+
+Reload the scene before restoring each independent evaluation state when reset-history sensitivity is observed. Measure total cost including reload and warmup, and confirm marginal/final comparisons at ordinary speed. Keep reused-scene diagnostics distinct from the qualified measurement path.
+
+The larger batch also exercised a genuine gameplay timeout. The fixture's broad ignore setting had not prevented the runner from failing that log path. Replaced it with an explicit expectation for the exact known timeout message, keeping the timeout as a failed placement result and leaving other errors fatal; a dedicated production-timeout test passed.
