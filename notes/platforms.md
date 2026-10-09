@@ -18,7 +18,7 @@ We develop on one machine but want the pipeline to be portable. Each **capabilit
 
 Unified memory means GPU models share RAM with everything else (Blender, Unity, the agent). Observed peaks so far: FLUX.2 Klein 4B ~10.5 GB at 512², Qwen-Image-2.1 ~20–22 GB at 512²–768×512, Stable Audio 3 small ~2 GB (upstream benchmark). Local LLMs add their weight size (e.g. 9–21 GB for the installed Ollama models).
 
-[2026-10-08 installation check](experiments/2026-10-08-unity-installation.md): Unity 6000.6.5f1 arm64 is now the only Hub editor, with iOS/Web modules and bundled Mac Mono players; optional Mac IL2CPP is not selected. Git LFS 3.8.0 and CLI beta.12 are available. A [subsequent Xcode preflight](experiments/2026-10-08-xcode-preflight.md) confirms Xcode 26.3 is selected on Sequoia, with device/simulator SDKs 26.2 and an available simulator runtime reporting 26.3.1. The [FBX/Metal probe](experiments/2026-10-07-unity-ios-preflight.md) used Blender 5.2.2 LTS and the previous Unity 6000.6.2f1; imports/builds on the replacement remain unverified. See [Unity](tools/unity.md#ios-on-a-sequoia-host-documented-builds-unverified) for the iOS workflow and remaining build checks.
+[2026-10-08 scaffold verification](experiments/2026-10-08-urp-scaffold.md): Unity 6000.6.5f1 arm64 is the only Hub editor, with iOS/Web modules and bundled Mac Mono players; optional Mac IL2CPP is not selected. Blender 5.2.2 LTS FBX import, URP rendering/input/physics, native Mac build/run, Git LFS 3.8.0 upload/restore, and a cache-free rebuild now pass. Xcode 26.3 on Sequoia compiles the unsigned iOS export with SDK 26.2. The available simulator runtime reports 26.3.1 but has not run an app. CLI beta.12 remains optional/unverified. See [Unity](tools/unity.md#ios-on-a-sequoia-host-unsigned-compile-verified) for signing/device gates.
 
 ## Backend matrix
 
@@ -30,7 +30,7 @@ Unified memory means GPU models share RAM with everything else (Blender, Unity, 
 | SFX / music | ✅ **Stable Audio 3 MLX** (`sa3`) — [tools/stable-audio-3.md](tools/stable-audio-3.md) | 🟡 Stable Audio 3 **TensorRT** `sa3` (same CLI flags, Linux; Windows via WSL2 ❓); 🟡 `stable-audio-3` PyTorch lib (CUDA) | ❓ `stable-audio-3` PyTorch on ROCm; ❓ ONNX exports via onnxruntime (MIGraphX / DirectML) | 🟡 Small models on CPU (TFLite/LiteRT runtime upstream) |
 | Local LLM | ✅ **Ollama** (MLX models); 🟡 **oMLX** (Apple Silicon only) — [tools/local-llm.md](tools/local-llm.md) | 🟡 Ollama (CUDA) | 🟡 Ollama (ROCm) | Hosted LLM APIs |
 | 3D modelling | ✅ Blender (Metal) | 🟡 Blender (CUDA/OptiX) | 🟡 Blender (HIP) | Blender CPU |
-| Game engine | ✅ Historical 6000.6.2f1 FBX/animation and native build; 🟡 6000.6.5f1 installed, project/build checks pending; Pipeline unverified | 🟡 Unity | 🟡 Unity | — |
+| Game engine | ✅ 6000.6.5f1 URP/FBX/input/physics, Mac player, unsigned iOS compile and clean restore; Pipeline/device runs unverified | 🟡 Unity | 🟡 Unity | — |
 
 The same Hugging Face weights generally work across backends (e.g. `black-forest-labs/FLUX.2-klein-4B`; `stabilityai/stable-audio-3-optimized` ships `MLX/`, `tensorRT/`, `onnx/`, `tflite/` and `cpu-amx/` variants), so switching platform changes the runtime, not the model. Check licences per model, not per backend.
 

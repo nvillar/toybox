@@ -8,7 +8,7 @@ versions: { git: 2.50.1, git-lfs: 3.8.0, gh: 2.101.0, unity-cli: 1.0.0-beta.12 }
 
 Role: where private media experiments, game projects and binary assets live. A private GitHub + Git LFS library has been created, uploaded and restored on macOS; Unity-specific workflows, locking and object storage remain unverified. Evidence: [private asset-library experiment](../experiments/2026-09-23-private-asset-library.md).
 
-**Current readiness:** [Git LFS 3.8.0 is now executable](../experiments/2026-10-08-unity-installation.md), resolving the missing-command finding from 2026-10-07. Repository-local initialization and a current upload/restore still need verification. The September round-trip used Git 2.53.0 / Git LFS 3.7.1 / gh 2.98.0; its results are historical, not a fresh round-trip on the current versions. CLI `vcs` help below was inspected on beta.8, not the newly installed beta.12.
+**Current readiness:** [Git LFS 3.8.0 upload/restore is now verified](../experiments/2026-10-08-urp-scaffold.md) with Apple Git 2.50.1 and gh 2.101.0: repo-local filters, two source/export binaries, and a fresh remote Unity checkout. All 112 tracked files matched byte-for-byte; tests, native Mac build/run, and iOS export passed without a Library cache or source drift. This resolves the missing-command finding from 2026-10-07. The September library round-trip retains its older version scope. CLI `vcs` help below was inspected on beta.8, not the installed beta.12.
 
 ## Storage convention
 
@@ -16,7 +16,7 @@ Role: where private media experiments, game projects and binary assets live. A p
 |-------|--------------------|--------|
 | Public `toybox` | Generic methods, measurements, scripts, intentional non-project fixtures | In use |
 | Private `toybox-assets` | Selected media experiments, full briefs and prompts, sources, review sheets, provenance; one folder per project | GitHub + Git LFS upload/restore verified |
-| Private per-game repo | Unity project and approved assets when a game enters production | Planned; no Unity project needed to start the asset library |
+| Private per-game repo | Unity project and approved assets when a game enters production | In use; LFS-backed clean rebuild verified |
 | Local `out/` | Disposable batches, intermediate renders and builds | Scratch, not a backup |
 | Private object storage | Large archives or video batches that outgrow practical LFS use | Deferred; R2/S3 + `rclone` are candidates |
 

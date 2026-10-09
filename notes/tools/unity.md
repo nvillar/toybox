@@ -8,7 +8,7 @@ versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1, xcode: "26.3 (17
 
 Role: assemble assets into a playable game, run it, test it, and build it.
 
-**Current installation:** [6000.6.5f1 arm64, checked 2026-10-08](../experiments/2026-10-08-unity-installation.md), is the only editor in the Hub directory. iOS and Web modules are present. Mac Mono players are bundled even with optional **Mac Build Support (IL2CPP)** unselected. Hub's **Web Build Support** still uses module ID `webgl` and directory `WebGLSupport`. Only executable/installation checks have been repeated on this version; the project/import/render/build recipes below were exercised on **6000.6.2f1** and remain **(unverified)** on the replacement. CLI beta.12 is present; help and workflow observations below retain their original beta.8 scope.
+**Current installation:** [6000.6.5f1 arm64](../experiments/2026-10-08-unity-installation.md) is the only editor in the Hub directory. iOS and Web modules are present. Mac Mono players are bundled even with optional **Mac Build Support (IL2CPP)** unselected. Hub's **Web Build Support** still uses module ID `webgl` and directory `WebGLSupport`. A [current URP scaffold experiment](../experiments/2026-10-08-urp-scaffold.md) now verifies project creation, static FBX import, mouse/touch routing, physics, rendering, native Mac build/run, unsigned iOS compilation, and a cache-free remote restore. The animation/navigation recipes below retain their **6000.6.2f1** scope. CLI beta.12 is present; CLI help observations retain their original beta.8 scope.
 
 ## Driving it
 
@@ -45,14 +45,30 @@ Copy a C# editor helper into `Assets/Editor/` and assets into `Assets/`, then us
 [Rechecked on 2026-10-07](../experiments/2026-10-07-unity-ios-preflight.md): the native 6000.6.2f1 editor created a project, compiled a helper, and imported an asymmetric Blender FBX with the expected metre dimensions under Metal. These are local checks, not proof that a shipping target is ready.
 
 - `unity --version` reports the separate CLI version; invoke the actual editor with `-version` to identify the compiler/importer in use.
-- **Choose the render pipeline explicitly.** Plain `-createProject` produced Built-in, not URP. The installed 3D URP template archive was version `17.2.1`, but its manifest pinned URP `17.6.0`. Inspect the selected editor's template manifest; do not infer package versions from the archive name. URP creation/rendering remains **(unverified)** here.
+- **Choose the render pipeline explicitly.** Plain `-createProject` produced Built-in, not URP. Use `-createProject <new-path> -cloneFromTemplate <archive>`; [`create_urp.sh`](../../scripts/unity/create_urp.sh) is verified on 6000.6.5f1. The 3D URP archive is version `17.2.1`, but its manifest pins URP `17.6.0`. Input System resolved to 1.20.0 from a 1.19.0 template entry. Commit the generated manifest and lockfile; do not infer rendering-package versions from archive names.
 - Installed modules in this Hub layout are under `/Applications/Unity/Hub/Editor/<version>/PlaybackEngines`, beside `Unity.app`. An entry in `modules.json` may describe an available download rather than an installed component. Use `BuildPipeline.IsBuildTargetSupported` as an editor-side check; macOS was true and iOS false.
 - The licence at that preflight allowed batch work even though a token-refresh error appeared in the log. Do not infer cloud authentication from local success, or ignore a future licence failure.
 - For VS Code, Microsoft's [Unity extension](https://code.visualstudio.com/docs/other/unity) uses `com.unity.ide.visualstudio` 2.0.20 or later, not the legacy VS Code Editor package. This authoring integration is **(unverified)** here; a PATH-visible .NET SDK is not required for the editor's own C# compiler.
 
-### iOS on a Sequoia host (documented; builds unverified)
+### Current URP, tests, and native-player checks
 
-Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. The iOS module is present for 6000.6.5f1, and [Xcode 26.3 (17C529) is now installed and selected on Sequoia 15.8.1](../experiments/2026-10-08-xcode-preflight.md). SDK discovery and first-launch checks passed; no app build or signing was attempted.
+Verified on **6000.6.5f1 / URP 17.6.0**: [commands, failures, and corrections](../experiments/2026-10-08-urp-scaffold.md).
+
+- Separate runtime, editor, and test assemblies. Run `-runTests -testPlatform EditMode` or `PlayMode` with explicit result/log paths, **without `-quit`**. Check XML counts/results; a batch exit is not enough.
+- For batch Input System tests, temporarily select `AllDeviceInputAlwaysGoesToGameView` and allow background processing; restore the previous settings afterward. Queue real `MouseState`/`TouchState` events and exercise UI/physics raycasters rather than only invoking handlers.
+- Persist a fixed timestep through the actual TimeManager object: `Time.fixedDeltaTime = 1f / 60f`, mark it dirty, save, then reopen to verify. This version serializes rational time; setting the property's `floatValue` did not change it.
+- Use `UniversalRenderPipeline.SingleCameraRequest` with a RenderTexture for URP camera captures; inspect pixels, not just hashes. The initial StandardRequest path produced wrong material colors. Camera captures do not include a screen-space overlay HUD; capture the real native frame separately with `ScreenCapture`.
+- When post-processing is deliberately unused, clear the renderer's `postProcessData`; keeping stripped effect references produced avoidable runtime warnings.
+- Use `Debug.isDebugBuild` for development-only runtime diagnostics; `DEVELOPMENT_BUILD` is deprecated here. A command-driven native probe should enable background execution for its duration and have an external timeout.
+- A remote clone with restored LFS assets passed tests, Mac build/run, and iOS export without a project Library cache or source changes. Preserve Unity's normalized iOS automatic-graphics flag and assert the effective API list is Metal-only instead of repeatedly forcing a setting that the importer rewrites.
+
+### iOS on a Sequoia host (unsigned compile verified)
+
+Unity needs **iOS Build Support for the exact editor** to export an Xcode project, then **full Xcode** to compile the application locally ([Unity setup](https://docs.unity3d.com/6000.6/Documentation/Manual/ios-environment-setup.html)). Command Line Tools alone are insufficient. Unity 6000.6.5f1 and Xcode 26.3 (17C529) on Sequoia 15.8.1 now [export and compile an unsigned IL2CPP/ARM64 app](../experiments/2026-10-08-urp-scaffold.md), using SDK 26.2 with deployment minimum 26.0. Signing and device launches remain unverified.
+
+- For unsigned device compilation, use `xcodebuild -project <export>/Unity-iPhone.xcodeproj -scheme Unity-iPhone -configuration Debug -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath <ignored-path> CODE_SIGNING_ALLOWED=NO`. Inspect the compiled app's Info.plist, not only Unity's settings.
+- Device-family orientation policies may need both Info.plist and runtime `Screen` settings: Unity's generated view controller supplies its own orientation mask. A small UIKit device-idiom helper was linked successfully; physical rotation/window behavior remains **(unverified)**.
+- Current Xcode warnings include Unity-generated deprecated iOS APIs, `UIRequiresFullScreen`, a script phase without outputs, and a missing final store icon. Do not confuse a successful unsigned compile with distribution readiness.
 
 - As checked 2026-10-07, [Apple's compatibility table](https://developer.apple.com/xcode/system-requirements/) lists **Xcode 26.3 / iOS 26.2 SDK** as compatible with Sequoia **15.6+** within its stated OS range. Xcode 26.4.1 requires macOS 26.2; Xcode 27 requires macOS 26.6+. Use a versioned download rather than prescribing "latest Xcode."
 - Keep the host OS, Xcode, SDK, simulator runtime, and deployment minimum separate. The local SDKs report **26.2** while the available simulator runtime is named **iOS 26.3** and reports version **26.3.1**. Do not infer one version from another. A newer SDK can build for an older supported deployment minimum.

@@ -32,6 +32,7 @@ Conventions:
 | [`blender/export_rig_probe.py`](blender/export_rig_probe.py) | Character-only FBX diagnostic, moving/stationary mesh guards and expected measurements | Blender 5.2.2 |
 | [`blender/export_static_scene.py`](blender/export_static_scene.py) | Evaluated static FBX, per-object Generated-coordinate preservation, grouped colour/normal bakes, geometry/material/hash manifest; constrained Principled workflow | Blender 5.2.2, Cycles Metal |
 | [`unity/RigImportProbe.cs`](unity/RigImportProbe.cs) | Import FBX, check Generic Animator/skin/axes, capture poses and save/reopen a scene | Unity 6000.6.2f1, built-in renderer, macOS |
+| [`unity/create_urp.sh`](unity/create_urp.sh) | Create a new project from an explicit editor/template pair; reject existing destinations | Unity 6000.6.5f1, URP template 17.2.1, macOS arm64 |
 | [`unity/AnimationStudy.cs`](unity/AnimationStudy.cs) | Compare idle/walk bones and all mesh bounds, measure world-space foot contacts, render loops and check real Play Mode; requires `RigImportProbe.cs` | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/StudyLocomotion.cs`](unity/StudyLocomotion.cs) | Constant-speed, camera-follow study preview with a four-cycle position reset; not a player controller | Unity 6000.6.2f1 |
 | [`unity/ClickToMove.cs`](unity/ClickToMove.cs) | Screen-ray/NavMesh destinations, obstacle rejection, retarget/stop/reset, turning and velocity-driven Animator parameters; [setup contract](../notes/tools/unity.md#click-to-move-and-native-builds) | Unity 6000.6.2f1, native macOS arm64 |
