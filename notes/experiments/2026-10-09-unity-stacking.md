@@ -56,3 +56,11 @@ On the same editor and physics stack, an editor-only PlayMode fixture exercised 
 - The ordinary-clock pilot ran near real time. Measure actual trial duration before launching thousands of trials; successful placements with a long observation tail can dominate cost.
 
 These are calibration results for a small corpus, not a general physics quality or snapshot determinism claim. Private results remain in the project repository.
+
+### Accelerated-clock follow-up
+
+Keeping the physics timestep unchanged while increasing `Time.timeScale` substantially reduced wall time in an ordinary-callback PlayMode runner. A generated corpus survived reconstruction and observation at ordinary speed, and successful placement samples survived at both speeds. This was not sufficient evidence of equivalence: repeated borderline placements included a survival/loss disagreement.
+
+Use counterbalanced speed order, repeat both ordinary and accelerated cases, and record distributions rather than expecting a previously failed attempt to always fail again. Keep the full comparison gated when the sample cannot distinguish acceleration bias from ordinary contact/order variability. Restore timing and log-handling settings after the fixture. Expected gameplay timeout errors can be recorded as outcomes, but all other errors/exceptions must still fail the harness.
+
+The corpus test exceeded Unity's default 180-second timeout during normal-speed cross-checks; an explicit bounded `Timeout` attribute allowed the final measurement to complete. A completion marker denotes completed data collection, not scientific acceptance of equivalent behavior. Preserve partial runs separately from completed evidence.
