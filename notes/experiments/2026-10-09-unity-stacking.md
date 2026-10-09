@@ -43,3 +43,16 @@ On the same Unity/URP/Input System versions, a control-focused follow-up exposed
 - Cap flick speed, specify minimum sample duration and stale-release cutoff, and ignore stationary drag events. Include these in numeric tests rather than judging only a screenshot.
 
 These checks establish direction and mathematical behavior, not subjective touch-feel acceptance. No project-specific tuning constants or media are published.
+
+## Follow-up: physics evaluation calibration
+
+On the same editor and physics stack, an editor-only PlayMode fixture exercised actual lowering/scoring/loss, repeated placements, and reconstruction of a settled tower from prefab identities, poses and velocities. The command used the earlier direct-editor PlayMode form plus `-testFilter` for the calibration fixture; the complete PlayMode suite and native gameplay smoke also passed.
+
+- Snapshot reconstruction does not restore PhysX contact caches. Wake restored dynamic bodies, rebuild callbacks with ordinary fixed steps, then measure no-placement survival and drift. Do not force sleep or zero velocities to make a fixture pass.
+- Support bookkeeping used Unity fixed-time timestamps. Keep the ordinary fixed-update loop for the reference run; manual simulation or accelerated scheduling needs separate equivalence checks.
+- A renderer-bounds check immediately after setting an interpolated Rigidbody pose failed. Waiting for a fixed step and rendered frame made the visible bounds and body COM comparable.
+- Loaded solver/contact-offset values differed from values assigned in the asset generator. Capture runtime configuration before freezing an experiment baseline; generator code is not proof of persistence.
+- Repeated inputs had consistent survival outcomes but some noticeably different resting poses. Paired evaluations need repeated borderline cases and order checks, not an assumption of exact physics replay.
+- The ordinary-clock pilot ran near real time. Measure actual trial duration before launching thousands of trials; successful placements with a long observation tail can dominate cost.
+
+These are calibration results for a small corpus, not a general physics quality or snapshot determinism claim. Private results remain in the project repository.

@@ -73,6 +73,7 @@ Verified on **6000.6.5f1 / URP 17.6.0**: [commands, failures, and corrections](.
 - URP Complex Lit clearcoat needs its keyword/mask/smoothness configured; reflection lighting is separate. Native frame review remains necessary even when shader compilation succeeds.
 - For a camera-facing arcball with screen X right/Y up, Unity's near hemisphere is camera-local **negative Z**. Conjugate the local quaternion delta by camera rotation. Test projected near-surface motion in the pointer direction at several camera yaws, plus rim roll; drag-back undo alone also passes for reversed controls.
 - A tuned spherical/cubic-shoulder/equator projection differs from a generic sphere/hyperbola trackball. Preserve its curve, logical-pixel bounds, flick sampling and decay independently. Use shared projected bounds for visible/input spheres and pause camera-height tracking during an owned gesture. [Follow-up evidence](../experiments/2026-10-09-unity-stacking.md#follow-up-camera-facing-arcball-and-visible-direction-tests).
+- For physics evaluations, record loaded runtime settings rather than assuming generator assignments persisted. Rehydrate saved poses with contact warmup and a no-placement survival/drift check; do not force stability. Preserve fixed-time bookkeeping when calibrating acceleration, and measure repeatability and wall time before a large matrix. [Calibration evidence](../experiments/2026-10-09-unity-stacking.md#follow-up-physics-evaluation-calibration).
 
 ### iOS on a Sequoia host (unsigned compile verified)
 
