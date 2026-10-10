@@ -45,6 +45,15 @@ Cloudflare's **Clef** (27B, from Qwen3.8-27B) and **Clef-Flash** (9B, from Qwen3
   - Cold load: 3.1 s (Flash), 4.7 s (27B).
 
   The vendor's figures (39 ms / 209 ms) are from unstated hardware and don't transfer to this machine.
+- **Measured: latency grows linearly with input tokens.** The cost is prompt processing; there is no generation step. Clef 27B (MLX, 100% GPU, 26 GB resident at 16K context) took about 2.8–3.6 ms per input token:
+
+  | Input tokens | Latency |
+  |---|---|
+  | 197 | 0.56 s |
+  | 565 | 2.0 s |
+  | 1,237 | 4.4 s |
+
+  Question text counts as input: 1, 3 and 8 short questions took 0.56, 1.4 and 3.2 s. **Keep the state and the questions compact.** Reuse of a shared prefix across calls was inconsistent: one of four calls with an identical 1K-token prefix dropped to 0.76 s, the rest didn't. **(unverified)**
 - **Measured: outputs are deterministic, and identical requests are cached** (~10 ms). Re-asking an unchanged state is free. For variety, sample from the probabilities yourself.
 - **Measured: one call per subject.** Putting several independent subjects into one state with per-subject questions was no faster (Flash about the same as separate calls, 27B ~3× slower) and changed the answers. Earlier subjects' descriptions leak into later ones.
 - Sources disagree on context length (64K vs 256K). **(unverified here)**

@@ -39,6 +39,10 @@ Project specifics stay in the private game repo.
 - **Persona text was a weak lever.** Swapping only the persona barely moved most distributions; situational text dominated.
 - **Batching changed answers:** combining subjects in one call agreed with the per-subject choice in as few as 0 of 3 cases.
 
+### Follow-up: what drives latency (Clef 27B)
+
+With a unique suffix on each request to defeat the cache, latency scaled with input tokens (0.56 s at 197 tokens, 4.4 s at 1,237), and every question's text added to those tokens. This fits a compute-bound single forward pass: about 2 × 27B × tokens, at the M4 Max's effective throughput. A datacenter GPU is roughly 30× faster, which accounts for the vendor's ~200 ms. Prefix reuse across calls was inconsistent and remains unverified.
+
 ## Learnings
 
 - Folded into [tools/local-llm.md](../tools/local-llm.md#decision-models-clef): measured latency, caching and determinism, one call per subject. Also corrected the stale Ollama version (0.34.3 → 0.40.2).
