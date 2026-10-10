@@ -72,3 +72,11 @@ A larger prespecified comparison crossed scene reuse/reload, ordinary/accelerate
 Reload the scene before restoring each independent evaluation state when reset-history sensitivity is observed. Measure total cost including reload and warmup, and confirm marginal/final comparisons at ordinary speed. Keep reused-scene diagnostics distinct from the qualified measurement path.
 
 The larger batch also exercised a genuine gameplay timeout. The fixture's broad ignore setting had not prevented the runner from failing that log path. Replaced it with an explicit expectation for the exact known timeout message, keeping the timeout as a failed placement result and leaving other errors fatal; a dedicated production-timeout test passed.
+
+### Fixed-step initialization and paired screening
+
+A stratified isolated corpus and complete paired placement screen were exercised through the same direct-editor test workflow. Normal-clock confirmation of selected disagreements then found a taller restored tower moving at ordinary speed but already asleep at accelerated speed.
+
+The cleanup frame after reconstruction was unintentionally advancing physics before the measured warmup. Pausing time while flushing deferred destruction, then restoring the chosen speed and running an asserted number of fixed steps, removed that initialization difference. The expanded paired check matched starting states and trajectories; the earlier screen was retained as superseded evidence and rerun under the corrected fingerprint.
+
+Reusable evaluation practices: retain exact initial states, not only final success flags; keep physics inputs identical across policies; report cases with sampled solutions separately from aggregate placement success; and distinguish sampled angular neighborhoods from proven continuous tolerance. Validate the full trial-ID grid, metadata, finite transforms, and completion count before summarizing. A checkpoint-resume check removed one cached trial after preserving the complete original evidence; only that missing trial reran.
