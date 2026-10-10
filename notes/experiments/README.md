@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-10-10 | [Clef decision models through Ollama](2026-10-10-decision-models-ollama.md) | Clef-Flash ~0.54 s / Clef 27B ~2.1 s per fresh decision on M4 Max; deterministic with cached repeats; one call per subject; persona text weaker than situation. |
 | 2026-10-09 | [Compound stacking and gesture acceptance](2026-10-09-unity-stacking.md) | Source-derived figures, scoring/loss/replay and native captures; cylinder/capsule, kinematic pose and cancellation fixes. Follow-up: camera-facing arcball and visible-direction regression tests. |
 | 2026-10-08 | [Source/export fidelity audit](2026-10-08-urp-scaffold.md#follow-up-source-versus-export-fidelity-audit) | Six GLBs match evaluated Blender triangle counts and retain clearcoat; source access enables refinement, not an automatic resolution upgrade. Rendering parity remains separate. |
 | 2026-10-08 | [URP scaffold and unsigned iOS build](2026-10-08-urp-scaffold.md) | 6000.6.5f1 URP/FBX/input/physics checks, native Mac player, unsigned Xcode compile, and LFS-backed cache-free rebuild with no source drift. Signing/device runs remain pending. |

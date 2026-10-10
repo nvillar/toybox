@@ -81,7 +81,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
 | 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render + rig hand-off + idle/walk study · ⚪ production animation |
 | Game engine | Unity editor batch mode; CLI + Pipeline candidates | 🟢 6000.6.5f1 URP scaffold, input/physics, native player, clean restore · ⚪ Pipeline |
-| Local LLM | Ollama (MLX models); oMLX candidate | 🟡 installed, not yet used in pipeline |
+| Local LLM | Ollama (MLX models); oMLX candidate; Clef decision models | 🟡 generative models installed, not yet used in pipeline · 🟢 Clef decision latency measured ([notes](notes/tools/local-llm.md#decision-models-clef)) |
 | Video | FFmpeg | 🟢 motion-review encoding · ⚪ generative video |
 | Asset storage, collaboration | Private `toybox-assets` library and per-game repos · GitHub + Git LFS | 🟢 LFS 3.8.0 upload/restore and cache-free Unity rebuild · ⚪ multi-user locking ([notes](notes/tools/asset-storage.md)) |
 | Publishing | Unity BuildPipeline + Xcode | 🟢 local macOS arm64 player and unsigned iOS compile on Sequoia · ⚪ signing / physical-device runs / distribution ([experiment](notes/experiments/2026-10-08-urp-scaffold.md)) |
