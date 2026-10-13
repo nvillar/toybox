@@ -62,6 +62,7 @@ blender -b out/authoring-study/clips/clips.blend --python-exit-code 1 -P scripts
 - **For vertical spine bones, the second Euler component is yaw (twist).** For world-space hand-target offsets, rotate about the axis you actually mean (sideways pointing = world Y).
 - **Unity Humanoid requires unique names for transforms mapped to human bones.** A mesh object named `Head` next to a `Head` bone fails avatar creation ("Ambiguous Transform"). Name meshes e.g. `HeadMesh`.
 - **The FBX take is named after the scene.** Set `scene.name` to the clip name before export, or every take is called "Scene".
+- **Review videos for in-app or web viewers:** concatenating clips with `-f concat -c copy` and no `+faststart` played fine in FFmpeg but showed **black in the user's viewer**. Re-encode the joined video (`concat` filter, `libx264 -profile:v main`, `yuv420p`, `-movflags +faststart`) and offer a GIF fallback.
 - **Foot drift can be a feature.** Sitting needs a deliberate foot slide forward, and standing up a step back. Measure drift only where feet should be planted.
 
 **Not yet established:**
