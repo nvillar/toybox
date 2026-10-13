@@ -74,6 +74,27 @@ blender -b out/authoring-study/clips/clips.blend --python-exit-code 1 -P scripts
 - facial expression
 - cats
 
+## Review round 1 (user)
+
+Verdict: "looks good and promising". Two artefacts, both fixed in the method:
+
+1. **"Not fully sitting, pivoting on its thighs."** The seat-gap check took the lowest body point over the seat, which was the thighs at the front edge. It reported contact while the pelvis hovered. Now:
+   - the check measures **under the pelvis** (within 12 cm of the Hips joint) and separately reports the deepest penetration
+   - the hips sit further back on the seat
+   - the seat height suits the character's short stylised legs: **0.41 m for a knee height of about 0.43 m**. At 0.45 m the thighs hung over the front edge.
+
+   Result: pelvis 3.8 mm above the seat; thighs compress 15 mm.
+2. **"Book in an odd position vs the hands."** The book was attached to the chest while the hands were placed independently. Now it's **held**:
+   - placed automatically between the palms at the clip's first frame, facing the head
+   - carried by the left hand, so the right hand can turn pages
+
+Also: resting hands moved onto the thighs after the hips moved back.
+
+**Lessons:**
+- Measure contact at the body part that should carry the weight, not at the nearest point.
+- Seat heights must suit the character's proportions. This is exactly why anchors should be relative to the character.
+- A prop that is held should be driven by the hands holding it, not placed independently.
+
 ## Follow-ups
 
 - Human review of the clips. Then a shared-rig study: a second adult (different proportions) and a child on the same clips, with runtime hip/foot/hand IK in Unity.

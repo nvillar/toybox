@@ -140,6 +140,29 @@ def build_props(spec):
     return props
 
 
+def hold_between_hands(rig, book, frame):
+    """Place the book between the palms, facing the head, then carry it with the left hand (so the right can turn pages)."""
+    sc = bpy.context.scene
+    sc.frame_set(frame)
+    bpy.context.view_layer.update()
+    pb = rig.pose.bones
+    palm = lambda b: rig.matrix_world @ ((pb[b].head + pb[b].tail) / 2)
+    left, right = palm("LeftHand"), palm("RightHand")
+    head = rig.matrix_world @ pb["Head"].head
+    centre = (left + right) / 2
+    x = (left - right).normalized()                       # across the book, hand to hand
+    toward = (head - centre)
+    y = (toward - toward.dot(x) * x).normalized()         # book's thin axis faces the reader
+    z = x.cross(y)
+    m = Matrix((x, y, z)).transposed().to_4x4()
+    m.translation = centre
+    book.parent = rig
+    book.parent_type = "BONE"
+    book.parent_bone = "LeftHand"
+    bpy.context.view_layer.update()
+    book.matrix_world = m                                 # Blender works out the offset from the bone
+
+
 def interp(ease):
     return {"snap": ("BEZIER", "EASE_IN_OUT"), "smooth": ("BEZIER", "AUTO"), "linear": ("LINEAR", "AUTO")}.get(ease, ("BEZIER", "AUTO"))
 
@@ -252,12 +275,17 @@ def measure(rig, clip, props):
         top = max((seat.matrix_world @ v.co).z for v in seat.data.vertices)
         lo_x, hi_x = min((seat.matrix_world @ v.co).x for v in seat.data.vertices), max((seat.matrix_world @ v.co).x for v in seat.data.vertices)
         lo_y, hi_y = min((seat.matrix_world @ v.co).y for v in seat.data.vertices), max((seat.matrix_world @ v.co).y for v in seat.data.vertices)
-        gaps = []
+        gaps, thighs = [], []
         for f in clip["seated_frames"]:
             sc.frame_set(f)
-            over = [p.z for p in body_points() if lo_x < p.x < hi_x and lo_y < p.y < hi_y and p.z < top + 0.25]
-            gaps.append(min(over) - top if over else None)
+            pelvis = rig.matrix_world @ rig.pose.bones["Hips"].head
+            pts = [p for p in body_points() if lo_x < p.x < hi_x and lo_y < p.y < hi_y]
+            # the seat should carry the pelvis (points near the hips), not just the thighs at the front edge
+            under = [p.z for p in pts if (Vector((p.x, p.y, 0)) - Vector((pelvis.x, pelvis.y, 0))).length < 0.12]
+            gaps.append(min(under) - top if under else None)
+            thighs.append(min(p.z for p in pts) - top if pts else None)
         out["seat_gap_mm"] = [round(g * 1000, 1) if g is not None else None for g in gaps]
+        out["deepest_into_seat_mm"] = [round(g * 1000, 1) if g is not None else None for g in thighs]
     if "contact_frame" in clip and "switch" in props:
         sc.frame_set(clip["contact_frame"])
         tip = rig.matrix_world @ rig.pose.bones[clip.get("contact_bone", "RightHand")].tail
@@ -304,12 +332,7 @@ def main():
         for pname, obj in props.items():
             obj.hide_render = pname not in props_visible
         if "book" in props_visible:
-            book = props["book"]
-            book.parent = rig
-            book.parent_type = "BONE"
-            book.parent_bone = clip.get("book_bone", "LeftHand")
-            book.location = Vector(clip.get("book_offset", [0.0, 0.08, 0.0]))
-            book.rotation_euler = Euler([math.radians(x) for x in clip.get("book_rot", [0, 0, 0])])
+            props["book"].parent = None
         # auto-correct seated height: key, measure the seat gap, shift the seated hips by the gap, re-key (twice)
         for attempt in range(3):
             mute_constraints(rig, False)
@@ -322,6 +345,8 @@ def main():
             for pose in clip["keys"]:
                 if pose.get("seated"):
                     pose["hips"] = [pose["hips"][0], pose["hips"][1], pose["hips"][2] - shift]
+        if "book" in props_visible:
+            hold_between_hands(rig, props["book"], clip["keys"][0]["frame"])
         act = bake(rig, name)
         act["props"] = ",".join(sorted(props_visible))            # renderers show only this clip's props
         mute_constraints(rig, True)

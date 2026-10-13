@@ -1,5 +1,5 @@
 {
- "_doc": "Pose-to-pose study clips for build_stylised_character.py (1.68 m, facing -Y). Hips are offsets from rest; targets are world positions. 'seated' keys are auto-corrected to touch the seat.",
+ "_doc": "Pose-to-pose study clips for build_stylised_character.py (1.68 m, facing -Y). Hips are offsets from rest; targets are world positions. 'seated' keys are auto-corrected to touch the seat. Seat height suits this character's short stylised legs (knee ~0.43 m); higher seats make the thighs hang over the front edge.",
  "fps": 30,
  "props": {
   "seat": {
@@ -7,7 +7,7 @@
     0,
     0.3
    ],
-   "height": 0.45
+   "height": 0.41
   },
   "switch": {
    "at": [
@@ -99,7 +99,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": 14,
@@ -119,14 +119,14 @@
       0
      ],
      "hand_L": [
-      0.19,
-      -0.16,
-      0.64
+      0.16,
+      0.0,
+      0.55
      ],
      "hand_R": [
-      -0.19,
       -0.16,
-      0.64
+      0.0,
+      0.55
      ]
     },
     {
@@ -134,7 +134,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": -4,
@@ -169,7 +169,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": -2,
@@ -189,14 +189,14 @@
       0
      ],
      "hand_L": [
-      0.17,
-      -0.2,
-      0.62
+      0.13,
+      0.08,
+      0.53
      ],
      "hand_R": [
-      -0.17,
-      -0.2,
-      0.62
+      -0.13,
+      0.08,
+      0.53
      ],
      "ease": "smooth",
      "foot_L": [
@@ -208,6 +208,16 @@
       -0.11,
       -0.1,
       0.085
+     ],
+     "hand_L_rot": [
+      -70,
+      0,
+      0
+     ],
+     "hand_R_rot": [
+      -70,
+      0,
+      0
      ]
     },
     {
@@ -216,7 +226,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ]
     }
@@ -234,24 +244,13 @@
     60,
     120
    ],
-   "book_bone": "Chest",
-   "book_offset": [
-    0.0,
-    -0.22,
-    0.25
-   ],
-   "book_rot": [
-    60,
-    0,
-    0
-   ],
    "keys": [
     {
      "frame": 1,
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": -2,
@@ -302,7 +301,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "chest": [
@@ -322,7 +321,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "chest": [
@@ -342,7 +341,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hand_R": [
@@ -367,7 +366,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hand_R": [
@@ -402,7 +401,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "chest": [
@@ -417,7 +416,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "chest": [
@@ -453,19 +452,19 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": -2,
      "hand_L": [
-      0.17,
-      -0.2,
-      0.62
+      0.13,
+      0.08,
+      0.53
      ],
      "hand_R": [
-      -0.17,
-      -0.2,
-      0.62
+      -0.13,
+      0.08,
+      0.53
      ],
      "foot_L": [
       0.1,
@@ -476,6 +475,16 @@
       -0.11,
       -0.1,
       0.085
+     ],
+     "hand_L_rot": [
+      -70,
+      0,
+      0
+     ],
+     "hand_R_rot": [
+      -70,
+      0,
+      0
      ]
     },
     {
@@ -483,7 +492,7 @@
      "seated": true,
      "hips": [
       0,
-      0.22,
+      0.29,
       -0.27
      ],
      "hips_pitch": -6,
@@ -513,7 +522,7 @@
      "seated": true,
      "hips": [
       0,
-      0.2,
+      0.29,
       -0.27
      ],
      "hips_pitch": 32,
@@ -533,14 +542,14 @@
       0
      ],
      "hand_L": [
-      0.18,
-      -0.16,
-      0.63
+      0.15,
+      0.02,
+      0.54
      ],
      "hand_R": [
-      -0.18,
-      -0.16,
-      0.63
+      -0.15,
+      0.02,
+      0.54
      ],
      "foot_L": [
       0.1,
