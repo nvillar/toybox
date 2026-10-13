@@ -143,6 +143,12 @@ A [later experiment](../experiments/2026-09-24-static-scene-unity.md) replaces b
 - Transparent Standard materials retain visible glass/crystal geometry but not Cycles refraction or caustics. Grouping transparent geometry can also limit sorting; do not claim offline-render parity.
 - For a 50% movement increase, set agent speed to 1.08 m/s and retain `authoredWalkSpeed=0.72`; observed `WalkRate` is 1.5. The existing controller already supports this without changing clip calibration.
 
+## Humanoid import
+
+[`HumanoidImportProbe.cs`](../../scripts/unity/HumanoidImportProbe.cs) imports FBX as Humanoid (Create From This Model, `resampleCurves` off, no compression) and reports avatar validity, bone mapping and clips. Verified on 6000.6.5f1 with a 21-bone rig named after Humanoid bones: automatic mapping, valid `isHuman`, clips flagged `humanMotion` ([experiment](../experiments/2026-10-13-agent-authored-character-animation.md)).
+
+- **"Ambiguous Transform … found in hierarchy for human bone"** means another transform shares a mapped bone's name (e.g. a mesh called `Head`). Names must be unique.
+
 ## Gotchas
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.

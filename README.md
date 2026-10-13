@@ -79,7 +79,7 @@ Development machine: Apple M4 Max, 128 GB unified memory.
 |------------|---------|--------|
 | Images, textures, backgrounds | MFLUX · FLUX.2 Klein 4B (default); Qwen-Image-2.1 for in-image text (non-commercial) | 🟢 macOS · ⚪ other platforms |
 | SFX, music | Stable Audio 3 MLX `sa3` | 🟢 macOS · 🟡 NVIDIA (TensorRT) |
-| 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render + rig hand-off + idle/walk study · ⚪ production animation |
+| 3D modelling | Blender (bpy, procedural scenes, headless Cycles/Metal) | 🟢 scene + render + rig hand-off + idle/walk study + scripted stylised character with Humanoid rig + pose-to-pose clips · ⚪ production animation, retargeting, fingers |
 | Game engine | Unity editor batch mode; CLI + Pipeline candidates | 🟢 6000.6.5f1 URP scaffold, input/physics, native player, clean restore · ⚪ Pipeline |
 | Local LLM | Ollama (MLX models); oMLX candidate; Clef decision models | 🟡 generative models installed, not yet used in pipeline · 🟢 Clef decision latency measured ([notes](notes/tools/local-llm.md#decision-models-clef)) |
 | Video | FFmpeg | 🟢 motion-review encoding · ⚪ generative video |

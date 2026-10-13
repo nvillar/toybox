@@ -98,6 +98,19 @@ A [six-figure read-only audit](../experiments/2026-10-08-urp-scaffold.md#follow-
 - The helper requires metre-scale coordinates, one direct Principled material per object, Generated-coordinate procedural textures and unlinked scalar factors. Guards reject non-metre units, multiple slots, indirect surface outputs, linked scalar factors and explicit non-Generated coordinate outputs. Existing UV image textures and other graph variants are outside its contract, not a verified general-purpose material conversion. Metal is the verified bake device.
 - `--planar-material NAME` separates coplanar groups for engine-side planar reflections. Other groups remain collection/material based. Inspect both the complete room and close-up surfaces after import.
 
+## Agent-authored character and pose-to-pose clips
+
+[Evidence](../experiments/2026-10-13-agent-authored-character-animation.md):
+- [`build_stylised_character.py`](../../scripts/blender/build_stylised_character.py) builds a parametric stylised humanoid with a Unity-Humanoid-named rig.
+- [`author_clips.py`](../../scripts/blender/author_clips.py) turns JSON key poses (IK targets, hips and spine angles, easing) into baked FK clips, with measured and auto-corrected contact.
+- [`render_review.py`](../../scripts/blender/render_review.py) renders contact sheets and sequences for agent and human review.
+
+Gotchas:
+- Skin hulls are asymmetric at branch joints: symmetrize before subdividing.
+- Bone-parented objects sit at the bone **tail**.
+- Name meshes so they never collide with Humanoid bone names.
+- Set `scene.name` to the clip name before FBX export, because takes are named after the scene.
+
 ## To explore
 
 - Eevee vs Cycles preview quality and speed; Metal Cycles is now exercised.

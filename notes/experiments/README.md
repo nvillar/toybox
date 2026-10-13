@@ -4,6 +4,7 @@ Dated logs of what we tried. Name files `YYYY-MM-DD-short-slug.md` and start fro
 
 | Date | Experiment | Outcome |
 |------|------------|---------|
+| 2026-10-13 | [Agent-authored character and pose-to-pose animation](2026-10-13-agent-authored-character-animation.md) | Scripted stylised character with Humanoid-named rig; 4 pose-to-pose clips authored as IK-target data with measured/auto-corrected contact; valid Unity Humanoid import. Gotchas: skin symmetry, bone-tail parenting, unique Humanoid names, take naming. |
 | 2026-10-10 | [Clef decision models through Ollama](2026-10-10-decision-models-ollama.md) | Clef-Flash ~0.54 s / Clef 27B ~2.1 s per fresh decision on M4 Max; deterministic with cached repeats; one call per subject; persona text weaker than situation. |
 | 2026-10-09 | [Compound stacking and gesture acceptance](2026-10-09-unity-stacking.md) | Source-derived figures, scoring/loss/replay and native captures; cylinder/capsule, kinematic pose and cancellation fixes. Follow-up: camera-facing arcball and visible-direction regression tests. |
 | 2026-10-08 | [Source/export fidelity audit](2026-10-08-urp-scaffold.md#follow-up-source-versus-export-fidelity-audit) | Six GLBs match evaluated Blender triangle counts and retain clearcoat; source access enables refinement, not an automatic resolution upgrade. Rendering parity remains separate. |

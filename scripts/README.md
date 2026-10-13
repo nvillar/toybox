@@ -31,6 +31,10 @@ Conventions:
 | [`blender/render_scene.py`](blender/render_scene.py) | Render a saved scene/camera to PNG with scene-hash provenance | Cycles / Metal, Blender 5.2.2 |
 | [`blender/export_rig_probe.py`](blender/export_rig_probe.py) | Character-only FBX diagnostic, moving/stationary mesh guards and expected measurements | Blender 5.2.2 |
 | [`blender/export_static_scene.py`](blender/export_static_scene.py) | Evaluated static FBX, per-object Generated-coordinate preservation, grouped colour/normal bakes, geometry/material/hash manifest; constrained Principled workflow | Blender 5.2.2, Cycles Metal |
+| [`blender/build_stylised_character.py`](blender/build_stylised_character.py) | Parametric stylised humanoid (height, heads-tall, build) from a skinned joint graph; Unity-Humanoid-named 21-bone deform rig | Blender 5.2.2 |
+| [`blender/author_clips.py`](blender/author_clips.py) | Pose-to-pose clips from JSON key poses via IK targets; bake to FK; measure/auto-correct contact; FBX per clip ([example](blender/examples/sit_read_press.json)) | Blender 5.2.2 |
+| [`blender/render_review.py`](blender/render_review.py) | Auto-framed turnaround / key-frame / sequence renders with ground, lights and per-action prop visibility | Blender 5.2.2, Eevee |
+| [`unity/HumanoidImportProbe.cs`](unity/HumanoidImportProbe.cs) | Import FBX as Humanoid; report avatar validity, bone mapping and clips | Unity 6000.6.5f1 |
 | [`unity/RigImportProbe.cs`](unity/RigImportProbe.cs) | Import FBX, check Generic Animator/skin/axes, capture poses and save/reopen a scene | Unity 6000.6.2f1, built-in renderer, macOS |
 | [`unity/create_urp.sh`](unity/create_urp.sh) | Create a new project from an explicit editor/template pair; reject existing destinations | Unity 6000.6.5f1, URP template 17.2.1, macOS arm64 |
 | [`unity/AnimationStudy.cs`](unity/AnimationStudy.cs) | Compare idle/walk bones and all mesh bounds, measure world-space foot contacts, render loops and check real Play Mode; requires `RigImportProbe.cs` | Unity 6000.6.2f1, built-in renderer, macOS |
