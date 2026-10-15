@@ -98,6 +98,7 @@ Also: resting hands moved onto the thighs after the hips moved back.
 ## Follow-up fixes (2026-10-14, from a room mockup)
 
 - **Feet:** at diorama distance, thin tapering feet read as dark lumps and pinched ankles look like pins. Feet are now longer, wider and thicker at the ankle, with chunky rounded toes, and the soles are flattened to Z=0 after subdivision.
+- **Heels:** a shoe built only forward of the ankle reads as a slipper with no heel. A heel point slightly behind and below the ankle fixes it, **as a branch only** (ankle → heel). Closing a loop (heel → ball) makes the Skin modifier crease across the instep.
 - **IK pole offsets must follow the rig's facing.** The poles were offset in world directions, so a character rotated 180° had its knee poles behind it: twisted legs and feet. Offsets are now transformed by the rig's rotation.
 - **Imported Euler-keyed actions need matching rotation modes.** A freshly built rig defaults to quaternions, so Euler-keyed clips silently apply only locations: the character sinks into the seat with straight limbs. Set `pose_bone.rotation_mode = "XYZ"` before assigning. In Blender 5, also assign `animation_data.action_slot` for actions loaded from another file.
 

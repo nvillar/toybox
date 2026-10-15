@@ -40,7 +40,7 @@ def joints(height: float, heads: float, build: float) -> dict:
         "shoulder_L": (0.19, 0, None), "elbow_L": (0.225, 0.01, 0.99), "wrist_L": (0.24, -0.01, 0.79),
         "hand_L": (0.245, -0.015, 0.69), "thumb_L": (0.21, -0.055, 0.74),
         "hip_L": (0.095, 0, 0.80), "knee_L": (0.10, -0.01, 0.43), "ankle_L": (0.10, 0.02, 0.085),
-        "ball_L": (0.10, -0.11, 0.047), "toe_L": (0.10, -0.215, 0.047),
+        "heel_L": (0.10, 0.055, 0.045), "ball_L": (0.10, -0.10, 0.047), "toe_L": (0.10, -0.20, 0.047),
     }
     out = {"neck_top": Vector((0, 0, neck_top)), "neck": Vector((0, 0, neck_top - 0.05 * s))}
     for k, (x, y, z) in base.items():
@@ -57,13 +57,13 @@ def joints(height: float, heads: float, build: float) -> dict:
 
 RADII = {"hips": 0.145, "spine": 0.13, "chest": 0.15, "neck": 0.062, "neck_top": 0.06,
          "shoulder": 0.068, "elbow": 0.052, "wrist": 0.044, "hand": 0.064, "thumb": 0.028,
-         "hip": 0.09, "knee": 0.064, "ankle": 0.058, "ball": 0.07, "toe": 0.062}
+         "hip": 0.09, "knee": 0.064, "ankle": 0.056, "heel": 0.05, "ball": 0.064, "toe": 0.058}
 
 EDGES = [("hips", "spine"), ("spine", "chest"), ("chest", "neck"), ("neck", "neck_top"),
          ("chest", "shoulder_L"), ("shoulder_L", "elbow_L"), ("elbow_L", "wrist_L"), ("wrist_L", "hand_L"), ("wrist_L", "thumb_L"),
          ("chest", "shoulder_R"), ("shoulder_R", "elbow_R"), ("elbow_R", "wrist_R"), ("wrist_R", "hand_R"), ("wrist_R", "thumb_R"),
-         ("hips", "hip_L"), ("hip_L", "knee_L"), ("knee_L", "ankle_L"), ("ankle_L", "ball_L"), ("ball_L", "toe_L"),
-         ("hips", "hip_R"), ("hip_R", "knee_R"), ("knee_R", "ankle_R"), ("ankle_R", "ball_R"), ("ball_R", "toe_R")]
+         ("hips", "hip_L"), ("hip_L", "knee_L"), ("knee_L", "ankle_L"), ("ankle_L", "ball_L"), ("ball_L", "toe_L"), ("ankle_L", "heel_L"),
+         ("hips", "hip_R"), ("hip_R", "knee_R"), ("knee_R", "ankle_R"), ("ankle_R", "ball_R"), ("ball_R", "toe_R"), ("ankle_R", "heel_R")]
 
 BONES = [  # name, head joint, tail joint, parent
     ("Hips", "hips", "spine", None), ("Spine", "spine", "chest", "Hips"), ("Chest", "chest", "neck", "Spine"),
