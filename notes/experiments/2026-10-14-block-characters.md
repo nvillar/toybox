@@ -32,3 +32,23 @@
 - **Poses may hide blocks** (tucked legs), and hidden blocks are excluded from the gate.
 - **Update the view layer** (`bpy.context.view_layer.update()`) before reading `matrix_world` of anything just created or parented. A stale matrix placed an object at the origin.
 - **Posing by aiming bones in the character's own frame** (rotate the rest direction onto a target direction, keep the head where the parents put it) is enough for static poses without IK.
+
+## Follow-up (2026-10-15): solving joint gaps over the range of motion
+
+**Method.**
+- Give each joint a range of motion: degrees about axes in the character's frame, taken from the poses actually needed.
+- Sweep it, turning the joint's subtree of blocks about its pivot in 5–10° steps with everything else at rest.
+- Measure the signed clearance between the moving and static blocks in both directions (BVH nearest point plus the sign of the normal).
+- Bisect the trim of one block end (the joint's "lever") for the smallest gap that keeps a margin (4 mm) everywhere.
+- Cap the visible gap at rest (15% of the block's thickness), so limbs stay coherent.
+- Anything that can't meet both is reported, with the angles it can actually reach.
+
+**Findings.**
+- **Hand-picked gaps were both too big and too small.** They were 1–3 cm at rest, yet knees, elbows and hips still intersected by about 4 cm at full bend. Shape decides it, not distance.
+- **Round parts should turn about their own centre.** A ball head pivoting at its base needed a 25 mm neck gap; pivoting at its centre needs only the margin.
+- **Pivots belong at the parent's surface,** with the child's end rounded about the pivot (a hinge cylinder or a ball). Pivots buried inside a body make limbs sweep into it.
+- **A part that turns against two neighbours** (a pelvis between thighs) should be rounded about their shared axis, and no deeper than the parts that turn against it.
+- **Thickness limits bending.** At deep bends a limb folds onto its neighbour's side whatever the gap; the sweep reports the reachable angle, and the range or the shape has to change.
+- **Garments must not span a joint.** A rigid skirt on the hips makes sitting impossible; split it into a panel per thigh.
+- **The same sweep works as an acceptance test for add-on parts** (hair, beards, garments) against a body plan's ranges.
+- **Furniture standards fall out of the proportions:** seat height (feet reach the floor), maximum seat depth (shins clear the front edge), and table and counter heights from elbow height.
