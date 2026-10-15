@@ -49,7 +49,8 @@ def setup_controls(rig):
         target.rotation_mode = "QUATERNION"
         target.rotation_quaternion = (rig.matrix_world @ end.matrix_local).to_quaternion()
         joint = rig.data.bones[ik_bone].head_local
-        pole = add_empty(f"POLE_{key}", rig.matrix_world @ joint + pole_off, 0.03)
+        # pole offsets are in the character's own frame, so they follow the rig's facing
+        pole = add_empty(f"POLE_{key}", rig.matrix_world @ joint + rig.matrix_world.to_3x3() @ pole_off, 0.03)
         pb = rig.pose.bones[ik_bone]
         ik = pb.constraints.new("IK")
         ik.target, ik.pole_target, ik.chain_count = target, pole, 2

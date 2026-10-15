@@ -40,7 +40,7 @@ def joints(height: float, heads: float, build: float) -> dict:
         "shoulder_L": (0.19, 0, None), "elbow_L": (0.225, 0.01, 0.99), "wrist_L": (0.24, -0.01, 0.79),
         "hand_L": (0.245, -0.015, 0.69), "thumb_L": (0.21, -0.055, 0.74),
         "hip_L": (0.095, 0, 0.80), "knee_L": (0.10, -0.01, 0.43), "ankle_L": (0.10, 0.02, 0.085),
-        "ball_L": (0.10, -0.10, 0.03), "toe_L": (0.10, -0.17, 0.03),
+        "ball_L": (0.10, -0.11, 0.047), "toe_L": (0.10, -0.215, 0.047),
     }
     out = {"neck_top": Vector((0, 0, neck_top)), "neck": Vector((0, 0, neck_top - 0.05 * s))}
     for k, (x, y, z) in base.items():
@@ -57,7 +57,7 @@ def joints(height: float, heads: float, build: float) -> dict:
 
 RADII = {"hips": 0.145, "spine": 0.13, "chest": 0.15, "neck": 0.062, "neck_top": 0.06,
          "shoulder": 0.068, "elbow": 0.052, "wrist": 0.044, "hand": 0.064, "thumb": 0.028,
-         "hip": 0.09, "knee": 0.064, "ankle": 0.05, "ball": 0.052, "toe": 0.045}
+         "hip": 0.09, "knee": 0.064, "ankle": 0.058, "ball": 0.07, "toe": 0.062}
 
 EDGES = [("hips", "spine"), ("spine", "chest"), ("chest", "neck"), ("neck", "neck_top"),
          ("chest", "shoulder_L"), ("shoulder_L", "elbow_L"), ("elbow_L", "wrist_L"), ("wrist_L", "hand_L"), ("wrist_L", "thumb_L"),
@@ -117,6 +117,9 @@ def build_body(j, mats):
     bpy.ops.object.mode_set(mode="OBJECT")
     bpy.ops.object.modifier_apply(modifier="Subdivision")
     bpy.ops.object.shade_smooth()
+    for v in body.data.vertices:          # chunky shoes with flat soles resting on the floor
+        if v.co.z < 0.0:
+            v.co.z = 0.0
     import bmesh
     bm = bmesh.new()
     bm.from_mesh(body.data)
