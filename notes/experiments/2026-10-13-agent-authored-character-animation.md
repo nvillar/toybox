@@ -107,3 +107,5 @@ Also: resting hands moved onto the thighs after the hips moved back.
 - Human review of the clips. Then a shared-rig study: a second adult (different proportions) and a child on the same clips, with runtime hip/foot/hand IK in Unity.
 - A two-key "use" library (press, twist, pull) generated from anchor height.
 - Upper-body activity layers as masked overrides on sitting and standing bases.
+
+**Hands (follow-up).** A ball hand with a thumb branching off the wrist reads as a "flower" at game distance: two lobes splaying from one node. The fix is a mitten: wrist → palm → fingertip chain, Skin radii flattened across the palm (about 0.6 × the front-to-back radius), and a small thumb branching from the *palm*, not the wrist. **Lesson:** give small extremities a single dominant silhouette, and branch sub-parts from mid-chain nodes rather than from the joint they hang off. Also stage hand targets for the camera: hands placed near the body's centre line hide one arm behind the torso from a three-quarter back view.
