@@ -52,3 +52,14 @@
 - **Garments must not span a joint.** A rigid skirt on the hips makes sitting impossible; split it into a panel per thigh.
 - **The same sweep works as an acceptance test for add-on parts** (hair, beards, garments) against a body plan's ranges.
 - **Furniture standards fall out of the proportions:** seat height (feet reach the floor), maximum seat depth (shins clear the front edge), and table and counter heights from elbow height.
+
+**Revised (same day): plain blocks won.**
+- Shaping joints to avoid self-intersection (pivot-centred cylinder and ball caps, with gaps solved over the range of motion) made awkward silhouettes and visible seams where caps met boxes. Plain rounded blocks with small fixed gaps, whose own limbs are allowed to pass into each other at a bend, looked better at diorama distance.
+- Keep the clearance sweep as a review aid (render each joint at its extremes), not as a gate.
+- Gate what reads as wrong: characters into props, walls or each other.
+
+**Gaps belong only at joints.**
+- Details on the same part (eyes, cheeks, stripes, buttons) must sit flush. Floating details look odd.
+- Place face details by ray casting the actual head mesh and orienting each to the surface normal, sunk so only a few mm stand proud.
+- Check for floating details in both directions (detail to part and part to detail), or a hem that wraps a torso, or a big flat face next to a small detail, gives false readings.
+- Where curved blocks cross at shallow angles (hair over a head), use fine tessellation (64 segments). Coarse spheres give zig-zag intersection lines.
