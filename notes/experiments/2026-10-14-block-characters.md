@@ -63,3 +63,46 @@
 - Place face details by ray casting the actual head mesh and orienting each to the surface normal, sunk so only a few mm stand proud.
 - Check for floating details in both directions (detail to part and part to detail), or a hem that wraps a torso, or a big flat face next to a small detail, gives false readings.
 - Where curved blocks cross at shallow angles (hair over a head), use fine tessellation (64 segments). Coarse spheres give zig-zag intersection lines.
+
+## Follow-up (2026-10-17): motion with nothing going into anything, on any frame
+
+**Question.** Characters walk to furniture, sit, get up and pull chairs out, from routines written as data. A route to a dining chair went straight through the chair. How do we prevent that kind of bug in general, rather than case by case?
+
+**Why it happened:**
+- the route ignored the piece it was heading for on the last stretch
+- the chair's "stand here to sit" spot assumed the chair had already been pulled out
+- only still poses were checked
+
+**Method.** One rule, "nothing goes into anything else", applied to motion as it already was to still poses:
+- **Check every frame,** at the rendered frame rate, with the same per-object overlap check as still poses, plus the floor. At 0.1 s samples a cat's tail swept into a cushion between two frames; at 24 fps it was caught.
+- **Rigid blocks make that cheap.** Each block is bound wholly to one bone, so its shape (vertices and BVH tree in its own space) can be built once and placed each frame by one transform: the armature's world matrix × the pose bone's matrix × the bone's rest matrix inverted × the armature's inverse world matrix × the object's world matrix. That matched Blender's evaluated meshes to under a micron. A frame against about 280 room objects took ~40 ms before culling by distance.
+- **The planner gets no exemptions.** Routes run between clear points; the last bit up to a seat or a shelf is planned in the body's real shape. Close to things the planner tries a short menu of moves: walk straight on and turn; set off on an arc; turn, then step back; step along, then across. It keeps the first that clears every frame.
+- **Moves are few and general:**
+  - a walk or trot along a path
+  - small steps between two stances (turning on the spot, sidesteps, steps back)
+  - an animal pivoting on the spot
+  - a change of posture: two solved poses blended about one stance, feet on the floor in both kept planted, and a lean on the way
+  - a piece sliding, a hand on it
+- **Pieces that move say so.** A dining chair declares how far it slides and where a hand takes it. When there's no room to stand in front of a seat, sit down or get up, the character goes beside the chair, takes it from above, steps back with it, sits and scoots in as far as there's room. The same rule leaves a chair at a round table alone and pulls one out from a counter.
+
+**Lessons.**
+- **The motion check found problems nobody had looked for:**
+  - a trot sinking planted paws up to 40 mm into the floor on turns (one-bone legs can't shorten, and the body was kept level)
+  - a cat's tail sweeping up through a low table as she stood up
+  - a hand's straight path to a grip passing through the chair post
+- **A hand takes a grip from above:** it rises, moves over, then settles. Stand far enough out that the hanging hands clear the piece, not a shoulder's width.
+- **Fit an animal's body to its planted legs.** Solve its height, pitch and roll (Gauss-Newton, with a small penalty on tilt) so each planted leg reaches its paw's spot exactly; the neck takes the tilt back so the head stays steady. A trotting diagonal pair is met exactly; four planted legs are met as nearly as they can be.
+- **One floor rule for every limb:** a leg in the air, or a tail, that would reach below the floor reaches further along or lies along the floor. Applying it to planted legs instead made them slide; fix the body instead.
+- **Walk maps need the body's real shape from above:**
+  - a body that turns freely (a person) keeps a clear circle: the walkway, or its own reach, whichever is wider
+  - a long narrow body (an animal) is its outline facing one of eight ways, turning between them on the spot, so it still passes gaps lengthwise
+- **Measure the body's reach while it moves** (arms and legs swinging through a stride), not at rest.
+- **Skip a frame's 3D check only where the walk map vouches for the whole body** at that position and facing. "Near the ends of the route" was a guess, and it left gaps neither check covered.
+- **Search order matters for speed.** Check the end of a walk first, where most ways in fail. Don't pose frames the walk map vouches for. Planning went from 55 s to about 4 s an action.
+- **Conventions, tolerances and motion numbers:**
+  - one facing convention for characters, paths and arcs (two opposite sign conventions had crept in, joined by minus signs)
+  - one floor tolerance for every check (they had drifted to 6, 8 and 12 mm, and the loosest hid the trot's dips)
+  - motion timings kept as data, next to the poses
+- **Before changing a convention, snapshot every move:** record bone positions over time, refactor, compare. The motion stayed identical to 0.01 mm.
+
+**Not solved yet:** characters don't avoid each other; the check catches collisions, but routines were hand-timed to keep characters apart. Engine crowd avoidance is a candidate ([Godot vs Unity](2026-10-17-godot-vs-unity.md)).

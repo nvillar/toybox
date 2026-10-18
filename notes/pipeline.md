@@ -1,6 +1,6 @@
 ---
 status: partial
-last_verified: 2026-09-24
+last_verified: 2026-10-17
 ---
 
 # Pipeline overview
@@ -14,7 +14,7 @@ flowchart LR
     agent --> img[Image models<br/>textures, skies, UI]
     agent --> aud[Audio models<br/>sfx, music, voice]
     img -->|PNG / EXR| blender
-    blender -->|GLB / FBX| unity[Unity<br/>CLI + Pipeline]
+    blender -->|GLB / FBX| unity[Unity or Godot<br/>CLI]
     img -->|PNG| unity
     aud -->|WAV / OGG| unity
     agent --> unity
@@ -31,7 +31,7 @@ flowchart LR
 | 2D assets | Textures, PBR maps, backgrounds, skyboxes, sprites, UI | `scripts/gen/image.py` (MFLUX on macOS), Blender bakes | `.png`, `.exr` | [tools/image-generation.md](tools/image-generation.md) |
 | Audio | SFX, ambience, music, voice | `scripts/gen/audio.py` (Stable Audio 3 on macOS), `ffmpeg` | `.wav` (source), `.ogg` | [tools/audio-generation.md](tools/audio-generation.md) |
 | Language helpers | Prompt variants, naming, captioning / QA | Ollama / oMLX | text / JSON | [tools/local-llm.md](tools/local-llm.md) |
-| Assembly | Import, scenes, prefabs, scripts, gameplay | Unity | Unity project | [Click-to-move](experiments/2026-09-24-click-to-move.md) plus [detailed geometry/material transfer](experiments/2026-09-24-static-scene-unity.md); realtime look and shipping budgets remain separate. [tools/unity.md](tools/unity.md) |
+| Assembly | Import, scenes, prefabs, scripts, gameplay | Unity; Godot under evaluation | Engine project | [Click-to-move](experiments/2026-09-24-click-to-move.md) plus [detailed geometry/material transfer](experiments/2026-09-24-static-scene-unity.md); realtime look and shipping budgets remain separate. [tools/unity.md](tools/unity.md). For agent-driven iteration Godot's loop measured 30–40× faster, Unity's runtime ~3× faster ([comparison](experiments/2026-10-17-godot-vs-unity.md), [tools/godot.md](tools/godot.md)). |
 | Test | Edit/PlayMode tests, screenshots, log inspection | Unity CLI | Test reports, images | Closes the loop so the agent can *see* results. |
 | Publish | Build targets, packaging, distribution | Unity editor `BuildPipeline`; CLI candidate | Platform builds | Local macOS arm64 prototype and cache-free rebuild verified; signing, distribution and other targets open. |
 
@@ -41,7 +41,9 @@ These are the defaults until an experiment shows a better choice.
 
 - **Units & axes:** metres; verify exporter and importer together using one-metre markers. Tested FBX settings map Blender `(x, y, z)` to Unity `(x, z, y)`: a character facing Blender -Y faces Unity -Z. The motion study uses a 180-degree Y rotation on the visual child under a +Z locomotion parent; no hidden negative scale.
 - **Animation:** in-place clips plus code-driven translation for the first study. Match translation speed to stance-foot travel; measure stance drift in world space, foot clearance and loop endpoints, including samples between authored keys. No foot-contact guarantee on slopes or during blends yet.
-- **Meshes:** FBX for the verified Unity rig/animation hand-off (built-in importer, no extra package). GLB with embedded textures remains a candidate for simple assets; Unity glTF import is still unverified.
+- **Meshes:** FBX for the verified Unity rig/animation hand-off (built-in importer, no extra package). GLB for Godot, whose native format it is (Godot import **unverified** yet). GLB with embedded textures remains a candidate for simple assets in Unity; Unity glTF import is still unverified.
+- **Metadata on objects:** Blender custom properties travel as glTF extras (`export_extras=True`) and FBX custom properties (`use_custom_props=True`). Re-importing a GLB into Blender keeps them. The FBX exporter failed on custom properties that were integer lists, such as a rotation `(0, 0, 0)`; store vectors as floats. Use this to hand over what an engine can't infer, such as each block's primitive (shape, size, centre, rotation) so the engine can build matching primitive colliders.
+- **Re-importing GLB into Blender** sets objects to quaternion rotation, so setting `rotation_euler` silently does nothing. Set `rotation_mode` first, or use quaternions.
 - **Textures:** PNG, power-of-two, sRGB for colour, linear for data maps (normal, roughness, metallic, AO).
 - **Audio:** WAV source (Stable Audio 3 emits 44.1 kHz stereo 16-bit; keep native rate unless Unity needs otherwise); loudness-normalised; loops trimmed on zero crossings.
 - **Naming:** `snake_case`, prefixed by type: `mdl_`, `tex_`, `sfx_`, `mus_`, `sky_`.

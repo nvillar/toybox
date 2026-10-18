@@ -30,7 +30,7 @@ Unified memory means GPU models share RAM with everything else (Blender, Unity, 
 | SFX / music | ✅ **Stable Audio 3 MLX** (`sa3`) — [tools/stable-audio-3.md](tools/stable-audio-3.md) | 🟡 Stable Audio 3 **TensorRT** `sa3` (same CLI flags, Linux; Windows via WSL2 ❓); 🟡 `stable-audio-3` PyTorch lib (CUDA) | ❓ `stable-audio-3` PyTorch on ROCm; ❓ ONNX exports via onnxruntime (MIGraphX / DirectML) | 🟡 Small models on CPU (TFLite/LiteRT runtime upstream) |
 | Local LLM | ✅ **Ollama** (MLX models); 🟡 **oMLX** (Apple Silicon only) — [tools/local-llm.md](tools/local-llm.md) | 🟡 Ollama (CUDA) | 🟡 Ollama (ROCm) | Hosted LLM APIs |
 | 3D modelling | ✅ Blender (Metal) | 🟡 Blender (CUDA/OptiX) | 🟡 Blender (HIP) | Blender CPU |
-| Game engine | ✅ 6000.6.5f1 URP/FBX/input/physics, Mac player, unsigned iOS compile and clean restore; Pipeline/device runs unverified | 🟡 Unity | 🟡 Unity | — |
+| Game engine | ✅ Unity 6000.6.5f1 URP/FBX/input/physics, Mac player, unsigned iOS compile and clean restore; Pipeline/device runs unverified · ✅ Godot 4.7.2 headless scripts, Metal rendering, movie-maker sequences ([comparison](experiments/2026-10-17-godot-vs-unity.md)); exports unverified | 🟡 Unity · 🟡 Godot | 🟡 Unity · 🟡 Godot | — |
 
 The same Hugging Face weights generally work across backends (e.g. `black-forest-labs/FLUX.2-klein-4B`; `stabilityai/stable-audio-3-optimized` ships `MLX/`, `tensorRT/`, `onnx/`, `tflite/` and `cpu-amx/` variants), so switching platform changes the runtime, not the model. Check licences per model, not per backend.
 

@@ -1,7 +1,7 @@
 ---
 status: partial
-last_verified: 2026-10-09
-versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1, xcode: "26.3 (17C529)" }
+last_verified: 2026-10-17
+versions: { unity-cli: 1.0.0-beta.12, unity-editor: 6000.6.5f1, urp: 17.6, xcode: "26.3 (17C529)" }
 ---
 
 # Unity
@@ -58,6 +58,7 @@ Verified on **6000.6.5f1 / URP 17.6.0**: [commands, failures, and corrections](.
 - For batch Input System tests, temporarily select `AllDeviceInputAlwaysGoesToGameView` and allow background processing; restore the previous settings afterward. Queue real `MouseState`/`TouchState` events and exercise UI/physics raycasters rather than only invoking handlers.
 - Persist a fixed timestep through the actual TimeManager object: `Time.fixedDeltaTime = 1f / 60f`, mark it dirty, save, then reopen to verify. This version serializes rational time; setting the property's `floatValue` did not change it.
 - Use `UniversalRenderPipeline.SingleCameraRequest` with a RenderTexture for URP camera captures; inspect pixels, not just hashes. The initial StandardRequest path produced wrong material colors. Camera captures do not include a screen-space overlay HUD; capture the real native frame separately with `ScreenCapture`.
+- **Don't trust batch-editor captures of a lit URP scene with SSAO.** In a [2026-10-17 diorama](../experiments/2026-10-17-godot-vs-unity.md) (a sun, six lamps, SSAO, glow), both `SingleCameraRequest` and `Camera.Render()` rendered opaque surfaces dark and tinted, while the built player was correct. Turning off async shader compilation didn't help; SSAO in offscreen editor renders is the likely cause **(unverified)**. Check captures against a player frame. Until the cause is found, a trustworthy frame after a code edit costs a player build plus a run, about 13 s.
 - When post-processing is deliberately unused, clear the renderer's `postProcessData`; keeping stripped effect references produced avoidable runtime warnings.
 - Use `Debug.isDebugBuild` for development-only runtime diagnostics; `DEVELOPMENT_BUILD` is deprecated here. A command-driven native probe should enable background execution for its duration and have an external timeout.
 - A remote clone with restored LFS assets passed tests, Mac build/run, and iOS export without a project Library cache or source changes. Preserve Unity's normalized iOS automatic-graphics flag and assert the effective API list is Metal-only instead of repeatedly forcing a setting that the importer rewrites.
@@ -148,6 +149,16 @@ A [later experiment](../experiments/2026-09-24-static-scene-unity.md) replaces b
 [`HumanoidImportProbe.cs`](../../scripts/unity/HumanoidImportProbe.cs) imports FBX as Humanoid (Create From This Model, `resampleCurves` off, no compression) and reports avatar validity, bone mapping and clips. Verified on 6000.6.5f1 with a 21-bone rig named after Humanoid bones: automatic mapping, valid `isHuman`, clips flagged `humanMotion` ([experiment](../experiments/2026-10-13-agent-authored-character-animation.md)).
 
 - **"Ambiguous Transform … found in hierarchy for human bone"** means another transform shares a mapped bone's name (e.g. a mesh called `Head`). Names must be unique.
+
+## Costs in an agent's loop (2026-10-17)
+
+[Measured](../experiments/2026-10-17-godot-vs-unity.md) with 6000.6.5f1 on an M4 Max:
+- **Batch invocations:** each costs 4–5 s before doing any work. Running a method takes 4.1 s; editing a C# script and running again takes 5.4 s (recompile and domain reload); 5 EditMode tests take 5.3 s.
+- **Builds:** a cold player build takes 55 s, an incremental one 9.3 s.
+- **Runtime start-up:** the release Mono player's first frame takes 2.2 s warm and 3.3 s with caches cleared.
+- **Runtime speed:** the same player ran a small URP diorama at 0.58 ms median per frame, and C# ran a motion-maths kernel about 4× faster than GDScript.
+- **Materials made at runtime** risk having their shader variants stripped from a build. Create them in an editor script.
+- **No dither in URP Lit:** a dithered fade needs Shader Graph or a custom shader.
 
 ## Gotchas
 
