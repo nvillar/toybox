@@ -160,6 +160,28 @@ A [later experiment](../experiments/2026-09-24-static-scene-unity.md) replaces b
 - **Materials made at runtime** risk having their shader variants stripped from a build. Create them in an editor script.
 - **No dither in URP Lit:** a dithered fade needs Shader Graph or a custom shader.
 
+## Import, IK, navigation, physics (2026-10-17)
+
+[Second pass](../experiments/2026-10-17-godot-vs-unity.md#second-pass-a-real-export-engine-ik-navigation-and-colliders) with FBX from Blender (toybox's verified settings) into 6000.6.5f1:
+- **What arrives:**
+  - binding and skinning match Blender exactly
+  - custom properties arrive as `Vector4`s and strings
+  - room nodes keep a 90° X turn, and meshes sit in a z-flipped local frame
+- **An orthographic camera arrives perspective.** Rebuild cameras from data.
+- **Colours came out darker and over-saturated,** which looks like sRGB values read as linear **(unverified)**. Plan a material fix-up pass, or try glTFast.
+- **IK:** Animation Rigging's `TwoBoneIKConstraint` is built in at 6.6.0 and worked the first time (wrist within 2.5 mm).
+- **Navigation:**
+  - it bakes in 6.4 ms and rebakes async in 7 ms, carving is available, and results don't depend on simulation speed
+  - two avoiding agents stayed about 1 mm apart
+  - gotchas:
+    - a `NavMeshSurface` added at runtime didn't register its data; build with `NavMeshBuilder` directly
+    - `NavMeshAgent.Warp` fails silently off the mesh
+    - `NavMesh.SamplePosition` and `CalculateTriangulation` only see the default agent type unless given a filter
+    - runtime builds need Read/Write on imported meshes, and after changing import settings, bump the asset postprocessor's version to force a reimport
+- **Physics:** a PhysX overlap query (broadphase plus `ComputePenetration`) cost 0.36 µs uncapped.
+- **A script error in a batch player leaves the process running.** Wrap agent runs in a timeout (`perl -e 'alarm shift; exec @ARGV' <seconds> <command…>` on macOS).
+- **Silent failures in this pass:** a camera component returning null, `NavMeshSurface`, `Warp` and mesh Read/Write. Each gave no error, only a wrong result.
+
 ## Gotchas
 
 - Unity projects generate large `Library/`, `Temp/`, `Logs/`, `obj/` folders — put disposable projects under ignored `out/`. Preserve `Assets/` including `.meta`, `Packages/` and `ProjectSettings/` for selected private archives.

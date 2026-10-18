@@ -78,14 +78,50 @@ Both use under an eighth of a 60 fps frame (16.7 ms).
   - **Godot:** needed no setup step; scenes and projects are a few text files an agent can write directly.
   - **Unity:** needed an editor script to create materials, the scene and the player settings, because materials made only at runtime risk having their shader variants stripped from a build. It has a built-in test runner (NUnit); Godot needs GUT or gdUnit4, or plain scripts that exit nonzero.
 
+## Second pass: a real export, engine IK, navigation and colliders
+
+**Method.**
+- **One Blender export for both engines:** a room of about 400 rigid blocks and two characters (52 blocks on 21 and 15 bones), as glTF for Godot and as FBX for Unity, with toybox's verified settings.
+- **Primitives travel with the blocks:** each block's primitive (shape, size, centre, rotation) goes as glTF extras or FBX custom properties.
+- **Nothing of the project's own was ported.** Each engine got a few lines of script per check:
+  - **Godot:** run headless with `--fixed-fps 60` for timings, and in real time for navigation.
+  - **Unity:** a `-batchmode -nographics` player with a fixed timestep.
+
+| | Godot 4.7.2 (glTF) | Unity 6.6 (FBX) |
+|---|---|---|
+| Import: blocks and metadata | all blocks; extras kept as node metadata | all blocks; custom properties kept (as `Vector4` and strings) |
+| Import: orthographic camera | stays orthographic | arrives **perspective** |
+| Import: materials | match Blender | **darker and over-saturated** |
+| Rigid binding | every block on exactly one bone | the same |
+| Turning a bone moves its blocks | matches Blender | matches (skinned vertices equal bone × bind pose exactly) |
+| Colliders built from the primitives vs mesh bounds | worst 0.54 mm | worst 0.54 mm |
+| Built-in two-bone IK onto a target | `TwoBoneIK3D`, ~10 lines, wrist within 2.5 mm | Animation Rigging `TwoBoneIKConstraint` (built in), ~13 lines, wrist within 2.5 mm |
+| Navmesh bake (2.5 cm cells) | 27 ms (50 ms in real time) | 6.4 ms |
+| Rebake after an obstacle slides 0.25 m | 30 ms async (54 ms in real time) | 7 ms async; carving also available |
+| Two agents swap places, real time | both arrive; touch with up to 3 mm overlap | both arrive; about 1 mm apart; the same every run |
+| The same, simulation faster than real time | **one agent never arrives (3 of 3 runs); 2.7 cm overlap** | identical to real time |
+| Building colliders from the primitives | ~325 shapes in 3 ms | ~325 shapes in 14 ms |
+| Overlap queries, uncapped | 0.4–0.8 µs a query | 0.36 µs a query |
+| Turnaround per check | 0.6 s | ~8 s (5 s player build + 2.7 s run) |
+
+**Learnings.**
+- **On the core jobs the engines are equal and add no error:** binding, bones moving their blocks, collider fit and IK accuracy matched to the millimetre.
+- **Import fidelity favours glTF into Godot.** Unity's FBX lost the orthographic camera, and colours came out darker and over-saturated, which looks like sRGB values read as linear **(unverified)**. Unity's glTF importer (glTFast) wasn't tested.
+- **Engine IK solves to the wrist bone, not the grip.** If contact is defined at a grip point further along the hand, offset the IK target by it (here 7.6 cm).
+- **Unity's navigation is faster and deterministic.** Godot's navigation rebakes on a thread in wall-clock time. When a simulation runs faster than real time and an obstacle moves, its agents can get stuck (the rebake and repath interacting is the likely cause, **unverified**). That matters for any game with a speed control or fast-forwarded replays.
+- **Neither engine's avoidance keeps a clear gap** between agents: Godot's touch, Unity's stay about 1 mm apart. Pad agent radii, or check contact separately.
+- **"Nothing goes into anything" as engine queries is cheap:** about 0.02–0.04 ms a frame for two 40-block characters against a room, in either engine.
+- **Measure tiny timings uncapped.** Under real-time pacing, the same Godot query loop measured 7–8 µs a query instead of under 1 µs: the CPU idles between frames.
+- **Agree on what counts as floor.** A thin rug made characters' feet "overlap" in both engines until each collider builder applied the same rule, by height: anything whose top is at most 3 cm counts as floor. Ship the rule (its threshold) with the export, not a name list.
+- **Script errors don't end the process** in either engine, so an agent's runs need a timeout. macOS has no `timeout` command; this works:
+
+      perl -e 'alarm shift; exec @ARGV' <seconds> <command…>
+
+Engine-specific gotchas are in [tools/godot.md](../tools/godot.md) and [tools/unity.md](../tools/unity.md).
+
 ## Follow-ups
 
-- **A second pass on an exported scene:** the same Blender export (glTF for Godot, FBX for Unity) of a room and characters built from primitive blocks, with each block's primitive recorded as glTF extras or FBX custom properties. Measure:
-  - import fidelity
-  - each engine's built-in two-bone IK
-  - navmesh with a moving obstacle, and two agents avoiding each other
-  - primitive colliders generated from the blocks, with a timed overlap query each frame
-
-  → [backlog](../backlog.md).
 - **Godot with a release export template, and Godot .NET:** frame time and kernel speed. → [backlog](../backlog.md).
+- **Unity with glTFast instead of FBX:** does it fix the camera and colours? → [backlog](../backlog.md).
+- **Crowds:** more than two agents, agents of different sizes squeezing past furniture, and Godot navigation in a fast-forwarded simulation. → [backlog](../backlog.md).
 - **Confirm the Unity batch-capture cause:** SSAO, or something else. → [backlog](../backlog.md).

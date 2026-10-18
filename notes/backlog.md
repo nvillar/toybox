@@ -36,11 +36,10 @@ Open questions and next experiments. Move items into an experiment log when you 
 - [ ] **Local vs cloud concept art**: run the same brief and suffix through a cloud image model and compare quality, consistency and terms.
 - [ ] **Character consistency across shots** with commercial-safe models (Klein 9B-kv reference editing is non-commercial).
 
-- [ ] **Engine comparison, second pass** ([first pass](experiments/2026-10-17-godot-vs-unity.md)): import one Blender export of a block-built room and characters (GLB in Godot, FBX in Unity) and score:
-  - fidelity
-  - built-in two-bone IK
-  - navmesh with a moving obstacle, and two agents avoiding each other
-  - primitive colliders generated from per-block extras, with a timed overlap query each frame
+- [x] **Engine comparison, second pass**: import fidelity, built-in IK, navigation with a moving obstacle and avoidance, colliders from per-block extras ([experiment](experiments/2026-10-17-godot-vs-unity.md#second-pass-a-real-export-engine-ik-navigation-and-colliders)).
+- [ ] **Unity glTF import (glTFast)**: does it keep orthographic cameras and colours that FBX loses?
+- [ ] **Godot navigation faster than real time**: with a moving obstacle an agent never arrived; find whether the async rebake and repath are the cause, and a fix (synchronous rebake, waiting a frame, or our own planner).
+- [ ] **Crowds**: more than two agents, and agents of different sizes squeezing past furniture, in both engines.
 - [ ] **Godot release export and .NET**: install export templates; measure a release build's frame time and the motion kernel in C#/GDExtension against GDScript.
 - [ ] **Unity batch-capture fault**: find why batch-editor captures of a lit URP scene with SSAO render dark and tinted while the player is correct ([Unity](tools/unity.md#verified-local-batch-workflow)).
 - [ ] **Characters avoiding each other**: engine crowd avoidance against a planner that claims floor cells and reserves seats ([block characters](experiments/2026-10-14-block-characters.md#follow-up-2026-10-17-motion-with-nothing-going-into-anything-on-any-frame)).

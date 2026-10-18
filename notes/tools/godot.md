@@ -29,7 +29,25 @@ Role: a candidate engine for assembling, running and testing games. It's being c
 - GDScript, typed and using engine `Vector3`/`Basis`, ran a motion-maths kernel 3.7× faster than plain Python and about 4× slower than C# in a Unity player. For hot paths use the .NET build (C#) or GDExtension **(neither verified here)**.
 - **Dithered transparency** (fading a wall that hides a character) is one material setting: `TRANSPARENCY_ALPHA_HASH`.
 
+## Import, IK, navigation, physics (verified 2026-10-17)
+
+[Second pass](../experiments/2026-10-17-godot-vs-unity.md#second-pass-a-real-export-engine-ik-navigation-and-colliders):
+- **glTF from Blender imports right with no work:**
+  - skinned meshes, each bound to one bone as in Blender
+  - an orthographic camera stays orthographic
+  - colours match Blender's renders
+  - Blender `(x, y, z)` becomes Godot `(x, z, -y)`
+  - extras arrive as node metadata
+- **`TwoBoneIK3D` does nothing, silently, without a pole node.** Its solved pose can only be read inside the skeleton's `skeleton_updated` signal. Its documentation is thin.
+- **Navigation:**
+  - a navmesh bake took 27–50 ms; a rebake after a moved obstacle runs async in wall-clock time (30–54 ms)
+  - with the simulation faster than real time and an obstacle moving, one agent never arrived (3 of 3 runs); in real time it was fine
+  - avoidance let agents touch, with up to 3 mm overlap in real time
+- **Physics overlap queries:** 0.4–0.8 µs each uncapped, or 0.4 µs reusing query objects. Under real-time pacing they measure ~10× slower because the CPU idles between frames, so time them uncapped.
+- **GDScript gotchas:** type inference on Variants, and lambdas capture locals by value.
+- **A script error leaves the process running.** Wrap agent runs in a timeout; macOS has no `timeout`, so use `perl -e 'alarm shift; exec @ARGV' <seconds> <command…>`.
+
 ## To explore
 
-- Import a Blender glTF with skinned meshes and custom properties (extras), and a release export template's frame time ([backlog](../backlog.md)).
-- Built-in two-bone IK, NavigationServer with avoidance and moving obstacles, and physics overlap queries on primitive colliders.
+- A release export template's frame time, and Godot .NET ([backlog](../backlog.md)).
+- Navigation in a simulation running faster than real time with moving obstacles: is the async rebake the cause?
