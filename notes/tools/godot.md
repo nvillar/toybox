@@ -1,7 +1,7 @@
 ---
 status: partial
 last_verified: 2026-10-17
-versions: { godot: 4.7.2.stable (Homebrew cask) }   # override.cfg next to project.godot overrides settings for a run
+versions: { godot: 4.7.2.stable (Homebrew cask) }
 ---
 
 # Godot
