@@ -1,7 +1,7 @@
 ---
 status: partial
 last_verified: 2026-10-17
-versions: { godot: 4.7.2.stable (Homebrew cask) }
+versions: { godot: 4.7.2.stable (Homebrew cask) }   # override.cfg next to project.godot overrides settings for a run
 ---
 
 # Godot
@@ -41,8 +41,10 @@ Role: a candidate engine for assembling, running and testing games. It's being c
 - **`TwoBoneIK3D` does nothing, silently, without a pole node.** Its solved pose can only be read inside the skeleton's `skeleton_updated` signal. Its documentation is thin.
 - **Navigation:**
   - a navmesh bake took 27–50 ms; a rebake after a moved obstacle runs async in wall-clock time (30–54 ms)
-  - with the simulation faster than real time and an obstacle moving, one agent never arrived (3 of 3 runs); in real time it was fine
-  - avoidance let agents touch, with up to 3 mm overlap in real time
+  - **navigation is threaded by default**, so map, region and avoidance updates land in wall-clock time. A simulation faster than real time then routes on stale data: with a moving obstacle, one agent never arrived. For fast-forward or replays, set `navigation/world/map_use_async_iterations`, `navigation/world/region_use_async_iterations` and `navigation/avoidance/thread_model/avoidance_use_multiple_threads` to false: every run was then identical at any speed. Then rebake on the main thread and re-route when something moves, or route on your own walk map ([third pass](../experiments/2026-10-17-godot-vs-unity.md#third-pass-godot-navigation-faster-than-real-time))
+  - **a start-up race when threaded:** a navmesh baked as the map's cell size is set can leave the map empty, silently, and agents with an empty first path don't ask again. Wait until `NavigationServer3D.map_get_path` answers before giving targets
+  - `NavigationAgent3D` computes avoidance only while it has a target; set `target_position` even when steering by your own route
+  - avoidance let agents touch, with up to 3 mm overlap
 - **Physics overlap queries:** 0.4–0.8 µs each uncapped, or 0.4 µs reusing query objects. Under real-time pacing they measure ~10× slower because the CPU idles between frames, so time them uncapped.
 - **GDScript gotchas:** type inference on Variants, and lambdas capture locals by value.
 - **A script error leaves the process running.** Wrap agent runs in a timeout; macOS has no `timeout`, so use `perl -e 'alarm shift; exec @ARGV' <seconds> <command…>`.
@@ -50,4 +52,4 @@ Role: a candidate engine for assembling, running and testing games. It's being c
 ## To explore
 
 - A release export template's frame time, and Godot .NET ([backlog](../backlog.md)).
-- Navigation in a simulation running faster than real time with moving obstacles: is the async rebake the cause?
+- Crowds: more than two agents, and agents of different sizes.

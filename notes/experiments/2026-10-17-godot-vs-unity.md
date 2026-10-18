@@ -108,7 +108,7 @@ Both use under an eighth of a 60 fps frame (16.7 ms).
 - **On the core jobs the engines are equal and add no error:** binding, bones moving their blocks, collider fit and IK accuracy matched to the millimetre.
 - **Import fidelity favours glTF into Godot.** Unity's FBX lost the orthographic camera, and colours came out darker and over-saturated, which looks like sRGB values read as linear **(unverified)**. Unity's glTF importer (glTFast) wasn't tested.
 - **Engine IK solves to the wrist bone, not the grip.** If contact is defined at a grip point further along the hand, offset the IK target by it (here 7.6 cm).
-- **Unity's navigation is faster and deterministic.** Godot's navigation rebakes on a thread in wall-clock time. When a simulation runs faster than real time and an obstacle moves, its agents can get stuck (the rebake and repath interacting is the likely cause, **unverified**). That matters for any game with a speed control or fast-forwarded replays.
+- **Unity's navigation is faster and deterministic by default.** Godot's agents got stuck when the simulation ran faster than real time and an obstacle moved. The third pass found the cause and two fixes (below): with synchronous navigation, Godot is deterministic at any speed too.
 - **Neither engine's avoidance keeps a clear gap** between agents: Godot's touch, Unity's stay about 1 mm apart. Pad agent radii, or check contact separately.
 - **"Nothing goes into anything" as engine queries is cheap:** about 0.02–0.04 ms a frame for two 40-block characters against a room, in either engine.
 - **Measure tiny timings uncapped.** Under real-time pacing, the same Godot query loop measured 7–8 µs a query instead of under 1 µs: the CPU idles between frames.
@@ -123,5 +123,37 @@ Engine-specific gotchas are in [tools/godot.md](../tools/godot.md) and [tools/un
 
 - **Godot with a release export template, and Godot .NET:** frame time and kernel speed. → [backlog](../backlog.md).
 - **Unity with glTFast instead of FBX:** does it fix the camera and colours? → [backlog](../backlog.md).
-- **Crowds:** more than two agents, agents of different sizes squeezing past furniture, and Godot navigation in a fast-forwarded simulation. → [backlog](../backlog.md).
+- **Crowds:** more than two agents, and agents of different sizes squeezing past furniture. → [backlog](../backlog.md).
+
+## Third pass: Godot navigation faster than real time
+
+**Method.** The same two agents swap places while an obstacle (a chair) slides 0.25 m, routed four ways:
+- **async:** Godot's navmesh, rebaked on a thread when the chair stops (the second pass)
+- **norebake:** never rebaked
+- **sync:** rebaked on the main thread, then every agent routes again
+- **grid:** a walk map of the project's own: clear raster points per body size from physics shape queries, rebuilt when the chair stops, routed with `AStarGrid2D`; Godot's avoidance still separates the agents
+
+Each runs twice fast-forwarded (headless `--fixed-fps 60`: 75–1200× real time) and twice in real time, with Godot's default threaded navigation and with synchronous navigation (set through an `override.cfg`).
+
+| Way | Threaded (default), fast | Threaded, real time | Synchronous, fast and real time |
+|---|---|---|---|
+| async | an agent never arrives; 27 mm overlap | arrive, times vary | fast: an agent never arrives; real time: arrive |
+| norebake | an agent never arrives | an agent never arrives, or nobody moves | an agent never arrives |
+| sync | 2.53 / 3.22 s | 2.52–2.53 / 3.22 s | **2.52 / 3.22 s, every run** |
+| grid | 2.83 / 3.05 s | 2.83–2.88 / 3.05–3.10 s | **2.83 / 3.05 s, every run** |
+
+A rebuild after the obstacle moves takes about 25 ms for the navmesh and 2 ms for the grid. Agents ended between 3 mm overlapping and 0.2 mm apart.
+
+**Learnings.**
+- **The cause is Godot's navigation threading, not the rebake.** By default the navigation server updates maps and regions asynchronously, and computes avoidance on several threads, so results land in wall-clock time. A simulation running ahead of the clock routes and avoids with stale data. Never rebaking fails the same way: the obstacle moves into the agent's way and the map never learns of it.
+- **For a simulation that fast-forwards or replays, make navigation synchronous.** Every run was identical at any speed with these settings in `project.godot`:
+
+      navigation/world/map_use_async_iterations=false
+      navigation/world/region_use_async_iterations=false
+      navigation/avoidance/thread_model/avoidance_use_multiple_threads=false
+
+  Then either rebake on the main thread and have agents route again when something moves, or route on a walk map of your own and use Godot only for avoidance.
+- **A silent start-up race with threaded navigation.** A navmesh baked in the same frame as setting the map's cell size can leave the map empty, with no warning. Agents that ask for a route before the map has the mesh get an empty path, and don't ask again until the map changes; in some real-time runs nobody moved at all. Wait until the map answers a route query (`NavigationServer3D.map_get_path` not empty) before giving agents targets. Synchronous navigation is ready after one frame.
+- **`NavigationAgent3D` computes avoidance only while it has a navigation target.** When steering by your own route, set `target_position` to the goal anyway.
+- **`override.cfg` next to `project.godot` overrides project settings** for a test run without editing the project.
 - **Confirm the Unity batch-capture cause:** SSAO, or something else. → [backlog](../backlog.md).

@@ -38,7 +38,7 @@ Open questions and next experiments. Move items into an experiment log when you 
 
 - [x] **Engine comparison, second pass**: import fidelity, built-in IK, navigation with a moving obstacle and avoidance, colliders from per-block extras ([experiment](experiments/2026-10-17-godot-vs-unity.md#second-pass-a-real-export-engine-ik-navigation-and-colliders)).
 - [ ] **Unity glTF import (glTFast)**: does it keep orthographic cameras and colours that FBX loses?
-- [ ] **Godot navigation faster than real time**: with a moving obstacle an agent never arrived; find whether the async rebake and repath are the cause, and a fix (synchronous rebake, waiting a frame, or our own planner).
+- [x] **Godot navigation faster than real time**: caused by threaded navigation; synchronous navigation plus a main-thread rebake, or a walk map of one's own, works at any speed ([experiment](experiments/2026-10-17-godot-vs-unity.md#third-pass-godot-navigation-faster-than-real-time)).
 - [ ] **Crowds**: more than two agents, and agents of different sizes squeezing past furniture, in both engines.
 - [ ] **Godot release export and .NET**: install export templates; measure a release build's frame time and the motion kernel in C#/GDExtension against GDScript.
 - [ ] **Unity batch-capture fault**: find why batch-editor captures of a lit URP scene with SSAO render dark and tinted while the player is correct ([Unity](tools/unity.md#verified-local-batch-workflow)).
